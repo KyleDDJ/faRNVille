@@ -1,12 +1,8 @@
+import ShopScreen from "@/screens/ShopScreen";
 import React from "react";
-import { Text, View } from "react-native";
 
 const shop = () => {
-  return (
-    <View>
-      <Text>shop</Text>
-    </View>
-  );
+  return <ShopScreen />;
 };
 
 export default shop;
