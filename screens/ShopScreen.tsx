@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { FlatList, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import EarningsSummary from "@/components/EarningSummary";
@@ -20,14 +20,15 @@ const ShopScreen = () => {
     >
       <EarningsSummary />
       <View className="flex-1 pt-6 pb-16">
-        {PLANTS.map(plant => (
-          <PlantCard
-            key={plant.id}
-            plant={plant}
-            onAdd={handleAddPlant}
-            variant="shop"
-          />
-        ))}
+        <FlatList
+          data={PLANTS}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({ item }) => (
+            <PlantCard plant={item} onAdd={handleAddPlant} variant="shop" />
+          )}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 64 }}
+        />
       </View>
     </SafeAreaView>
   );

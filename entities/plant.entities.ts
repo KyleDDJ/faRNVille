@@ -3,13 +3,14 @@ export type Plants = {
   name: string;
   harvestTime: string;
   stock: string;
-  profit: string;
-  cost: string;
+  profit: number;
+  cost: number;
   status?: 'available' | 'planted' | 'growing' | 'ready' | 'harvested';
   isActive?: boolean;
   category?: 'vegetable' | 'fruit';
   plantedAt?: Date;
   harvestReadyAt?: Date;
   harvestedAt?: Date; 
-  image?: any; 
+  image?: any;
+  harvestTimeMinutes?: number; 
 };

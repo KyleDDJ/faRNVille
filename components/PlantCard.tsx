@@ -4,14 +4,14 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
-type ShopCardProps = {
+type PlantCardProps = {
   plant: Plants;
   onAdd?: (plant: Plants) => void;
   variant?: "shop" | "seeds";
   showAddButton?: boolean;
 };
 
-const ShopCard: React.FC<ShopCardProps> = ({
+const PlantCard: React.FC<PlantCardProps> = ({
   plant,
   onAdd,
   variant = "shop",
@@ -19,7 +19,7 @@ const ShopCard: React.FC<ShopCardProps> = ({
 }) => {
   const getMiddleText = () => {
     if (variant === "shop") {
-      return `Harvest in ${plant.harvestTime} | Cost: ${plant.cost}`;
+      return `Harvest in ${plant.harvestTime} | Cost: $${plant.cost}.00`;
     } else {
       return `Harvest in ${plant.harvestTime} | Stock: ${plant.stock}`;
     }
@@ -46,7 +46,7 @@ const ShopCard: React.FC<ShopCardProps> = ({
           className="text-lg font-bold"
           style={{ color: COLORS.leafy_green2 }}
         >
-          Profit: {plant.profit}
+          Profit: ${plant.profit}.00
         </Text>
       </View>
 
@@ -63,4 +63,4 @@ const ShopCard: React.FC<ShopCardProps> = ({
   );
 };
 
-export default ShopCard;
+export default PlantCard;

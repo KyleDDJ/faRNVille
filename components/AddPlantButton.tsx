@@ -7,14 +7,12 @@ type AddPlantButtonProps = {
   title: string;
   onPress?: () => void;
   borderColor?: string;
-  borderStyle?: "solid";
 };
 
 const AddPlantButton: React.FC<AddPlantButtonProps> = ({
   title,
   onPress,
   borderColor = COLORS.gray400,
-  borderStyle = "solid",
 }) => {
   return (
     <TouchableOpacity
@@ -24,7 +22,7 @@ const AddPlantButton: React.FC<AddPlantButtonProps> = ({
       style={{
         borderWidth: 2,
         borderColor,
-        borderStyle,
+        borderStyle: "solid",
       }}
     >
       <View className="mb-4">
