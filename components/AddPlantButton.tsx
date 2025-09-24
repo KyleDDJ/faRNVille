@@ -20,9 +20,9 @@ const AddPlantButton: React.FC<AddPlantButtonProps> = ({
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.8}
-      className="w-11/12 self-center mt-5 rounded-2xl p-6 items-center"
+      className="w-10/12 self-center mt-5 rounded-2xl p-6 items-center"
       style={{
-        borderWidth: 3,
+        borderWidth: 2,
         borderColor,
         borderStyle,
       }}

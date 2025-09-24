@@ -5,7 +5,7 @@ export const defaultTextColor = '#335135';
  
 export const COLORS = {
 
-	green: '#476A49',
+
 	leafy_green : "#314f33",
 	leafy_green1 : "#7c967d",
 	leafy_green2 : "#335135",
@@ -16,8 +16,10 @@ export const COLORS = {
 	black: "#000000ff",
 	white: "#ffffffff",
 
-
-
+	remove: '#FF7081',
+	orange: '#FFA500',
+	yellow: '#FFDE21',
+	green: '#476A49',
 	gray50: "#F9FAFB",
     gray100: "#F3F4F6",
     gray200: "#E5E7EB",

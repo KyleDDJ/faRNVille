@@ -26,14 +26,14 @@ const ShopCard: React.FC<ShopCardProps> = ({
   };
 
   return (
-    <View className="bg-white rounded-3xl p-4 mx-4 my-3 flex-row items-center border border-gray-200 shadow-lg">
+    <View className="bg-white rounded-3xl p-4 mx-4 my-3 flex-row items-center border border-gray-200  ">
       <Image
         source={plant.image}
         className="w-36 h-28 rounded-2xl mr-4"
         resizeMode="cover"
       />
 
-      <View className="flex-1 pb-10">
+      <View className="flex-1 pb-4">
         <Text
           className="text-2xl font-bold mb-1"
           style={{ color: COLORS.leafy_green2 }}

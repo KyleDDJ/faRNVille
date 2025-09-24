@@ -11,13 +11,10 @@ const FarmScreen: React.FC = () => {
       className="flex-1"
       style={{
         backgroundColor: defaultBackground,
-        paddingBottom: 100,
       }}
     >
       <EarningSummary />
-      <View
-        style={{ paddingTop: 16, paddingBottom: 100, alignItems: "center" }}
-      >
+      <View style={{ paddingTop: 16, alignItems: "center" }}>
         <AddPlantButton
           title="Add a Plant"
           onPress={() => console.log("Add a plant pressed!")}

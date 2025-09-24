@@ -1,6 +1,7 @@
 import { COLORS } from "@/constants/Colors";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Tabs } from "expo-router";
 
 export default function TabLayout() {
@@ -48,9 +49,9 @@ export default function TabLayout() {
           title: "Farm",
           headerShown: false,
           tabBarIcon: ({ focused, color }) => (
-            <FontAwesome5
-              name="truck-monster"
-              size={focused ? 25 : 24}
+            <MaterialCommunityIcons
+              name="barn"
+              size={focused ? 32 : 29}
               color={color}
             />
           ),
