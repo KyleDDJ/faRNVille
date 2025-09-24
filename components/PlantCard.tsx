@@ -1,15 +1,30 @@
 import { COLORS } from "@/constants/Colors";
 import { Plants } from "@/entities/plant.entities";
-import Entypo from "@expo/vector-icons/Entypo";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 type ShopCardProps = {
   plant: Plants;
   onAdd?: (plant: Plants) => void;
+  variant?: "shop" | "seeds";
+  showAddButton?: boolean;
 };
 
-const ShopCard: React.FC<ShopCardProps> = ({ plant, onAdd }) => {
+const ShopCard: React.FC<ShopCardProps> = ({
+  plant,
+  onAdd,
+  variant = "shop",
+  showAddButton = true,
+}) => {
+  const getMiddleText = () => {
+    if (variant === "shop") {
+      return `Harvest in ${plant.harvestTime} | Cost: ${plant.cost}`;
+    } else {
+      return `Harvest in ${plant.harvestTime} | Stock: ${plant.stock}`;
+    }
+  };
+
   return (
     <View className="bg-white rounded-3xl p-4 mx-4 my-3 flex-row items-center border border-gray-200 shadow-lg">
       <Image
@@ -26,10 +41,7 @@ const ShopCard: React.FC<ShopCardProps> = ({ plant, onAdd }) => {
           {plant.name}
         </Text>
 
-        <Text className="text-sm text-gray-400 mb-1">
-          Harvest in {plant.harvestTime} | Cost: {plant.cost}
-        </Text>
-
+        <Text className="text-based text-gray-400 mb-1">{getMiddleText()}</Text>
         <Text
           className="text-lg font-bold"
           style={{ color: COLORS.leafy_green2 }}
@@ -38,12 +50,15 @@ const ShopCard: React.FC<ShopCardProps> = ({ plant, onAdd }) => {
         </Text>
       </View>
 
-      <TouchableOpacity
-        onPress={() => onAdd?.(plant)}
-        className="mt-6 self-end"
-      >
-        <Entypo name="circle-with-plus" size={35} color={COLORS.leafy_green2} />
-      </TouchableOpacity>
+      {showAddButton && (
+        <TouchableOpacity
+          onPress={() => onAdd?.(plant)}
+          className="w-12 h-12 rounded-full items-center justify-center ml-3"
+          style={{ backgroundColor: COLORS.leafy_green2 }}
+        >
+          <FontAwesome5 name="plus" size={24} color={COLORS.white} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

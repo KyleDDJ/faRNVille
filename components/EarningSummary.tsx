@@ -47,7 +47,7 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
 
       <View className="items-end">
         <Text
-          className="text-sm text-white mb-1 font-bold "
+          className="text-sm text-white mb-1 font-bold mr-4"
           style={{ fontSize: 14, color: COLORS.gray300 }}
         >
           Earnings!

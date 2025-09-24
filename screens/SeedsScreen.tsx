@@ -1,31 +1,23 @@
+import { defaultBackground } from "@/constants/Colors";
 import React from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import EarningsSummary from "@/components/EarningSummary";
 import PlantCard from "@/components/PlantCard";
-import { defaultBackground } from "@/constants/Colors";
 import { PLANTS } from "@/constants/Plant";
-import { Plants } from "@/entities/plant.entities";
 
-const ShopScreen = () => {
-  const handleAddPlant = (plant: Plants) => {
-    console.log("Buy", plant.name);
-  };
-
+const SeedsScreen = () => {
   return (
-    <SafeAreaView
-      className="flex-1"
-      style={{ backgroundColor: defaultBackground }}
-    >
+    <SafeAreaView style={{ flex: 1, backgroundColor: defaultBackground }}>
       <EarningsSummary />
       <View className="flex-1 pt-6 pb-16">
         {PLANTS.map(plant => (
           <PlantCard
             key={plant.id}
             plant={plant}
-            onAdd={handleAddPlant}
-            variant="shop"
+            variant="seeds"
+            showAddButton={false}
           />
         ))}
       </View>
@@ -33,4 +25,4 @@ const ShopScreen = () => {
   );
 };
 
-export default ShopScreen;
+export default SeedsScreen;
