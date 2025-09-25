@@ -1,5 +1,6 @@
 import AddPlantButton from "@/components/AddPlantButton";
 import EarningSummary from "@/components/EarningSummary";
+import FarmingSummaryCard from "@/components/FarmingSummary";
 import NoPlantView from "@/components/NoPlantView";
 import PlantCard from "@/components/PlantCard";
 import { COLORS, defaultBackground } from "@/constants/Colors";
@@ -75,12 +76,19 @@ const FarmScreen: React.FC = () => {
 
       {planted_plants.length > 0 ? (
         <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
+          <FarmingSummaryCard
+            sprint_name={"Farming Summary"}
+            minutes_left={"15"}
+            remaning_seed={5}
+            possible_income={15}
+            planted_plants={3}
+          />
           {planted_plants.map((plant, index) => (
             <FarmDashboard
               key={plant.uniqueId}
               plant={plant}
               progress={index === 0 ? 0.2 : index === 1 ? 0.75 : 1}
-              timeLeft={index === 0 ? "4m 20s" : index === 1 ? "1m 23s" : "0s"}
+              time_left={index === 0 ? "4m 20s" : index === 1 ? "1m 23s" : "0s"}
               onRemove={() => handleOpenRemovePlant(plant)}
               onHarvest={() => handleHarvest(plant.uniqueId)}
             />

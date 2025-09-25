@@ -7,7 +7,7 @@ import * as Progress from "react-native-progress";
 type FarmDashboardProps = {
   plant: Plants;
   progress: number;
-  timeLeft: string;
+  time_left: string;
   onRemove: () => void;
   onHarvest: () => void;
 };
@@ -15,7 +15,7 @@ type FarmDashboardProps = {
 const FarmDashboard: React.FC<FarmDashboardProps> = ({
   plant,
   progress,
-  timeLeft,
+  time_left,
   onRemove,
   onHarvest,
 }) => {
@@ -24,7 +24,7 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
   return (
     <View className="mb-3">
       <View
-        className="w-11/12 flex-row self-center mt-4 rounded-2xl p-3 items-center"
+        className="w-11/12 flex-row self-center mt-1 rounded-2xl p-3 items-center"
         style={{
           borderWidth: 1,
           borderColor: COLORS.gray300,
@@ -37,9 +37,9 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
           resizeMode="cover"
         />
 
-        <View className="flex-col flex-1">
-          <Text className="text-lg font-bold">
-            {plant.name}{" "}
+        <View className="flex-col flex-1 mt-8">
+          <Text className="text-lg font-bold" style={{ color: COLORS.green }}>
+            {plant.name}
             {isReady && (
               <Text className="text-green-600 font-semibold">
                 (+${plant.profit.toFixed(2)})
@@ -52,12 +52,12 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
               isReady ? "text-green-600" : "text-gray-600"
             } mb-1`}
           >
-            {isReady ? "Harvest now!" : `Harvest in ${timeLeft}`}
+            {isReady ? "Harvest now!" : `Harvest in ${time_left}`}
           </Text>
 
           <Progress.Bar
             progress={progress}
-            width={200}
+            width={235}
             height={12}
             borderRadius={6}
             borderWidth={0}
@@ -75,7 +75,7 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
         {isReady ? (
           <TouchableOpacity
             className="rounded-2xl px-3 py-1 ml-3 mb-20"
-            style={{ backgroundColor: COLORS.green }}
+            style={{ backgroundColor: COLORS.lightgreen }}
             onPress={onHarvest}
           >
             <Text className="text-white font-semibold">Complete</Text>

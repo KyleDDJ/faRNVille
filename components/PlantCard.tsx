@@ -26,7 +26,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
   };
 
   return (
-    <View className="bg-white rounded-3xl p-2 mx-4 my-3 flex-row items-center border border-gray-200  ">
+    <View className="bg-white rounded-3xl p-2 mx-4 my-3 flex-row items-center border border-gray-200">
       <Image
         source={plant.image}
         className="w-36 h-28 rounded-2xl mr-4"

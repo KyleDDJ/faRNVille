@@ -16,7 +16,7 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
   return (
     <View
       className="flex-row justify-between items-center px-6 py-10 rounded-b-3xl"
-      style={{ backgroundColor: COLORS.green }}
+      style={{ backgroundColor: COLORS.green, elevation: 10 }}
     >
       <View className="flex-row items-center">
         <Image
