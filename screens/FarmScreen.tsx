@@ -1,3 +1,4 @@
+import AddPlantButton from "@/components/AddPlantButton";
 import EarningSummary from "@/components/EarningSummary";
 import NoPlantView from "@/components/NoPlantView";
 import PlantCard from "@/components/PlantCard";
@@ -10,13 +11,19 @@ import {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const FarmScreen: React.FC = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
-  const [selected_plant, setSelectedPlant] = useState<any>(null);
+  const [planted_plants, setPlantedPlants] = useState<any[]>([]);
   const [temp_plant, setTempPlant] = useState<any>(null);
 
   const snapPoints = useMemo(() => ["75%"], []);
@@ -31,14 +38,19 @@ const FarmScreen: React.FC = () => {
 
   const handleConfirm = useCallback(() => {
     if (temp_plant) {
-      setSelectedPlant(temp_plant);
+      setPlantedPlants(prev => [...prev, temp_plant]);
       setTempPlant(null);
       handleClose();
     }
   }, [temp_plant]);
 
-  const handleRemove = useCallback(() => {
-    setSelectedPlant(null);
+  const handleRemove = useCallback((id: number) => {
+    setPlantedPlants(prev => prev.filter(p => p.id !== id));
+  }, []);
+
+  const handleHarvest = useCallback((id: number) => {
+    console.log("Harvested + profit added");
+    setPlantedPlants(prev => prev.filter(p => p.id !== id));
   }, []);
 
   return (
@@ -50,12 +62,27 @@ const FarmScreen: React.FC = () => {
     >
       <EarningSummary />
 
-      {selected_plant ? (
-        <FarmDashboard
-          plant={selected_plant}
-          onRemove={handleRemove}
-          onPlantAgain={handleOpen}
-        />
+      {planted_plants.length > 0 ? (
+        <ScrollView
+          className="flex-1"
+          contentContainerStyle={{ paddingBottom: 120 }}
+          showsVerticalScrollIndicator={false}
+        >
+          {planted_plants.map((plant, index) => (
+            <FarmDashboard
+              key={index}
+              plant={plant}
+              progress={index === 0 ? 0.2 : index === 1 ? 0.75 : 1}
+              timeLeft={index === 0 ? "4m 20s" : index === 1 ? "1m 23s" : "0s"}
+              onRemove={() => handleRemove(plant.id)}
+              onHarvest={() => handleHarvest(plant.id)}
+            />
+          ))}
+
+          <TouchableOpacity className="mt-4">
+            <AddPlantButton title="Add a Plant again" onPress={handleOpen} />
+          </TouchableOpacity>
+        </ScrollView>
       ) : (
         <NoPlantView onAdd={handleOpen} />
       )}
@@ -91,7 +118,7 @@ const FarmScreen: React.FC = () => {
             <Text className="text-lg font-semibold text-black ml-4">
               Ready to plant something?
             </Text>
-            <Text className="text-basetext-black opacity-80 ml-4">
+            <Text className="text-base text-black opacity-80 ml-4">
               Choose your seed from the shop and start farming!
             </Text>
           </View>
@@ -121,8 +148,8 @@ const FarmScreen: React.FC = () => {
 
           <View className="flex-row item-center justify-center gap-6 mt-3">
             <TouchableOpacity
-              className="w-5/12 rounded-lg py-3"
-              style={{ backgroundColor: COLORS.gray500 }}
+              className="w-5/12 rounded-3xl py-3"
+              style={{ backgroundColor: COLORS.gray400 }}
               onPress={handleClose}
             >
               <Text className="text-center text-white text-lg font-semibold">
@@ -131,8 +158,8 @@ const FarmScreen: React.FC = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              className="w-5/12 rounded-lg py-3"
-              style={{ backgroundColor: COLORS.leafy_green1 }}
+              className="w-5/12 rounded-3xl py-3"
+              style={{ backgroundColor: COLORS.green }}
               onPress={handleConfirm}
               disabled={!temp_plant}
             >

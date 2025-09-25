@@ -26,7 +26,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
   };
 
   return (
-    <View className="bg-white rounded-3xl p-4 mx-4 my-3 flex-row items-center border border-gray-200  ">
+    <View className="bg-white rounded-3xl p-2 mx-4 my-3 flex-row items-center border border-gray-200  ">
       <Image
         source={plant.image}
         className="w-36 h-28 rounded-2xl mr-4"
@@ -53,7 +53,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
       {showAddButton && (
         <TouchableOpacity
           onPress={() => onAdd?.(plant)}
-          className="w-12 h-12 rounded-full items-center justify-center ml-3"
+          className="w-10 h-10 rounded-full items-center justify-center mt-1"
           style={{ backgroundColor: COLORS.leafy_green2 }}
         >
           <FontAwesome5 name="plus" size={24} color={COLORS.white} />

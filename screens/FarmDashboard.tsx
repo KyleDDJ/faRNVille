@@ -1,4 +1,3 @@
-import AddPlantButton from "@/components/AddPlantButton";
 import { COLORS } from "@/constants/Colors";
 import { Plants } from "@/entities/plant.entities";
 import React from "react";
@@ -7,53 +6,90 @@ import * as Progress from "react-native-progress";
 
 type FarmDashboardProps = {
   plant: Plants;
+  progress: number;
+  timeLeft: string;
   onRemove: () => void;
-  onPlantAgain: () => void;
+  onHarvest: () => void;
 };
 
 const FarmDashboard: React.FC<FarmDashboardProps> = ({
   plant,
+  progress,
+  timeLeft,
   onRemove,
-  onPlantAgain,
+  onHarvest,
 }) => {
+  const isReady = progress >= 1;
+
   return (
-    <View className="mb-1">
+    <View className="mb-3">
       <View
-        className="w-11/12 flex-row self-center mt-5 rounded-2xl p-2 items-center"
+        className="w-11/12 flex-row self-center mt-4 rounded-2xl p-3 items-center"
         style={{
           borderWidth: 1,
           borderColor: COLORS.gray300,
+          backgroundColor: "white",
         }}
       >
         <Image
           source={plant.image}
-          className="w-40 h-32 rounded-xl mr-3"
+          className="w-28 h-28 rounded-xl mr-3"
           resizeMode="cover"
         />
-        <View className="flex-col flex-1 mt-14">
-          <Text className="text-xl font-bold">{plant.name}</Text>
-          <Text className="text-gray-600 text-base mb-1">
-            Harvest in: <Text className="font-mono text-base">00:04:20</Text>
+
+        <View className="flex-col flex-1">
+          <Text className="text-lg font-bold">
+            {plant.name}{" "}
+            {isReady && (
+              <Text className="text-green-600 font-semibold">
+                (+${plant.profit.toFixed(2)})
+              </Text>
+            )}
           </Text>
+
+          <Text
+            className={`text-base ${
+              isReady ? "text-green-600" : "text-gray-600"
+            } mb-1`}
+          >
+            {isReady ? "Harvest now!" : `Harvest in ${timeLeft}`}
+          </Text>
+
           <Progress.Bar
-            progress={0.2}
+            progress={progress}
             width={200}
             height={12}
-            color={COLORS.orange}
-            borderRadius={5}
+            borderRadius={6}
+            borderWidth={0}
+            color={
+              isReady
+                ? COLORS.green
+                : progress > 0.6
+                ? COLORS.yellow
+                : COLORS.orange
+            }
+            unfilledColor={COLORS.gray200}
           />
         </View>
-        <TouchableOpacity
-          className="rounded-2xl px-3 py-1 ml-3 mb-24"
-          style={{ backgroundColor: COLORS.remove }}
-          onPress={onRemove}
-        >
-          <Text className="text-white font-semibold">Remove</Text>
-        </TouchableOpacity>
+
+        {isReady ? (
+          <TouchableOpacity
+            className="rounded-2xl px-3 py-1 ml-3 mb-20"
+            style={{ backgroundColor: COLORS.green }}
+            onPress={onHarvest}
+          >
+            <Text className="text-white font-semibold">Complete</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            className="rounded-2xl px-3 py-1 ml-3 mb-20"
+            style={{ backgroundColor: COLORS.remove }}
+            onPress={onRemove}
+          >
+            <Text className="text-white font-semibold">Remove</Text>
+          </TouchableOpacity>
+        )}
       </View>
-      <TouchableOpacity>
-        <AddPlantButton title="Add a Plant again" onPress={onPlantAgain} />
-      </TouchableOpacity>
     </View>
   );
 };
