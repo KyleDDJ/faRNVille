@@ -111,7 +111,7 @@ const FarmScreen: React.FC = () => {
       >
         <BottomSheetView className="flex-1 py-2.5">
           <Text className="text-center text-xl font-bold text-black">
-            Add a New Plant 🌱
+            Add a New Plant
           </Text>
 
           <View className="mt-4">

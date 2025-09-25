@@ -1,13 +1,16 @@
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
+  BottomSheetTextInput,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
   FlatList,
+  Modal,
+  Pressable,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -20,11 +23,21 @@ import { PLANTS } from "@/constants/Plant";
 import { Plants } from "@/entities/plant.entities";
 
 const ShopScreen = () => {
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const [selected_plant, setSelectedPlant] = useState<Plants | null>(null);
-  const [number, onChangeNumber] = React.useState("");
+  const [number, onChangeNumber] = React.useState("1");
+  const [confirmation_modal_visible, setConfirmationModalVisible] =
+    useState(false);
+  const [purchase_info, setPurchaseInfo] = useState<{
+    name: string;
+    count: string;
+    cost: number;
+  } | null>(null);
+  const [success_modal_visible, setSuccessModalVisible] = useState(false);
+
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const handleAddPlant = (plant: Plants) => {
     setSelectedPlant(plant);
+    onChangeNumber("1");
     handleOpen();
   };
   const snapPoints = useMemo(() => ["20%"], []);
@@ -35,6 +48,7 @@ const ShopScreen = () => {
 
   const handleClose = useCallback(() => {
     bottomSheetModalRef.current?.dismiss();
+    onChangeNumber("1");
   }, []);
 
   return (
@@ -55,11 +69,86 @@ const ShopScreen = () => {
         />
       </View>
 
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={confirmation_modal_visible}
+        onRequestClose={() => setConfirmationModalVisible(false)}
+      >
+        <View className="flex-1 justify-center items-center bg-black/50">
+          <View className="bg-white rounded-2xl p-5 w-9/12 items-center">
+            <View className="mb-2">
+              <FontAwesome name="question" size={40} color={COLORS.green} />
+            </View>
+
+            <Text className="text-lg font-bold mb-4 text-center">
+              {purchase_info
+                ? `Confirm ${purchase_info.count} ${purchase_info.name}(s) for $${purchase_info.cost}?`
+                : ""}
+            </Text>
+
+            <View className="flex-row gap-5 justify-between items-center">
+              <Pressable
+                style={{ backgroundColor: COLORS.gray400 }}
+                className="px-10 py-3 rounded-full"
+                onPress={() => setConfirmationModalVisible(false)}
+              >
+                <Text className="text-white font-semibold">Cancel</Text>
+              </Pressable>
+              <Pressable
+                style={{ backgroundColor: COLORS.green }}
+                className="px-10 py-3 rounded-full"
+                onPress={() => {
+                  console.log("Confirmed purchase:", purchase_info);
+                  setConfirmationModalVisible(false);
+                  setSuccessModalVisible(true);
+                }}
+              >
+                <Text className="text-white font-semibold">Confirm</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={success_modal_visible}
+        onRequestClose={() => setSuccessModalVisible(false)}
+      >
+        <View className="flex-1 justify-center items-center bg-black/50">
+          <View className="bg-white rounded-2xl p-5 w-9/12 items-center">
+            <Text className="text-lg font-bold mb-4 text-center">
+              {purchase_info
+                ? `You purchased ${purchase_info.count} ${purchase_info.name}(s)!`
+                : ""}
+            </Text>
+
+            <Pressable
+              style={{ backgroundColor: COLORS.green }}
+              className="w-full py-3 rounded-full"
+              onPress={() => setSuccessModalVisible(false)}
+            >
+              <Text className="text-white font-semibold text-center">
+                Accept
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
       <BottomSheetModal
         ref={bottomSheetModalRef}
         index={0}
         snapPoints={snapPoints}
         enablePanDownToClose={true}
+        keyboardBehavior="interactive"
+        keyboardBlurBehavior="restore"
+        onDismiss={() => {
+          onChangeNumber("0");
+          setSelectedPlant(null);
+        }}
         backgroundStyle={{
           backgroundColor: defaultBackground,
           borderTopLeftRadius: 20,
@@ -89,7 +178,7 @@ const ShopScreen = () => {
                   <Text className="mr-2 text-black text-2xl font-bold">
                     Amount:
                   </Text>
-                  <TextInput
+                  <BottomSheetTextInput
                     style={{
                       borderWidth: 1,
                       borderColor: COLORS.gray300,
@@ -100,7 +189,6 @@ const ShopScreen = () => {
                     }}
                     onChangeText={onChangeNumber}
                     keyboardType="numeric"
-                    defaultValue="1"
                     value={number}
                   />
                 </View>
@@ -113,8 +201,16 @@ const ShopScreen = () => {
                 className="w-full mt-6 py-3 rounded-3xl"
                 style={{ backgroundColor: COLORS.green }}
                 onPress={() => {
-                  console.log("Bought", selected_plant.name, "x" + number);
+                  if (!selected_plant) return;
+
+                  setPurchaseInfo({
+                    name: selected_plant.name,
+                    count: number,
+                    cost: selected_plant.cost * Number(number),
+                  });
+
                   handleClose();
+                  setConfirmationModalVisible(true);
                 }}
               >
                 <Text className="text-center text-white font-semibold text-lg">
