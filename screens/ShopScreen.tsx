@@ -1,4 +1,5 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -93,7 +94,12 @@ const ShopScreen = () => {
                 className="px-10 py-3 rounded-full"
                 onPress={() => setConfirmationModalVisible(false)}
               >
-                <Text className="text-white font-semibold">Cancel</Text>
+                <Text
+                  className=" font-semibold"
+                  style={{ color: COLORS.white }}
+                >
+                  Cancel
+                </Text>
               </Pressable>
               <Pressable
                 style={{ backgroundColor: COLORS.green }}
@@ -118,7 +124,15 @@ const ShopScreen = () => {
         onRequestClose={() => setSuccessModalVisible(false)}
       >
         <View className="flex-1 justify-center items-center bg-black/50">
-          <View className="bg-white rounded-2xl p-5 w-9/12 items-center">
+          <View className="bg-white rounded-2xl pt-5 pb-4 px-5 w-9/12 items-center">
+            <View className="mb-2">
+              <Ionicons
+                name="checkmark-done-circle"
+                size={80}
+                color={COLORS.green}
+              />
+            </View>
+
             <Text className="text-lg font-bold mb-4 text-center">
               {purchase_info
                 ? `You purchased ${purchase_info.count} ${purchase_info.name}(s)!`

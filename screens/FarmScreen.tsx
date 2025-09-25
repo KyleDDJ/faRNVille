@@ -21,85 +21,93 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const FarmScreen: React.FC = () => {
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const addPlantSheetRef = useRef<BottomSheetModal>(null);
+  const removePlantSheetRef = useRef<BottomSheetModal>(null);
 
   const [planted_plants, setPlantedPlants] = useState<any[]>([]);
   const [temp_plant, setTempPlant] = useState<any>(null);
+  const [plant_to_remove, setPlantToRemove] = useState<any>(null);
 
-  const snapPoints = useMemo(() => ["75%"], []);
+  const snapPoints = useMemo(() => ["22", "65%"], []);
 
-  const handleOpen = useCallback(() => {
-    bottomSheetModalRef.current?.present();
+  const handleOpenAddPlant = useCallback(
+    () => addPlantSheetRef.current?.present(),
+    []
+  );
+  const handleCloseAddPlant = useCallback(() => {
+    addPlantSheetRef.current?.dismiss();
+    setTempPlant(null);
   }, []);
-
-  const handleClose = useCallback(() => {
-    bottomSheetModalRef.current?.dismiss();
-  }, []);
-
-  const handleConfirm = useCallback(() => {
+  const handleConfirmAdd = useCallback(() => {
     if (temp_plant) {
-      setPlantedPlants(prev => [...prev, temp_plant]);
-      setTempPlant(null);
-      handleClose();
+      setPlantedPlants(prev => [
+        ...prev,
+        { ...temp_plant, uniqueId: Date.now() },
+      ]);
+      handleCloseAddPlant();
     }
   }, [temp_plant]);
 
-  const handleRemove = useCallback((id: number) => {
-    setPlantedPlants(prev => prev.filter(p => p.id !== id));
+  const handleOpenRemovePlant = useCallback((plant: any) => {
+    setPlantToRemove(plant);
+    removePlantSheetRef.current?.present();
   }, []);
+  const handleCloseRemovePlant = useCallback(() => {
+    removePlantSheetRef.current?.dismiss();
+    setPlantToRemove(null);
+  }, []);
+  const handleConfirmRemove = useCallback(() => {
+    if (plant_to_remove) {
+      setPlantedPlants(prev =>
+        prev.filter(p => p.uniqueId !== plant_to_remove.uniqueId)
+      );
+      handleCloseRemovePlant();
+    }
+  }, [plant_to_remove]);
 
-  const handleHarvest = useCallback((id: number) => {
-    console.log("Harvested + profit added");
-    setPlantedPlants(prev => prev.filter(p => p.id !== id));
+  const handleHarvest = useCallback((uniqueId: number) => {
+    setPlantedPlants(prev => prev.filter(p => p.uniqueId !== uniqueId));
   }, []);
 
   return (
-    <SafeAreaView
-      className="flex-1"
-      style={{
-        backgroundColor: defaultBackground,
-      }}
-    >
+    <SafeAreaView style={{ flex: 1, backgroundColor: defaultBackground }}>
       <EarningSummary />
 
       {planted_plants.length > 0 ? (
-        <ScrollView
-          className="flex-1"
-          contentContainerStyle={{ paddingBottom: 120 }}
-          showsVerticalScrollIndicator={false}
-        >
+        <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
           {planted_plants.map((plant, index) => (
             <FarmDashboard
-              key={index}
+              key={plant.uniqueId}
               plant={plant}
               progress={index === 0 ? 0.2 : index === 1 ? 0.75 : 1}
               timeLeft={index === 0 ? "4m 20s" : index === 1 ? "1m 23s" : "0s"}
-              onRemove={() => handleRemove(plant.id)}
-              onHarvest={() => handleHarvest(plant.id)}
+              onRemove={() => handleOpenRemovePlant(plant)}
+              onHarvest={() => handleHarvest(plant.uniqueId)}
             />
           ))}
 
           <TouchableOpacity className="mt-4">
-            <AddPlantButton title="Add a Plant again" onPress={handleOpen} />
+            <AddPlantButton
+              title="Add a Plant again"
+              onPress={handleOpenAddPlant}
+            />
           </TouchableOpacity>
         </ScrollView>
       ) : (
-        <NoPlantView onAdd={handleOpen} />
+        <NoPlantView onAdd={handleOpenAddPlant} />
       )}
 
       <BottomSheetModal
-        ref={bottomSheetModalRef}
-        index={0}
+        ref={addPlantSheetRef}
+        index={1}
         snapPoints={snapPoints}
-        enablePanDownToClose={true}
+        enablePanDownToClose
         backgroundStyle={{
           backgroundColor: defaultBackground,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
         }}
-        handleIndicatorStyle={{
-          backgroundColor: COLORS.leafy_green1,
-        }}
+        handleIndicatorStyle={{ backgroundColor: COLORS.leafy_green1 }}
         backdropComponent={props => (
           <BottomSheetBackdrop
             {...props}
@@ -109,26 +117,16 @@ const FarmScreen: React.FC = () => {
           />
         )}
       >
-        <BottomSheetView className="flex-1 py-2.5">
-          <Text className="text-center text-xl font-bold text-black">
+        <BottomSheetView className="flex-1 py-5 px-4">
+          <Text className="text-xl font-bold text-center text-black">
             Add a New Plant
           </Text>
-
-          <View className="mt-4">
-            <Text className="text-lg font-semibold text-black ml-4">
-              Ready to plant something?
-            </Text>
-            <Text className="text-base text-black opacity-80 ml-4">
-              Choose your seed from the shop and start farming!
-            </Text>
-          </View>
 
           <FlatList
             data={PLANTS}
             keyExtractor={item => item.id.toString()}
             renderItem={({ item }) => (
               <TouchableOpacity
-                activeOpacity={0.7}
                 onPress={() => setTempPlant(item)}
                 style={{
                   backgroundColor:
@@ -143,24 +141,22 @@ const FarmScreen: React.FC = () => {
                 <PlantCard plant={item} variant="seeds" showAddButton={false} />
               </TouchableOpacity>
             )}
-            showsVerticalScrollIndicator={false}
           />
 
           <View className="flex-row item-center justify-center gap-6 mt-3">
             <TouchableOpacity
               className="w-5/12 rounded-3xl py-3"
               style={{ backgroundColor: COLORS.gray400 }}
-              onPress={handleClose}
+              onPress={handleCloseAddPlant}
             >
               <Text className="text-center text-white text-lg font-semibold">
                 Cancel
               </Text>
             </TouchableOpacity>
-
             <TouchableOpacity
               className="w-5/12 rounded-3xl py-3"
               style={{ backgroundColor: COLORS.green }}
-              onPress={handleConfirm}
+              onPress={handleConfirmAdd}
               disabled={!temp_plant}
             >
               <Text className="text-center text-white text-lg font-semibold">
@@ -168,6 +164,62 @@ const FarmScreen: React.FC = () => {
               </Text>
             </TouchableOpacity>
           </View>
+        </BottomSheetView>
+      </BottomSheetModal>
+
+      <BottomSheetModal
+        ref={removePlantSheetRef}
+        index={0}
+        snapPoints={snapPoints}
+        enablePanDownToClose
+        backgroundStyle={{
+          backgroundColor: defaultBackground,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+        }}
+        handleIndicatorStyle={{ backgroundColor: COLORS.leafy_green1 }}
+        backdropComponent={props => (
+          <BottomSheetBackdrop
+            {...props}
+            disappearsOnIndex={-1}
+            appearsOnIndex={0}
+            opacity={0.5}
+          />
+        )}
+      >
+        <BottomSheetView className="flex-1 py-5 px-4">
+          {plant_to_remove && (
+            <>
+              <Text
+                className="text-xl font-bold text-center"
+                style={{ color: COLORS.green }}
+              >
+                Confirm remove {plant_to_remove.name}?
+              </Text>
+
+              <View className="flex-col justify-center items-center mt-6 w-full space-y-4 px-4">
+                <TouchableOpacity
+                  className="rounded-3xl py-4 w-full mb-2"
+                  style={{ backgroundColor: COLORS.red }}
+                  onPress={handleConfirmRemove}
+                >
+                  <Text className="text-white font-bold text-center">
+                    Remove
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  className="rounded-3xl py-4 w-full"
+                  style={{ backgroundColor: COLORS.gray300 }}
+                  onPress={handleCloseRemovePlant}
+                >
+                  <Text className="text-black font-bold text-center">
+                    Cancel
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
         </BottomSheetView>
       </BottomSheetModal>
     </SafeAreaView>

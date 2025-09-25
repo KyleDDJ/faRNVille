@@ -15,7 +15,7 @@ export const COLORS = {
 	sunny: "#FBC02D",
 	black: "#000000ff",
 	white: "#ffffffff",
-
+	red: '#CD1C18',
 	remove: '#FF7081',
 	orange: '#FFA500',
 	yellow: '#FFDE21',
