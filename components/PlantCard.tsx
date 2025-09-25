@@ -41,7 +41,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
           {plant.name}
         </Text>
 
-        <Text className="text-based text-gray-400 mb-1">{getMiddleText()}</Text>
+        <Text className="text-bold text-gray-400 mb-1">{getMiddleText()}</Text>
         <Text
           className="text-lg font-bold"
           style={{ color: COLORS.leafy_green2 }}
@@ -53,7 +53,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
       {showAddButton && (
         <TouchableOpacity
           onPress={() => onAdd?.(plant)}
-          className="w-10 h-10 rounded-full items-center justify-center mt-1"
+          className="w-20 h-11 rounded-full items-center justify-center mt-16"
           style={{ backgroundColor: COLORS.leafy_green2 }}
         >
           <FontAwesome5 name="plus" size={24} color={COLORS.white} />
