@@ -113,7 +113,7 @@ const BuyPlantBottomSheet = forwardRef<
               className="w-full mt-4 py-3 rounded-3xl"
               style={{
                 backgroundColor: canAffordCurrent()
-                  ? COLORS.green
+                  ? COLORS.leafy_green1
                   : COLORS.gray300,
                 opacity: canAffordCurrent() ? 1 : 0.7,
               }}

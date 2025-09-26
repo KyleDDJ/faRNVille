@@ -1,5 +1,6 @@
 import { COLORS } from "@/constants/Colors";
 import { Plants } from "@/entities/plant.entities";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
@@ -66,10 +67,15 @@ const PlantCard: React.FC<PlantCardProps> = ({
       {show_add_button && (
         <TouchableOpacity
           onPress={() => onAdd?.(plant)}
-          className="w-20 h-11 rounded-full items-center justify-center mt-16"
+          className="w-20 h-11 flex-row gap-1 rounded-full items-center justify-center mt-16"
           style={{ backgroundColor: COLORS.leafy_green1 }}
         >
           <Text className="font-semibold text-white">Buy</Text>
+          <MaterialCommunityIcons
+            name="cart-outline"
+            size={18}
+            color={COLORS.white}
+          />
         </TouchableOpacity>
       )}
     </View>

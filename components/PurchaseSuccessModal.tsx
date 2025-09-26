@@ -18,9 +18,9 @@ const PurchaseSuccessModal: React.FC<PurchaseSuccessModalProps> = ({
     <View className="flex-1 justify-center items-center bg-black/50">
       <View className="bg-white rounded-2xl pt-5 pb-4 px-5 w-9/12 items-center">
         <MaterialCommunityIcons
-          name="leaf-circle"
-          size={48}
-          color={COLORS.lightgreen}
+          name="cart-check"
+          size={60}
+          color={COLORS.leafy_green1}
         />
 
         <Text className="text-lg text-gray-600 font-bold mb-4 text-center">
@@ -30,7 +30,7 @@ const PurchaseSuccessModal: React.FC<PurchaseSuccessModalProps> = ({
         </Text>
 
         <TouchableOpacity
-          style={{ backgroundColor: COLORS.lightgreen }}
+          style={{ backgroundColor: COLORS.leafy_green1 }}
           className="w-full py-3 rounded-full"
           onPress={on_close}
         >
