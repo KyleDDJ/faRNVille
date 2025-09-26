@@ -4,12 +4,18 @@ import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import * as Progress from "react-native-progress";
 
+type PlantedPlant = Plants & {
+  unique_id: number;
+  planted_at: Date;
+  harvest_ready_at: Date;
+};
+
 type FarmDashboardProps = {
-  plant: Plants & { uniqueId: number };
+  plant: PlantedPlant;
   progress: number;
   time_left: string;
-  onRemove: (plant: Plants & { uniqueId: number }) => void;
-  onHarvest: (plant: Plants & { uniqueId: number }) => void;
+  onRemove: (plant: PlantedPlant) => void;
+  onHarvest: (plant: PlantedPlant) => void;
 };
 
 const FarmDashboard: React.FC<FarmDashboardProps> = ({
@@ -28,7 +34,7 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
         style={{
           borderWidth: 1,
           borderColor: COLORS.gray300,
-          backgroundColor: "white",
+          backgroundColor: COLORS.white,
         }}
       >
         <Image
@@ -79,7 +85,7 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
           onPress={() => (isReady ? onHarvest(plant) : onRemove(plant))}
         >
           <Text className="text-white font-semibold">
-            {isReady ? "Complete" : "Remove"}
+            {isReady ? "Harvest" : "Remove"}
           </Text>
         </TouchableOpacity>
       </View>

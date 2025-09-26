@@ -3,7 +3,7 @@ import React from "react";
 import { FlatList, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import EarningsSummary from "@/components/EarningSummary";
+import EarningsSummary from "@/components/EarningsSummary";
 import PlantCard from "@/components/PlantCard";
 import { PLANTS } from "@/constants/Plant";
 import { usePlants } from "@/contexts/PlantsContext";
@@ -19,44 +19,52 @@ const SeedsScreen = () => {
     stock: `${inventory[plant.id]} seeds available`,
   }));
 
+  const filledInventory = () => (
+    <FlatList
+      data={purchasedPlants}
+      keyExtractor={item => item.id.toString()}
+      renderItem={({ item }) => (
+        <PlantCard
+          plant={item}
+          variant="seeds"
+          show_add_button={false}
+          inventory_count={inventory[item.id]}
+        />
+      )}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ paddingBottom: 64 }}
+    />
+  );
+
+  const emptyInventory = () => (
+    <View className="flex-1 justify-center items-center px-6">
+      <MaterialCommunityIcons
+        name="seed-off"
+        size={48}
+        color={COLORS.leafy_green1}
+        accessibilityLabel="Empty inventory icon"
+        className="mb-4"
+      />
+      <Text
+        className="text-center text-lg font-semibold mb-2"
+        style={{ color: COLORS.leafy_green1 }}
+      >
+        Oops! Your inventory is empty.
+      </Text>
+      <Text className="text-center text-base text-gray-500">
+        Visit the Shop to buy seeds and start planting your farm!
+      </Text>
+    </View>
+  );
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: defaultBackground }}>
+    <SafeAreaView
+      className="flex-1"
+      style={{ backgroundColor: defaultBackground }}
+    >
       <EarningsSummary />
       <View className="flex-1 pt-6 pb-16">
-        {purchasedPlants.length > 0 ? (
-          <FlatList
-            data={purchasedPlants}
-            keyExtractor={item => item.id.toString()}
-            renderItem={({ item }) => (
-              <PlantCard
-                plant={item}
-                variant="seeds"
-                showAddButton={false}
-                inventoryCount={inventory[item.id]}
-              />
-            )}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 64 }}
-          />
-        ) : (
-          <View className="flex-1 justify-center items-center px-4">
-            <MaterialCommunityIcons
-              name="seed-off"
-              size={48}
-              color={COLORS.leafy_green1}
-              className="mb-4"
-            />
-            <Text
-              className="text-center text-lg font-semibold mb-2"
-              style={{ color: COLORS.leafy_green1 }}
-            >
-              Oops! Your inventory is empty.
-            </Text>
-            <Text className="text-center text-gray-500 text-base px-6">
-              Visit the Shop to buy seeds and start planting your farm!
-            </Text>
-          </View>
-        )}
+        {purchasedPlants.length > 0 ? filledInventory() : emptyInventory()}
       </View>
     </SafeAreaView>
   );

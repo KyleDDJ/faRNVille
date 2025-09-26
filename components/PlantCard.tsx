@@ -5,27 +5,27 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 
 type PlantCardProps = {
   plant: Plants;
-  onAdd?: (plant: Plants) => void;
+  on_add?: (plant: Plants) => void;
   variant?: "shop" | "seeds";
-  showAddButton?: boolean;
-  isActive?: boolean;
-  inventoryCount?: number;
+  show_add_button?: boolean;
+  is_active?: boolean;
+  inventory_count?: number;
 };
 
 const PlantCard: React.FC<PlantCardProps> = ({
   plant,
-  onAdd,
+  on_add: onAdd,
   variant = "shop",
-  showAddButton = true,
-  isActive = false,
-  inventoryCount,
+  show_add_button = true,
+  is_active = false,
+  inventory_count,
 }) => {
   const getMiddleText = () => {
     if (variant === "shop") {
       return `Harvest in ${plant.harvestTime} | Cost: $${plant.cost}.00`;
     } else {
-      const stockText = inventoryCount
-        ? `${inventoryCount} seeds available`
+      const stockText = inventory_count
+        ? `${inventory_count} seeds available`
         : plant.stock;
       return `Harvest in ${plant.harvestTime} | Stock: ${stockText}`;
     }
@@ -35,9 +35,9 @@ const PlantCard: React.FC<PlantCardProps> = ({
     <View
       className="rounded-2xl p-2 mx-4 my-3 flex-row items-center"
       style={{
-        backgroundColor: isActive ? COLORS.gray200 : COLORS.white,
+        backgroundColor: is_active ? COLORS.gray200 : COLORS.white,
         borderWidth: 1,
-        borderColor: isActive ? COLORS.lightgreen : COLORS.gray300,
+        borderColor: is_active ? COLORS.lightgreen : COLORS.gray300,
         elevation: 6,
       }}
     >
@@ -63,7 +63,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
         </Text>
       </View>
 
-      {showAddButton && (
+      {show_add_button && (
         <TouchableOpacity
           onPress={() => onAdd?.(plant)}
           className="w-20 h-11 rounded-full items-center justify-center mt-16"

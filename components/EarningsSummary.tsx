@@ -1,18 +1,19 @@
 import { COLORS } from "@/constants/Colors";
+import { usePlants } from "@/contexts/PlantsContext";
 import React from "react";
 import { Image, Text, View } from "react-native";
 
 type EarningsSummaryProps = {
-  userName?: string;
-  earnings?: string;
+  user_name?: string;
   greeting?: string;
 };
 
 const EarningsSummary: React.FC<EarningsSummaryProps> = ({
-  userName = "Calvin Kyle",
-  earnings = "$10.00",
+  user_name = "Calvin Kyle",
   greeting = "Hello,",
 }) => {
+  const { money } = usePlants();
+
   return (
     <View
       className="flex-row justify-between items-center px-6 py-10 rounded-b-3xl"
@@ -23,7 +24,7 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
     >
       <View className="flex-row items-center">
         <Image
-          source={require("@/assets/users/user.jpg")}
+          source={require("@/assets/avatars/user.jpg")}
           resizeMode="cover"
           style={{
             width: 48,
@@ -43,7 +44,7 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
             className="text-lg font-semibold text-white"
             style={{ fontSize: 18, fontWeight: "600", color: COLORS.white }}
           >
-            {userName}
+            {user_name}
           </Text>
         </View>
       </View>
@@ -57,9 +58,13 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
         </Text>
         <Text
           className="text-2xl font-bold text-white"
-          style={{ fontSize: 28, fontWeight: "bold", color: COLORS.white }}
+          style={{
+            fontSize: 28,
+            fontWeight: "bold",
+            color: money < 1 ? COLORS.red : COLORS.white,
+          }}
         >
-          {earnings}
+          ${money.toFixed(2)}
         </Text>
       </View>
     </View>

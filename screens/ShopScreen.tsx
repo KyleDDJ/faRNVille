@@ -8,7 +8,7 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import { FlatList, Modal, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import EarningsSummary from "@/components/EarningSummary";
+import EarningsSummary from "@/components/EarningsSummary";
 import PlantCard from "@/components/PlantCard";
 import { COLORS, defaultBackground } from "@/constants/Colors";
 import { PLANTS } from "@/constants/Plant";
@@ -17,10 +17,11 @@ import { Plants } from "@/entities/plant.entities";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const ShopScreen = () => {
-  const { buyPlant } = usePlants();
+  const { buyPlant, canAfford, money } = usePlants();
 
   const [selected_plant, setSelectedPlant] = useState<Plants | null>(null);
   const [number, onChangeNumber] = React.useState("1");
+  const [success_modal_visible, setSuccessModalVisible] = useState(false);
   const [confirmation_modal_visible, setConfirmationModalVisible] =
     useState(false);
   const [purchase_info, setPurchaseInfo] = useState<{
@@ -29,17 +30,15 @@ const ShopScreen = () => {
     cost: number;
     plantId: number;
   } | null>(null);
-  const [success_modal_visible, setSuccessModalVisible] = useState(false);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const snapPoints = useMemo(() => ["25%"], []);
 
   const handleAddPlant = (plant: Plants) => {
     setSelectedPlant(plant);
     onChangeNumber("1");
     handleOpen();
   };
-
-  const snapPoints = useMemo(() => ["20%"], []);
 
   const handleOpen = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -52,11 +51,25 @@ const ShopScreen = () => {
 
   const handleConfirmPurchase = () => {
     if (purchase_info) {
-      buyPlant(purchase_info.plantId, Number(purchase_info.count));
+      const purchaseSuccess = buyPlant(
+        purchase_info.plantId,
+        Number(purchase_info.count)
+      );
       console.log("Confirmed purchase:", purchase_info);
+
+      setConfirmationModalVisible(false);
+
+      purchaseSuccess && setSuccessModalVisible(true);
     }
-    setConfirmationModalVisible(false);
-    setSuccessModalVisible(true);
+  };
+
+  const getCurrentCost = () => {
+    if (!selected_plant) return 0;
+    return selected_plant.cost * Number(number || "0");
+  };
+
+  const canAffordCurrent = () => {
+    return canAfford(getCurrentCost());
   };
 
   return (
@@ -70,7 +83,7 @@ const ShopScreen = () => {
           data={PLANTS}
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => (
-            <PlantCard plant={item} onAdd={handleAddPlant} variant="shop" />
+            <PlantCard plant={item} on_add={handleAddPlant} variant="shop" />
           )}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 64 }}
@@ -95,7 +108,9 @@ const ShopScreen = () => {
 
             <Text className="text-lg font-bold mb-4 text-center">
               {purchase_info
-                ? `Confirm ${purchase_info.count} ${purchase_info.name}(s) for $${purchase_info.cost}?`
+                ? `Confirm ${purchase_info.count} ${
+                    purchase_info.name
+                  }(s) for $${purchase_info.cost.toFixed(2)}?`
                 : ""}
             </Text>
 
@@ -162,7 +177,7 @@ const ShopScreen = () => {
         keyboardBehavior="interactive"
         keyboardBlurBehavior="restore"
         onDismiss={() => {
-          onChangeNumber("0");
+          onChangeNumber("1");
           setSelectedPlant(null);
         }}
         backgroundStyle={{
@@ -209,20 +224,41 @@ const ShopScreen = () => {
                   />
                 </View>
 
-                <Text className="text-gray-600 text-2xl  font-bold">
-                  Cost: ${selected_plant.cost * Number(number)}.00
+                <Text
+                  className="text-gray-600 text-2xl font-bold"
+                  style={{
+                    color: canAffordCurrent() ? COLORS.gray600 : COLORS.red,
+                  }}
+                >
+                  Cost: ${getCurrentCost().toFixed(2)}
                 </Text>
               </View>
+
+              {!canAffordCurrent() && (
+                <Text
+                  className="text-m text-center mt-4"
+                  style={{ color: COLORS.red }}
+                >
+                  Not enough money! You have ${money.toFixed(2)}
+                </Text>
+              )}
+
               <TouchableOpacity
-                className="w-full mt-6 py-3 rounded-3xl"
-                style={{ backgroundColor: COLORS.green }}
+                className="w-full mt-4 py-3 rounded-3xl"
+                style={{
+                  backgroundColor: canAffordCurrent()
+                    ? COLORS.green
+                    : COLORS.gray300,
+                  opacity: canAffordCurrent() ? 1 : 0.7,
+                }}
+                disabled={!canAffordCurrent()}
                 onPress={() => {
-                  if (!selected_plant) return;
+                  if (!selected_plant || !canAffordCurrent()) return;
 
                   setPurchaseInfo({
                     name: selected_plant.name,
                     count: number,
-                    cost: selected_plant.cost * Number(number),
+                    cost: getCurrentCost(),
                     plantId: selected_plant.id,
                   });
 
@@ -231,7 +267,7 @@ const ShopScreen = () => {
                 }}
               >
                 <Text className="text-center text-white font-semibold text-lg">
-                  Continue
+                  {canAffordCurrent() ? "Continue" : "Can't Afford"}
                 </Text>
               </TouchableOpacity>
             </View>

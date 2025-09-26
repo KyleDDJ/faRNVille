@@ -5,9 +5,5 @@ export type Plants = {
   stock: string;
   profit: number;
   cost: number;
-  status?: 'available' | 'planted' | 'growing' | 'ready' | 'harvested';
-  category?: 'vegetable' | 'fruit';
   image?: any;
-  plantedAt?: Date;
-  harvestReadyAt?: Date;
 };

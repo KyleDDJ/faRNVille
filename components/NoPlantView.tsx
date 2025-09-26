@@ -3,13 +3,13 @@ import { View } from "react-native";
 import AddPlantButton from "./AddPlantButton";
 
 type NoPlantViewProps = {
-  onAdd: () => void;
+  on_add: () => void;
 };
 
-const NoPlantView: React.FC<NoPlantViewProps> = ({ onAdd }) => {
+const NoPlantView: React.FC<NoPlantViewProps> = ({ on_add }) => {
   return (
     <View style={{ paddingTop: 16, alignItems: "center" }}>
-      <AddPlantButton title="Add a Plant" onPress={onAdd} />
+      <AddPlantButton title="Add a Plant" on_press={on_add} />
     </View>
   );
 };

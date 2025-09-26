@@ -5,18 +5,18 @@ import { Text, TouchableOpacity, View } from "react-native";
 
 type AddPlantButtonProps = {
   title: string;
-  onPress?: () => void;
+  on_press?: () => void;
   borderColor?: string;
 };
 
 const AddPlantButton: React.FC<AddPlantButtonProps> = ({
   title,
-  onPress,
+  on_press,
   borderColor = COLORS.gray400,
 }) => {
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={on_press}
       activeOpacity={0.8}
       className="w-10/12 self-center rounded-2xl p-6 items-center"
       style={{

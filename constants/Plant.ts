@@ -9,7 +9,6 @@ export const PLANTS: Plants[] = [
     profit: 5.0,
     cost: 3.0,
     image: require("@/assets/plants/carrot.jpg"),
-    category: "vegetable",
   },
   {
     id: 2,
@@ -19,7 +18,6 @@ export const PLANTS: Plants[] = [
     profit: 9.0,
     cost: 5.0,
     image: require("@/assets/plants/potato.jpg"),
-    category: "vegetable",
   },
   {
     id: 3,
@@ -29,6 +27,5 @@ export const PLANTS: Plants[] = [
     profit: 12.0,
     cost: 7.0,
     image: require("@/assets/plants/cabbage.jpg"),
-    category: "vegetable",
   },
 ];
