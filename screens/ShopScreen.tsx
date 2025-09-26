@@ -1,20 +1,17 @@
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetTextInput,
-  BottomSheetView,
-} from "@gorhom/bottom-sheet";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { FlatList, Modal, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import BuyPlantBottomSheet from "@/components/BuyPlantBottomSheet";
 import EarningsSummary from "@/components/EarningsSummary";
 import PlantCard from "@/components/PlantCard";
-import { COLORS, defaultBackground } from "@/constants/Colors";
+import PurchaseConfirmationModal from "@/components/PurchaseConfirmationModal";
+import PurchaseSuccessModal from "@/components/PurchaseSuccessModal";
+import { defaultBackground } from "@/constants/Colors";
 import { PLANTS } from "@/constants/Plant";
 import { usePlants } from "@/contexts/PlantsContext";
 import { Plants } from "@/entities/plant.entities";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const ShopScreen = () => {
   const { buyPlant, canAfford, money } = usePlants();
@@ -90,192 +87,30 @@ const ShopScreen = () => {
         />
       </View>
 
-      <Modal
-        animationType="fade"
-        transparent={true}
+      <PurchaseConfirmationModal
         visible={confirmation_modal_visible}
-        onRequestClose={() => setConfirmationModalVisible(false)}
-      >
-        <View className="flex-1 justify-center items-center bg-black/50">
-          <View className="bg-white rounded-2xl p-5 w-9/12 items-center">
-            <View className="mb-2">
-              <MaterialCommunityIcons
-                name="archive-plus"
-                size={50}
-                color={COLORS.lightgreen}
-              />
-            </View>
+        purchase_info={purchase_info}
+        on_cancel={() => setConfirmationModalVisible(false)}
+        on_confirm={handleConfirmPurchase}
+      />
 
-            <Text className="text-lg font-bold mb-4 text-center">
-              {purchase_info
-                ? `Confirm ${purchase_info.count} ${
-                    purchase_info.name
-                  }(s) for $${purchase_info.cost.toFixed(2)}?`
-                : ""}
-            </Text>
-
-            <View className="flex-row gap-5 justify-between items-center">
-              <TouchableOpacity
-                style={{ backgroundColor: COLORS.gray300 }}
-                className="px-10 py-3 rounded-full"
-                onPress={() => setConfirmationModalVisible(false)}
-              >
-                <Text className="font-semibold text-gray-500">Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ backgroundColor: COLORS.lightgreen }}
-                className="px-10 py-3 rounded-full"
-                onPress={handleConfirmPurchase}
-              >
-                <Text className="text-white font-semibold">Confirm</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
-
-      <Modal
-        animationType="fade"
-        transparent={true}
+      <PurchaseSuccessModal
         visible={success_modal_visible}
-        onRequestClose={() => setSuccessModalVisible(false)}
-      >
-        <View className="flex-1 justify-center items-center bg-black/50">
-          <View className="bg-white rounded-2xl pt-5 pb-4 px-5 w-9/12 items-center">
-            <View className="mb-2">
-              <MaterialCommunityIcons
-                name="leaf-circle"
-                size={48}
-                color={COLORS.lightgreen}
-              />
-            </View>
-
-            <Text className="text-lg text-gray-600 font-bold mb-4 text-center">
-              {purchase_info
-                ? `You purchased ${purchase_info.count} ${purchase_info.name}(s)!`
-                : ""}
-            </Text>
-
-            <TouchableOpacity
-              style={{ backgroundColor: COLORS.lightgreen }}
-              className="w-full py-3 rounded-full"
-              onPress={() => setSuccessModalVisible(false)}
-            >
-              <Text className="text-white font-semibold text-center">
-                Accept
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
-      <BottomSheetModal
+        purchase_info={purchase_info}
+        on_close={() => setSuccessModalVisible(false)}
+      />
+      <BuyPlantBottomSheet
         ref={bottomSheetModalRef}
-        index={0}
-        snapPoints={snapPoints}
-        enablePanDownToClose={true}
-        keyboardBehavior="interactive"
-        keyboardBlurBehavior="restore"
-        onDismiss={() => {
-          onChangeNumber("1");
-          setSelectedPlant(null);
+        selected_plant={selected_plant}
+        money={money}
+        can_afford={canAfford}
+        on_close={() => setSelectedPlant(null)}
+        on_continue={info => {
+          setPurchaseInfo(info);
+          bottomSheetModalRef.current?.dismiss();
+          setConfirmationModalVisible(true);
         }}
-        backgroundStyle={{
-          backgroundColor: defaultBackground,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-        }}
-        handleIndicatorStyle={{
-          backgroundColor: COLORS.leafy_green1,
-        }}
-        backdropComponent={props => (
-          <BottomSheetBackdrop
-            {...props}
-            disappearsOnIndex={-1}
-            appearsOnIndex={0}
-            opacity={0.5}
-          />
-        )}
-      >
-        <BottomSheetView className="flex-1 py-2.5 px-4">
-          {selected_plant ? (
-            <View className="items-center">
-              <Text className="text-xl font-bold text-gray-600">
-                Buying {selected_plant.name}
-              </Text>
-
-              <View className="flex-row items-center mt-5 w-full gap-5 justify-between">
-                <View className="flex-row items-center">
-                  <Text className="mr-2 text-gray-600 text-2xl font-bold">
-                    Amount:
-                  </Text>
-                  <BottomSheetTextInput
-                    style={{
-                      borderWidth: 1,
-                      borderColor: COLORS.gray300,
-                      paddingVertical: 8,
-                      borderRadius: 8,
-                      width: 100,
-                      textAlign: "center",
-                    }}
-                    onChangeText={onChangeNumber}
-                    keyboardType="numeric"
-                    value={number}
-                  />
-                </View>
-
-                <Text
-                  className="text-gray-600 text-2xl font-bold"
-                  style={{
-                    color: canAffordCurrent() ? COLORS.gray600 : COLORS.red,
-                  }}
-                >
-                  Cost: ${getCurrentCost().toFixed(2)}
-                </Text>
-              </View>
-
-              {!canAffordCurrent() && (
-                <Text
-                  className="text-m text-center mt-4"
-                  style={{ color: COLORS.red }}
-                >
-                  Not enough money! You have ${money.toFixed(2)}
-                </Text>
-              )}
-
-              <TouchableOpacity
-                className="w-full mt-4 py-3 rounded-3xl"
-                style={{
-                  backgroundColor: canAffordCurrent()
-                    ? COLORS.green
-                    : COLORS.gray300,
-                  opacity: canAffordCurrent() ? 1 : 0.7,
-                }}
-                disabled={!canAffordCurrent()}
-                onPress={() => {
-                  if (!selected_plant || !canAffordCurrent()) return;
-
-                  setPurchaseInfo({
-                    name: selected_plant.name,
-                    count: number,
-                    cost: getCurrentCost(),
-                    plantId: selected_plant.id,
-                  });
-
-                  handleClose();
-                  setConfirmationModalVisible(true);
-                }}
-              >
-                <Text className="text-center text-white font-semibold text-lg">
-                  {canAffordCurrent() ? "Continue" : "Can't Afford"}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <Text className="text-center text-lg">No plant selected</Text>
-          )}
-        </BottomSheetView>
-      </BottomSheetModal>
+      />
     </SafeAreaView>
   );
 };

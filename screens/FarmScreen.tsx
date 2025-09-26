@@ -145,8 +145,8 @@ const FarmScreen: React.FC = () => {
               plant={plant}
               progress={plant.progress}
               time_left={plant.time_left}
-              onRemove={() => handleOpenRemovePlant(plant)}
-              onHarvest={() => handleHarvest(plant)}
+              on_remove={() => handleOpenRemovePlant(plant)}
+              on_harvest={() => handleHarvest(plant)}
             />
           ))}
 

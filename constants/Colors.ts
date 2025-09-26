@@ -1,7 +1,5 @@
 
 export const defaultBackground = '#ffffffff';
-export const defaultCardBackground = '#7c967d';
-export const defaultTextColor = '#335135';
  
 export const COLORS = {
 	leafy_green : "#314f33",

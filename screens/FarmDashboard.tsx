@@ -14,18 +14,18 @@ type FarmDashboardProps = {
   plant: PlantedPlant;
   progress: number;
   time_left: string;
-  onRemove: (plant: PlantedPlant) => void;
-  onHarvest: (plant: PlantedPlant) => void;
+  on_remove: (plant: PlantedPlant) => void;
+  on_harvest: (plant: PlantedPlant) => void;
 };
 
 const FarmDashboard: React.FC<FarmDashboardProps> = ({
   plant,
   progress,
   time_left,
-  onRemove,
-  onHarvest,
+  on_remove,
+  on_harvest,
 }) => {
-  const isReady = progress >= 1;
+  const is_ready = progress >= 1;
 
   return (
     <View className="mb-3">
@@ -45,7 +45,7 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
         <View className="flex-col flex-1 mt-10">
           <Text className="text-lg font-bold" style={{ color: COLORS.green }}>
             {plant.name}
-            {isReady && (
+            {is_ready && (
               <Text className="text-green-600 font-semibold">
                 (+${plant.profit.toFixed(2)})
               </Text>
@@ -54,10 +54,10 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
 
           <Text
             className={`text-base ${
-              isReady ? "text-green-600" : "text-gray-600"
+              is_ready ? "text-green-600" : "text-gray-600"
             } mb-1`}
           >
-            {isReady ? "Harvest now!" : `Harvest in ${time_left}`}
+            {is_ready ? "Harvest now!" : `Harvest in ${time_left}`}
           </Text>
 
           <Progress.Bar
@@ -67,7 +67,7 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
             borderRadius={6}
             borderWidth={0}
             color={
-              isReady
+              is_ready
                 ? COLORS.green
                 : progress > 0.6
                 ? COLORS.yellow
@@ -80,12 +80,12 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
         <TouchableOpacity
           className="rounded-2xl px-3 py-1 ml-3 mb-20"
           style={{
-            backgroundColor: isReady ? COLORS.lightgreen : COLORS.remove,
+            backgroundColor: is_ready ? COLORS.lightgreen : COLORS.remove,
           }}
-          onPress={() => (isReady ? onHarvest(plant) : onRemove(plant))}
+          onPress={() => (is_ready ? on_harvest(plant) : on_remove(plant))}
         >
           <Text className="text-white font-semibold">
-            {isReady ? "Harvest" : "Remove"}
+            {is_ready ? "Harvest" : "Remove"}
           </Text>
         </TouchableOpacity>
       </View>
