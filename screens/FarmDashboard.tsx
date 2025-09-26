@@ -5,11 +5,11 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import * as Progress from "react-native-progress";
 
 type FarmDashboardProps = {
-  plant: Plants;
+  plant: Plants & { uniqueId: number };
   progress: number;
   time_left: string;
-  onRemove: () => void;
-  onHarvest: () => void;
+  onRemove: (plant: Plants & { uniqueId: number }) => void;
+  onHarvest: (plant: Plants & { uniqueId: number }) => void;
 };
 
 const FarmDashboard: React.FC<FarmDashboardProps> = ({
@@ -36,8 +36,7 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
           className="w-28 h-28 rounded-xl mr-3"
           resizeMode="cover"
         />
-
-        <View className="flex-col flex-1 mt-8">
+        <View className="flex-col flex-1 mt-10">
           <Text className="text-lg font-bold" style={{ color: COLORS.green }}>
             {plant.name}
             {isReady && (
@@ -58,7 +57,7 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
           <Progress.Bar
             progress={progress}
             width={235}
-            height={12}
+            height={8}
             borderRadius={6}
             borderWidth={0}
             color={
@@ -68,27 +67,21 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
                 ? COLORS.yellow
                 : COLORS.orange
             }
-            unfilledColor={COLORS.gray200}
+            unfilledColor={COLORS.gray100}
           />
         </View>
 
-        {isReady ? (
-          <TouchableOpacity
-            className="rounded-2xl px-3 py-1 ml-3 mb-20"
-            style={{ backgroundColor: COLORS.lightgreen }}
-            onPress={onHarvest}
-          >
-            <Text className="text-white font-semibold">Complete</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            className="rounded-2xl px-3 py-1 ml-3 mb-20"
-            style={{ backgroundColor: COLORS.remove }}
-            onPress={onRemove}
-          >
-            <Text className="text-white font-semibold">Remove</Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          className="rounded-2xl px-3 py-1 ml-3 mb-20"
+          style={{
+            backgroundColor: isReady ? COLORS.lightgreen : COLORS.remove,
+          }}
+          onPress={() => (isReady ? onHarvest(plant) : onRemove(plant))}
+        >
+          <Text className="text-white font-semibold">
+            {isReady ? "Complete" : "Remove"}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

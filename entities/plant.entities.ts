@@ -6,11 +6,8 @@ export type Plants = {
   profit: number;
   cost: number;
   status?: 'available' | 'planted' | 'growing' | 'ready' | 'harvested';
-  isActive?: boolean;
   category?: 'vegetable' | 'fruit';
+  image?: any;
   plantedAt?: Date;
   harvestReadyAt?: Date;
-  harvestedAt?: Date; 
-  image?: any;
-  harvestTimeMinutes?: number; 
 };

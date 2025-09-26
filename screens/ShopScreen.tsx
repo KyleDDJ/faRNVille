@@ -1,5 +1,3 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -22,6 +20,7 @@ import PlantCard from "@/components/PlantCard";
 import { COLORS, defaultBackground } from "@/constants/Colors";
 import { PLANTS } from "@/constants/Plant";
 import { Plants } from "@/entities/plant.entities";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const ShopScreen = () => {
   const [selected_plant, setSelectedPlant] = useState<Plants | null>(null);
@@ -79,7 +78,11 @@ const ShopScreen = () => {
         <View className="flex-1 justify-center items-center bg-black/50">
           <View className="bg-white rounded-2xl p-5 w-9/12 items-center">
             <View className="mb-2">
-              <FontAwesome name="question" size={40} color={COLORS.green} />
+              <MaterialCommunityIcons
+                name="archive-plus"
+                size={50}
+                color={COLORS.lightgreen}
+              />
             </View>
 
             <Text className="text-lg font-bold mb-4 text-center">
@@ -90,19 +93,14 @@ const ShopScreen = () => {
 
             <View className="flex-row gap-5 justify-between items-center">
               <Pressable
-                style={{ backgroundColor: COLORS.gray400 }}
+                style={{ backgroundColor: COLORS.gray300 }}
                 className="px-10 py-3 rounded-full"
                 onPress={() => setConfirmationModalVisible(false)}
               >
-                <Text
-                  className=" font-semibold"
-                  style={{ color: COLORS.white }}
-                >
-                  Cancel
-                </Text>
+                <Text className="font-semibold text-black">Cancel</Text>
               </Pressable>
               <Pressable
-                style={{ backgroundColor: COLORS.green }}
+                style={{ backgroundColor: COLORS.lightgreen }}
                 className="px-10 py-3 rounded-full"
                 onPress={() => {
                   console.log("Confirmed purchase:", purchase_info);
@@ -126,10 +124,10 @@ const ShopScreen = () => {
         <View className="flex-1 justify-center items-center bg-black/50">
           <View className="bg-white rounded-2xl pt-5 pb-4 px-5 w-9/12 items-center">
             <View className="mb-2">
-              <Ionicons
-                name="checkmark-done-circle"
-                size={80}
-                color={COLORS.green}
+              <MaterialCommunityIcons
+                name="leaf-circle"
+                size={48}
+                color={COLORS.lightgreen}
               />
             </View>
 
@@ -140,7 +138,7 @@ const ShopScreen = () => {
             </Text>
 
             <Pressable
-              style={{ backgroundColor: COLORS.green }}
+              style={{ backgroundColor: COLORS.lightgreen }}
               className="w-full py-3 rounded-full"
               onPress={() => setSuccessModalVisible(false)}
             >
@@ -228,7 +226,7 @@ const ShopScreen = () => {
                 }}
               >
                 <Text className="text-center text-white font-semibold text-lg">
-                  Buy
+                  Continue
                 </Text>
               </TouchableOpacity>
             </View>

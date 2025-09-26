@@ -1,6 +1,5 @@
 import { COLORS } from "@/constants/Colors";
 import { Plants } from "@/entities/plant.entities";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
@@ -9,6 +8,7 @@ type PlantCardProps = {
   onAdd?: (plant: Plants) => void;
   variant?: "shop" | "seeds";
   showAddButton?: boolean;
+  isActive?: boolean;
 };
 
 const PlantCard: React.FC<PlantCardProps> = ({
@@ -16,6 +16,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
   onAdd,
   variant = "shop",
   showAddButton = true,
+  isActive = false,
 }) => {
   const getMiddleText = () => {
     if (variant === "shop") {
@@ -26,7 +27,15 @@ const PlantCard: React.FC<PlantCardProps> = ({
   };
 
   return (
-    <View className="bg-white rounded-3xl p-2 mx-4 my-3 flex-row items-center border border-gray-200">
+    <View
+      className="rounded-2xl p-2 mx-4 my-3 flex-row items-center"
+      style={{
+        backgroundColor: isActive ? COLORS.gray200 : COLORS.white,
+        borderWidth: 1,
+        borderColor: isActive ? COLORS.lightgreen : COLORS.gray300,
+        elevation: 6,
+      }}
+    >
       <Image
         source={plant.image}
         className="w-36 h-28 rounded-2xl mr-4"
@@ -36,16 +45,15 @@ const PlantCard: React.FC<PlantCardProps> = ({
       <View className="flex-1 pb-4">
         <Text
           className="text-2xl font-bold mb-1"
-          style={{ color: COLORS.leafy_green2 }}
+          style={{ color: COLORS.green }}
         >
           {plant.name}
         </Text>
 
-        <Text className="text-bold text-gray-400 mb-1">{getMiddleText()}</Text>
-        <Text
-          className="text-lg font-bold"
-          style={{ color: COLORS.leafy_green2 }}
-        >
+        <Text className="font-bold text-sm text-gray-400 mb-1">
+          {getMiddleText()}
+        </Text>
+        <Text className="text-lg font-bold" style={{ color: COLORS.green }}>
           Profit: ${plant.profit}.00
         </Text>
       </View>
@@ -56,7 +64,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
           className="w-20 h-11 rounded-full items-center justify-center mt-16"
           style={{ backgroundColor: COLORS.leafy_green2 }}
         >
-          <FontAwesome5 name="plus" size={24} color={COLORS.white} />
+          <Text className="font-semibold text-white">Buy</Text>
         </TouchableOpacity>
       )}
     </View>

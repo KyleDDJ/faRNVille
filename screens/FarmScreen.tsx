@@ -5,7 +5,10 @@ import NoPlantView from "@/components/NoPlantView";
 import PlantCard from "@/components/PlantCard";
 import { COLORS, defaultBackground } from "@/constants/Colors";
 import { PLANTS } from "@/constants/Plant";
+import { Plants } from "@/entities/plant.entities";
 import FarmDashboard from "@/screens/FarmDashboard";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -14,6 +17,7 @@ import {
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
   FlatList,
+  Modal,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -28,8 +32,12 @@ const FarmScreen: React.FC = () => {
   const [planted_plants, setPlantedPlants] = useState<any[]>([]);
   const [temp_plant, setTempPlant] = useState<any>(null);
   const [plant_to_remove, setPlantToRemove] = useState<any>(null);
-
-  const snapPoints = useMemo(() => ["22", "65%"], []);
+  const [show_harvest_modal, setShowHarvestModal] = useState(false);
+  const [harvest_info, setHarvestInfo] = useState<{
+    name: string;
+    profit: string;
+  } | null>(null);
+  const snapPoints = useMemo(() => ["26", "65%"], []);
 
   const handleOpenAddPlant = useCallback(
     () => addPlantSheetRef.current?.present(),
@@ -66,23 +74,29 @@ const FarmScreen: React.FC = () => {
     }
   }, [plant_to_remove]);
 
-  const handleHarvest = useCallback((uniqueId: number) => {
-    setPlantedPlants(prev => prev.filter(p => p.uniqueId !== uniqueId));
+  const handleHarvest = useCallback((plant: Plants & { uniqueId: number }) => {
+    setPlantedPlants(prev => prev.filter(p => p.uniqueId !== plant.uniqueId));
+
+    setHarvestInfo({
+      name: plant.name,
+      profit: `$${plant.profit.toFixed(2)}`,
+    });
+
+    setShowHarvestModal(true);
   }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: defaultBackground }}>
       <EarningSummary />
-
+      <FarmingSummaryCard
+        sprint_name={"Farming Summary"}
+        minutes_left={"15"}
+        remaning_seed={5}
+        possible_income={15}
+        planted_plants={3}
+      />
       {planted_plants.length > 0 ? (
         <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
-          <FarmingSummaryCard
-            sprint_name={"Farming Summary"}
-            minutes_left={"15"}
-            remaning_seed={5}
-            possible_income={15}
-            planted_plants={3}
-          />
           {planted_plants.map((plant, index) => (
             <FarmDashboard
               key={plant.uniqueId}
@@ -90,7 +104,7 @@ const FarmScreen: React.FC = () => {
               progress={index === 0 ? 0.2 : index === 1 ? 0.75 : 1}
               time_left={index === 0 ? "4m 20s" : index === 1 ? "1m 23s" : "0s"}
               onRemove={() => handleOpenRemovePlant(plant)}
-              onHarvest={() => handleHarvest(plant.uniqueId)}
+              onHarvest={() => handleHarvest(plant)}
             />
           ))}
 
@@ -104,6 +118,41 @@ const FarmScreen: React.FC = () => {
       ) : (
         <NoPlantView onAdd={handleOpenAddPlant} />
       )}
+
+      <Modal visible={show_harvest_modal} transparent animationType="fade">
+        <View className="flex-1 justify-center items-center bg-black/50">
+          <View className="bg-white rounded-2xl p-3 w-[90%] items-center">
+            <View>
+              <MaterialIcons
+                name="trending-up"
+                size={70}
+                color={COLORS.lightgreen}
+              />
+            </View>
+            <Text
+              className="text-2xl font-bold mb-4"
+              style={{ color: COLORS.lightgreen }}
+            >
+              Success!
+            </Text>
+            <Text className="text-center font-bold text-black mb-6">
+              {harvest_info
+                ? `You've earned ${harvest_info.profit} by harvesting ${harvest_info.name}!`
+                : ""}
+            </Text>
+
+            <TouchableOpacity
+              className="rounded-xl w-full py-4"
+              style={{ backgroundColor: COLORS.leafy_green2 }}
+              onPress={() => setShowHarvestModal(false)}
+            >
+              <Text className="text-white font-bold text-lg text-center">
+                Close
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       <BottomSheetModal
         ref={addPlantSheetRef}
@@ -125,7 +174,7 @@ const FarmScreen: React.FC = () => {
           />
         )}
       >
-        <BottomSheetView className="flex-1 py-5 px-4">
+        <BottomSheetView className="flex-1 py-5 px-1">
           <Text className="text-xl font-bold text-center text-black">
             Add a New Plant
           </Text>
@@ -134,19 +183,13 @@ const FarmScreen: React.FC = () => {
             data={PLANTS}
             keyExtractor={item => item.id.toString()}
             renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => setTempPlant(item)}
-                style={{
-                  backgroundColor:
-                    temp_plant?.id === item.id
-                      ? COLORS.leafy_green1
-                      : "transparent",
-                  borderRadius: 12,
-                  marginVertical: 4,
-                  padding: temp_plant?.id === item.id ? 2 : 0,
-                }}
-              >
-                <PlantCard plant={item} variant="seeds" showAddButton={false} />
+              <TouchableOpacity onPress={() => setTempPlant(item)}>
+                <PlantCard
+                  plant={item}
+                  variant="seeds"
+                  showAddButton={false}
+                  isActive={temp_plant?.id === item.id}
+                />
               </TouchableOpacity>
             )}
           />
@@ -157,13 +200,13 @@ const FarmScreen: React.FC = () => {
               style={{ backgroundColor: COLORS.gray400 }}
               onPress={handleCloseAddPlant}
             >
-              <Text className="text-center text-white text-lg font-semibold">
+              <Text className="text-center text-black text-lg font-semibold">
                 Cancel
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               className="w-5/12 rounded-3xl py-3"
-              style={{ backgroundColor: COLORS.green }}
+              style={{ backgroundColor: COLORS.lightgreen }}
               onPress={handleConfirmAdd}
               disabled={!temp_plant}
             >
@@ -195,9 +238,12 @@ const FarmScreen: React.FC = () => {
           />
         )}
       >
-        <BottomSheetView className="flex-1 py-5 px-4">
+        <BottomSheetView className="flex-1 py-3 px-4">
           {plant_to_remove && (
             <>
+              <View className="items-center mb-3">
+                <FontAwesome6 name="trash-can" size={35} color={COLORS.red} />
+              </View>
               <Text
                 className="text-xl font-bold text-center"
                 style={{ color: COLORS.green }}
@@ -205,7 +251,7 @@ const FarmScreen: React.FC = () => {
                 Confirm remove {plant_to_remove.name}?
               </Text>
 
-              <View className="flex-col justify-center items-center mt-6 w-full space-y-4 px-4">
+              <View className="flex-col justify-center items-center mt-6 w-full space-y-4 ">
                 <TouchableOpacity
                   className="rounded-3xl py-4 w-full mb-2"
                   style={{ backgroundColor: COLORS.red }}
