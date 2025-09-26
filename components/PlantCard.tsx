@@ -62,7 +62,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
         <TouchableOpacity
           onPress={() => onAdd?.(plant)}
           className="w-20 h-11 rounded-full items-center justify-center mt-16"
-          style={{ backgroundColor: COLORS.leafy_green2 }}
+          style={{ backgroundColor: COLORS.leafy_green1 }}
         >
           <Text className="font-semibold text-white">Buy</Text>
         </TouchableOpacity>

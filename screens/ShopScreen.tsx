@@ -97,7 +97,7 @@ const ShopScreen = () => {
                 className="px-10 py-3 rounded-full"
                 onPress={() => setConfirmationModalVisible(false)}
               >
-                <Text className="font-semibold text-black">Cancel</Text>
+                <Text className="font-semibold text-gray-500">Cancel</Text>
               </Pressable>
               <Pressable
                 style={{ backgroundColor: COLORS.lightgreen }}
@@ -131,7 +131,7 @@ const ShopScreen = () => {
               />
             </View>
 
-            <Text className="text-lg font-bold mb-4 text-center">
+            <Text className="text-lg text-gray-600 font-bold mb-4 text-center">
               {purchase_info
                 ? `You purchased ${purchase_info.count} ${purchase_info.name}(s)!`
                 : ""}
@@ -181,13 +181,13 @@ const ShopScreen = () => {
         <BottomSheetView className="flex-1 py-2.5 px-4">
           {selected_plant ? (
             <View className="items-center">
-              <Text className="text-xl font-bold text-black">
+              <Text className="text-xl font-bold text-gray-600">
                 Buying {selected_plant.name}
               </Text>
 
               <View className="flex-row items-center mt-5 w-full gap-5 justify-between">
                 <View className="flex-row items-center">
-                  <Text className="mr-2 text-black text-2xl font-bold">
+                  <Text className="mr-2 text-gray-600 text-2xl font-bold">
                     Amount:
                   </Text>
                   <BottomSheetTextInput
@@ -205,7 +205,7 @@ const ShopScreen = () => {
                   />
                 </View>
 
-                <Text className="text-black text-2xl  font-bold">
+                <Text className="text-gray-600 text-2xl  font-bold">
                   Cost: ${selected_plant.cost * Number(number)}.00
                 </Text>
               </View>

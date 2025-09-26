@@ -175,9 +175,18 @@ const FarmScreen: React.FC = () => {
         )}
       >
         <BottomSheetView className="flex-1 py-5 px-1">
-          <Text className="text-xl font-bold text-center text-black">
+          <Text className="text-xl font-bold text-center text-gray-600">
             Add a New Plant
           </Text>
+
+          <View className="mt-4">
+            <Text className="text-lg font-semibold text-gray-600 ml-4">
+              Ready to plant something?
+            </Text>
+            <Text className="text-base text-gray-600 opacity-80 ml-4">
+              Choose your seed from the shop and start farming!
+            </Text>
+          </View>
 
           <FlatList
             data={PLANTS}
@@ -197,10 +206,10 @@ const FarmScreen: React.FC = () => {
           <View className="flex-row item-center justify-center gap-6 mt-3">
             <TouchableOpacity
               className="w-5/12 rounded-3xl py-3"
-              style={{ backgroundColor: COLORS.gray400 }}
+              style={{ backgroundColor: COLORS.gray300 }}
               onPress={handleCloseAddPlant}
             >
-              <Text className="text-center text-black text-lg font-semibold">
+              <Text className="text-center text-gray-500 text-lg font-semibold">
                 Cancel
               </Text>
             </TouchableOpacity>
