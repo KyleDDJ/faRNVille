@@ -9,6 +9,7 @@ type PlantCardProps = {
   variant?: "shop" | "seeds";
   showAddButton?: boolean;
   isActive?: boolean;
+  inventoryCount?: number;
 };
 
 const PlantCard: React.FC<PlantCardProps> = ({
@@ -17,12 +18,16 @@ const PlantCard: React.FC<PlantCardProps> = ({
   variant = "shop",
   showAddButton = true,
   isActive = false,
+  inventoryCount,
 }) => {
   const getMiddleText = () => {
     if (variant === "shop") {
       return `Harvest in ${plant.harvestTime} | Cost: $${plant.cost}.00`;
     } else {
-      return `Harvest in ${plant.harvestTime} | Stock: ${plant.stock}`;
+      const stockText = inventoryCount
+        ? `${inventoryCount} seeds available`
+        : plant.stock;
+      return `Harvest in ${plant.harvestTime} | Stock: ${stockText}`;
     }
   };
 

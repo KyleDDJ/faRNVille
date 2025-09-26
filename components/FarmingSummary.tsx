@@ -4,7 +4,6 @@ import { Text, View } from "react-native";
 import { COLORS } from "@/constants/Colors";
 type FarmingSummaryCardProps = {
   sprint_name: string;
-  minutes_left: string;
   remaning_seed: number;
   possible_income: number;
   planted_plants: number;
@@ -12,7 +11,6 @@ type FarmingSummaryCardProps = {
 
 const FarmingSummaryCard: React.FC<FarmingSummaryCardProps> = ({
   sprint_name,
-  minutes_left,
   remaning_seed,
   possible_income,
   planted_plants,
@@ -28,9 +26,6 @@ const FarmingSummaryCard: React.FC<FarmingSummaryCardProps> = ({
           style={{ color: COLORS.white }}
         >
           {sprint_name}
-        </Text>
-        <Text className=" text-sm" style={{ color: COLORS.white }}>
-          {minutes_left}m left
         </Text>
       </View>
 

@@ -5,24 +5,20 @@ import {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import {
-  FlatList,
-  Modal,
-  Pressable,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Modal, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import EarningsSummary from "@/components/EarningSummary";
 import PlantCard from "@/components/PlantCard";
 import { COLORS, defaultBackground } from "@/constants/Colors";
 import { PLANTS } from "@/constants/Plant";
+import { usePlants } from "@/contexts/PlantsContext";
 import { Plants } from "@/entities/plant.entities";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const ShopScreen = () => {
+  const { buyPlant } = usePlants();
+
   const [selected_plant, setSelectedPlant] = useState<Plants | null>(null);
   const [number, onChangeNumber] = React.useState("1");
   const [confirmation_modal_visible, setConfirmationModalVisible] =
@@ -31,15 +27,18 @@ const ShopScreen = () => {
     name: string;
     count: string;
     cost: number;
+    plantId: number;
   } | null>(null);
   const [success_modal_visible, setSuccessModalVisible] = useState(false);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
   const handleAddPlant = (plant: Plants) => {
     setSelectedPlant(plant);
     onChangeNumber("1");
     handleOpen();
   };
+
   const snapPoints = useMemo(() => ["20%"], []);
 
   const handleOpen = useCallback(() => {
@@ -50,6 +49,15 @@ const ShopScreen = () => {
     bottomSheetModalRef.current?.dismiss();
     onChangeNumber("1");
   }, []);
+
+  const handleConfirmPurchase = () => {
+    if (purchase_info) {
+      buyPlant(purchase_info.plantId, Number(purchase_info.count));
+      console.log("Confirmed purchase:", purchase_info);
+    }
+    setConfirmationModalVisible(false);
+    setSuccessModalVisible(true);
+  };
 
   return (
     <SafeAreaView
@@ -92,24 +100,20 @@ const ShopScreen = () => {
             </Text>
 
             <View className="flex-row gap-5 justify-between items-center">
-              <Pressable
+              <TouchableOpacity
                 style={{ backgroundColor: COLORS.gray300 }}
                 className="px-10 py-3 rounded-full"
                 onPress={() => setConfirmationModalVisible(false)}
               >
                 <Text className="font-semibold text-gray-500">Cancel</Text>
-              </Pressable>
-              <Pressable
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={{ backgroundColor: COLORS.lightgreen }}
                 className="px-10 py-3 rounded-full"
-                onPress={() => {
-                  console.log("Confirmed purchase:", purchase_info);
-                  setConfirmationModalVisible(false);
-                  setSuccessModalVisible(true);
-                }}
+                onPress={handleConfirmPurchase}
               >
                 <Text className="text-white font-semibold">Confirm</Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -137,7 +141,7 @@ const ShopScreen = () => {
                 : ""}
             </Text>
 
-            <Pressable
+            <TouchableOpacity
               style={{ backgroundColor: COLORS.lightgreen }}
               className="w-full py-3 rounded-full"
               onPress={() => setSuccessModalVisible(false)}
@@ -145,7 +149,7 @@ const ShopScreen = () => {
               <Text className="text-white font-semibold text-center">
                 Accept
               </Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -219,6 +223,7 @@ const ShopScreen = () => {
                     name: selected_plant.name,
                     count: number,
                     cost: selected_plant.cost * Number(number),
+                    plantId: selected_plant.id,
                   });
 
                   handleClose();

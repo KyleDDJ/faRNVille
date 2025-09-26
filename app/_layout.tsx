@@ -1,3 +1,4 @@
+import { PlantsProvider } from "@/contexts/PlantsContext";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { Stack } from "expo-router";
 import "react-native-gesture-handler";
@@ -8,9 +9,11 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
+        <PlantsProvider>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
+        </PlantsProvider>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );
