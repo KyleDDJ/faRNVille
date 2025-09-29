@@ -22,13 +22,8 @@ import { ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const FarmScreen: React.FC = () => {
-  const {
-    inventory,
-    planted_plants,
-    plantSeed: plantSeed,
-    harvestPlant: harvestPlant,
-    removePlant: removePlant,
-  } = usePlants();
+  const { inventory, planted_plants, plantSeed, harvestPlant, removePlant } =
+    usePlants();
 
   const addPlantSheetRef = useRef<BottomSheetModal>(null);
   const removePlantSheetRef = useRef<BottomSheetModal>(null);

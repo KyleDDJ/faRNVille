@@ -25,7 +25,7 @@ const PurchaseConfirmationModal: React.FC<PurchaseConfirmationModalProps> = ({
           color={COLORS.leafy_green1}
         />
 
-        <Text className="text-lg font-bold mb-4 text-center">
+        <Text className="text-lg text-gray-600 font-bold mb-4 text-center">
           {purchase_info
             ? `Confirm ${purchase_info.count} ${
                 purchase_info.name

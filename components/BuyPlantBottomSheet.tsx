@@ -1,5 +1,6 @@
 import { COLORS, defaultBackground } from "@/constants/Colors";
 import { Plants } from "@/entities/plant.entities";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -26,7 +27,7 @@ const BuyPlantBottomSheet = forwardRef<
   BottomSheetModal,
   BuyPlantBottomSheetProps
 >(({ selected_plant, money, can_afford, on_close, on_continue }, ref) => {
-  const snapPoints = useMemo(() => ["25%"], []);
+  const snapPoints = useMemo(() => ["35%"], []);
   const [number, setNumber] = useState("1");
 
   const getCurrentCost = () =>
@@ -66,6 +67,14 @@ const BuyPlantBottomSheet = forwardRef<
       <BottomSheetView className="flex-1 py-2.5 px-4">
         {selected_plant ? (
           <View className="items-center">
+            <View className="w-[80px] h-[80px] rounded-3xl mb-4 border-2 border-gray-200 items-center justify-center">
+              <FontAwesome5
+                name="seedling"
+                size={40}
+                color={COLORS.leafy_green1}
+              />
+            </View>
+
             <Text className="text-xl font-bold text-gray-600">
               Buying {selected_plant.name}
             </Text>
@@ -80,8 +89,8 @@ const BuyPlantBottomSheet = forwardRef<
                     borderWidth: 1,
                     borderColor: COLORS.gray300,
                     paddingVertical: 8,
-                    borderRadius: 8,
-                    width: 100,
+                    borderRadius: 50,
+                    width: 140,
                     textAlign: "center",
                   }}
                   onChangeText={setNumber}
@@ -91,7 +100,7 @@ const BuyPlantBottomSheet = forwardRef<
               </View>
 
               <Text
-                className="text-2xl font-bold"
+                className="text-3xl font-bold"
                 style={{
                   color: canAffordCurrent() ? COLORS.gray600 : COLORS.red,
                 }}

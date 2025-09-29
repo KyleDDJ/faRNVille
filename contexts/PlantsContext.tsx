@@ -14,9 +14,9 @@ type PlantsContextType = {
   inventory: { [id: number]: number };
   planted_plants: PlantedPlant[];
   money: number;
-  buyPlant: (plantId: number, amount: number) => boolean;
+  buyPlant: (plant_id: number, amount: number) => boolean;
   canAfford: (cost: number) => boolean;
-  plantSeed: (plantId: number) => boolean;
+  plantSeed: (plant_id: number) => boolean;
   harvestPlant: (unique_id: number) => void;
   removePlant: (unique_id: number) => void;
 };
@@ -79,8 +79,8 @@ export const PlantsProvider: React.FC<{ children: React.ReactNode }> = ({
         const parsedPlants = JSON.parse(savedPlantedPlants);
         const plantsWithDates = parsedPlants.map((plant: any) => ({
           ...plant,
-          plantedAt: new Date(plant.plantedAt),
-          harvestReadyAt: new Date(plant.harvestReadyAt),
+          planted_at: new Date(plant.planted_at),
+          harvest_ready_at: new Date(plant.harvest_ready_at),
         }));
         setPlantedPlants(plantsWithDates);
       }
@@ -130,8 +130,8 @@ export const PlantsProvider: React.FC<{ children: React.ReactNode }> = ({
     return time * 60 * 1000;
   };
 
-  const buyPlant = (plantId: number, amount: number): boolean => {
-    const plant = plants.find(p => p.id === plantId);
+  const buyPlant = (plant_id: number, amount: number): boolean => {
+    const plant = plants.find(p => p.id === plant_id);
     if (!plant) return false;
 
     const totalCost = plant.cost * amount;
@@ -148,7 +148,7 @@ export const PlantsProvider: React.FC<{ children: React.ReactNode }> = ({
 
     console.log(
       "Buying plant:",
-      plantId,
+      plant_id,
       "amount:",
       amount,
       "cost:",
@@ -166,7 +166,7 @@ export const PlantsProvider: React.FC<{ children: React.ReactNode }> = ({
 
       const updated = {
         ...prev,
-        [plantId]: (prev[plantId] || 0) + amount,
+        [plant_id]: (prev[plant_id] || 0) + amount,
       };
 
       console.log("Inventory AFTER:", updated);
@@ -176,15 +176,15 @@ export const PlantsProvider: React.FC<{ children: React.ReactNode }> = ({
     return true;
   };
 
-  const plantSeed = (plantId: number): boolean => {
-    const plant = plants.find(p => p.id === plantId);
-    if (!plant || !inventory[plantId] || inventory[plantId] <= 0) {
+  const plantSeed = (plant_id: number): boolean => {
+    const plant = plants.find(p => p.id === plant_id);
+    if (!plant || !inventory[plant_id] || inventory[plant_id] <= 0) {
       return false;
     }
 
     setInventory(prev => ({
       ...prev,
-      [plantId]: prev[plantId] - 1,
+      [plant_id]: prev[plant_id] - 1,
     }));
 
     const now = new Date();
