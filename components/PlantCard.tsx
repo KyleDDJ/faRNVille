@@ -39,7 +39,6 @@ const PlantCard: React.FC<PlantCardProps> = ({
         backgroundColor: is_active ? COLORS.gray200 : COLORS.white,
         borderWidth: 1,
         borderColor: is_active ? COLORS.lightgreen : COLORS.gray300,
-        elevation: 6,
       }}
     >
       <Image

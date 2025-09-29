@@ -39,6 +39,7 @@ const AddPlantBottomSheet = forwardRef<
         ref={ref}
         index={1}
         snapPoints={snap_points}
+        onDismiss={on_cancel}
         enablePanDownToClose
         backgroundStyle={{
           backgroundColor: defaultBackground,

@@ -27,7 +27,7 @@ const BuyPlantBottomSheet = forwardRef<
   BottomSheetModal,
   BuyPlantBottomSheetProps
 >(({ selected_plant, money, can_afford, on_close, on_continue }, ref) => {
-  const snapPoints = useMemo(() => ["35%"], []);
+  const snapPoints = useMemo(() => ["40%"], []);
   const [number, setNumber] = useState("1");
 
   const getCurrentCost = () =>
@@ -67,7 +67,10 @@ const BuyPlantBottomSheet = forwardRef<
       <BottomSheetView className="flex-1 py-2.5 px-4">
         {selected_plant ? (
           <View className="items-center">
-            <View className="w-[80px] h-[80px] rounded-3xl mb-4 border-2 border-gray-200 items-center justify-center">
+            <View
+              className="w-[80px] h-[80px] rounded-3xl mb-4 border items-center justify-center"
+              style={{ borderColor: COLORS.leafy_green1 }}
+            >
               <FontAwesome5
                 name="seedling"
                 size={40}
