@@ -22,8 +22,13 @@ import { ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const FarmScreen: React.FC = () => {
-  const { inventory, planted_plants, plantSeed, harvestPlant, removePlant } =
-    usePlants();
+  const {
+    inventory,
+    planted_plants,
+    plantSeed: plantSeed,
+    harvestPlant: harvestPlant,
+    removePlant: removePlant,
+  } = usePlants();
 
   const addPlantSheetRef = useRef<BottomSheetModal>(null);
   const removePlantSheetRef = useRef<BottomSheetModal>(null);
@@ -37,7 +42,8 @@ const FarmScreen: React.FC = () => {
   } | null>(null);
   const [plants_with_progress, setPlantsWithProgress] = useState<any[]>([]);
 
-  const snapPoints = useMemo(() => ["26%", "65%"], []);
+  const addPlantSnapPoints = useMemo(() => ["26%", "65%"], []);
+  const removePlantSnapPoints = useMemo(() => ["25%"], []);
 
   const availableSeeds = PLANTS.filter(
     plant => inventory[plant.id] && inventory[plant.id] > 0
@@ -50,8 +56,8 @@ const FarmScreen: React.FC = () => {
     const interval = setInterval(() => {
       const updatedPlants = planted_plants.map(plant => {
         const now = new Date().getTime();
-        const plantedTime = new Date(plant.plantedAt).getTime();
-        const harvestTime = new Date(plant.harvestReadyAt).getTime();
+        const plantedTime = new Date(plant.planted_at).getTime();
+        const harvestTime = new Date(plant.harvest_ready_at).getTime();
 
         const totalGrowthTime = harvestTime - plantedTime;
         const elapsedTime = now - plantedTime;
@@ -92,13 +98,10 @@ const FarmScreen: React.FC = () => {
     if (temp_plant) {
       const success = plantSeed(temp_plant.id);
       if (success) {
-        console.log(`Successfully planted ${temp_plant.name}`);
         handleCloseAddPlant();
-      } else {
-        console.log(`Failed to plant ${temp_plant.name} - no seeds available`);
       }
     }
-  }, [temp_plant, plantSeed]);
+  }, [temp_plant, plantSeed, handleCloseAddPlant]);
 
   const handleOpenRemovePlant = useCallback((plant: any) => {
     setPlantToRemove(plant);
@@ -112,14 +115,14 @@ const FarmScreen: React.FC = () => {
 
   const handleConfirmRemove = useCallback(() => {
     if (plant_to_remove) {
-      removePlant(plant_to_remove.uniqueId);
+      removePlant(plant_to_remove.unique_id);
       handleCloseRemovePlant();
     }
   }, [plant_to_remove, removePlant]);
 
   const handleHarvest = useCallback(
-    (plant: Plants & { uniqueId: number }) => {
-      harvestPlant(plant.uniqueId);
+    (plant: Plants & { unique_id: number }) => {
+      harvestPlant(plant.unique_id);
 
       setHarvestInfo({
         name: plant.name,
@@ -141,7 +144,7 @@ const FarmScreen: React.FC = () => {
         <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
           {plants_with_progress.map(plant => (
             <FarmDashboard
-              key={plant.uniqueId}
+              key={plant.unique_id}
               plant={plant}
               progress={plant.progress}
               time_left={plant.time_left}
@@ -169,7 +172,7 @@ const FarmScreen: React.FC = () => {
 
       <AddPlantBottomSheet
         ref={addPlantSheetRef}
-        snap_points={snapPoints}
+        snap_points={addPlantSnapPoints}
         available_seeds={availableSeeds}
         temp_plant={temp_plant}
         set_temp_plant={setTempPlant}
@@ -180,7 +183,7 @@ const FarmScreen: React.FC = () => {
 
       <RemovePlantBottomSheet
         ref={removePlantSheetRef}
-        snap_points={snapPoints}
+        snap_points={removePlantSnapPoints}
         plant_to_remove={plant_to_remove}
         on_confirm={handleConfirmRemove}
         on_cancel={handleCloseRemovePlant}

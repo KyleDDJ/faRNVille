@@ -7,3 +7,10 @@ export type Plants = {
   cost: number;
   image?: any;
 };
+
+export interface PurchaseInfo {
+  name: string;
+  count: string;  
+  cost: number;
+  plantId: number;
+}

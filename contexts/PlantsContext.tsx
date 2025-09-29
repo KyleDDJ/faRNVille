@@ -1,11 +1,12 @@
 import { PLANTS } from "@/constants/Plant";
 import { Plants } from "@/entities/plant.entities";
-import React, { createContext, useContext, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 type PlantedPlant = Plants & {
-  uniqueId: number;
-  plantedAt: Date;
-  harvestReadyAt: Date;
+  unique_id: number;
+  planted_at: Date;
+  harvest_ready_at: Date;
 };
 
 type PlantsContextType = {
@@ -16,11 +17,17 @@ type PlantsContextType = {
   buyPlant: (plantId: number, amount: number) => boolean;
   canAfford: (cost: number) => boolean;
   plantSeed: (plantId: number) => boolean;
-  harvestPlant: (uniqueId: number) => void;
-  removePlant: (uniqueId: number) => void;
+  harvestPlant: (unique_id: number) => void;
+  removePlant: (unique_id: number) => void;
 };
 
 const PlantsContext = createContext<PlantsContextType | undefined>(undefined);
+
+const STORAGE_KEYS = {
+  MONEY: "@farm_money",
+  INVENTORY: "@farm_inventory",
+  PLANTED_PLANTS: "@farm_planted_plants",
+};
 
 export const PlantsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -29,6 +36,88 @@ export const PlantsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [inventory, setInventory] = useState<{ [id: number]: number }>({});
   const [planted_plants, setPlantedPlants] = useState<PlantedPlant[]>([]);
   const [money, setMoney] = useState<number>(10.0);
+  const [is_loaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    loadPersistedData();
+  }, []);
+
+  useEffect(() => {
+    if (is_loaded) {
+      saveMoneyToStorage(money);
+    }
+  }, [money, is_loaded]);
+
+  useEffect(() => {
+    if (is_loaded) {
+      saveInventoryToStorage(inventory);
+    }
+  }, [inventory, is_loaded]);
+
+  useEffect(() => {
+    if (is_loaded) {
+      savePlantedPlantsToStorage(planted_plants);
+    }
+  }, [planted_plants, is_loaded]);
+
+  const loadPersistedData = async () => {
+    try {
+      const savedMoney = await AsyncStorage.getItem(STORAGE_KEYS.MONEY);
+      if (savedMoney !== null) {
+        setMoney(parseFloat(savedMoney));
+      }
+
+      const savedInventory = await AsyncStorage.getItem(STORAGE_KEYS.INVENTORY);
+      if (savedInventory !== null) {
+        setInventory(JSON.parse(savedInventory));
+      }
+
+      const savedPlantedPlants = await AsyncStorage.getItem(
+        STORAGE_KEYS.PLANTED_PLANTS
+      );
+      if (savedPlantedPlants !== null) {
+        const parsedPlants = JSON.parse(savedPlantedPlants);
+        const plantsWithDates = parsedPlants.map((plant: any) => ({
+          ...plant,
+          plantedAt: new Date(plant.plantedAt),
+          harvestReadyAt: new Date(plant.harvestReadyAt),
+        }));
+        setPlantedPlants(plantsWithDates);
+      }
+
+      setIsLoaded(true);
+    } catch (error) {
+      console.error("Error loading persisted data:", error);
+      setIsLoaded(true);
+    }
+  };
+
+  const saveMoneyToStorage = async (amount: number) => {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.MONEY, amount.toString());
+    } catch (error) {
+      console.error("Error saving money:", error);
+    }
+  };
+
+  const saveInventoryToStorage = async (inv: { [id: number]: number }) => {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.INVENTORY, JSON.stringify(inv));
+    } catch (error) {
+      console.error("Error saving inventory:", error);
+    }
+  };
+
+  const savePlantedPlantsToStorage = async (plants: PlantedPlant[]) => {
+    try {
+      await AsyncStorage.setItem(
+        STORAGE_KEYS.PLANTED_PLANTS,
+        JSON.stringify(plants)
+      );
+    } catch (error) {
+      console.error("Error saving planted plants:", error);
+    }
+  };
 
   const canAfford = (cost: number): boolean => {
     return money >= cost;
@@ -104,27 +193,31 @@ export const PlantsProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const plantedPlant: PlantedPlant = {
       ...plant,
-      uniqueId: Date.now() + Math.random(),
-      plantedAt: now,
-      harvestReadyAt,
+      unique_id: Date.now() + Math.random(),
+      planted_at: now,
+      harvest_ready_at: harvestReadyAt,
     };
 
     setPlantedPlants(prev => [...prev, plantedPlant]);
     return true;
   };
 
-  const harvestPlant = (uniqueId: number) => {
-    const plant = planted_plants.find(p => p.uniqueId === uniqueId);
+  const harvestPlant = (unique_id: number) => {
+    const plant = planted_plants.find(p => p.unique_id === unique_id);
     if (!plant) return;
 
     setMoney(prev => prev + plant.profit);
 
-    setPlantedPlants(prev => prev.filter(p => p.uniqueId !== uniqueId));
+    setPlantedPlants(prev => prev.filter(p => p.unique_id !== unique_id));
   };
 
-  const removePlant = (uniqueId: number) => {
-    setPlantedPlants(prev => prev.filter(p => p.uniqueId !== uniqueId));
+  const removePlant = (unique_id: number) => {
+    setPlantedPlants(prev => prev.filter(p => p.unique_id !== unique_id));
   };
+
+  if (!is_loaded) {
+    return null;
+  }
 
   return (
     <PlantsContext.Provider
