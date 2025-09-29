@@ -85,6 +85,7 @@ const SkeletonCard: React.FC<SkeletonCardProps> = ({
                 height: 20,
                 backgroundColor: COLORS.gray300,
                 borderRadius: 8,
+                marginTop: 20,
               }}
             />
             {showButton && (
