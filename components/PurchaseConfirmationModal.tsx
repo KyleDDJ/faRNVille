@@ -1,11 +1,12 @@
 import { COLORS } from "@/constants/Colors";
+import { PurchaseInfo } from "@/entities/plant.entities";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import React from "react";
 import { Modal, Text, TouchableOpacity, View } from "react-native";
 
 interface PurchaseConfirmationModalProps {
   visible: boolean;
-  purchase_info: { name: string; count: string; cost: number } | null;
+  purchase_info: PurchaseInfo | null;
   on_cancel: () => void;
   on_confirm: () => void;
 }
@@ -25,7 +26,7 @@ const PurchaseConfirmationModal: React.FC<PurchaseConfirmationModalProps> = ({
           color={COLORS.leafy_green1}
         />
 
-        <Text className="text-lg text-gray-600 font-bold mb-4 text-center">
+        <Text className="text-lg text-gray-600 font-bold my-6 text-center">
           {purchase_info
             ? `Confirm ${purchase_info.count} ${
                 purchase_info.name

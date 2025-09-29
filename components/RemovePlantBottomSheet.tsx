@@ -30,7 +30,7 @@ const RemovePlantBottomSheet = forwardRef<
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
       }}
-      handleIndicatorStyle={{ backgroundColor: COLORS.leafy_green1 }}
+      handleIndicatorStyle={{ backgroundColor: COLORS.gray600 }}
       backdropComponent={props => (
         <BottomSheetBackdrop
           {...props}
@@ -46,10 +46,7 @@ const RemovePlantBottomSheet = forwardRef<
             <View className="items-center mb-3">
               <FontAwesome6 name="trash-can" size={35} color={COLORS.red} />
             </View>
-            <Text
-              className="text-xl font-bold text-center"
-              style={{ color: COLORS.green }}
-            >
+            <Text className="text-xl font-bold text-center text-gray-600">
               Confirm remove {plant_to_remove.name}?
             </Text>
 
@@ -67,7 +64,9 @@ const RemovePlantBottomSheet = forwardRef<
                 style={{ backgroundColor: COLORS.gray300 }}
                 onPress={on_cancel}
               >
-                <Text className="text-black font-bold text-center">Cancel</Text>
+                <Text className="text-gray-600 font-bold text-center">
+                  Cancel
+                </Text>
               </TouchableOpacity>
             </View>
           </>

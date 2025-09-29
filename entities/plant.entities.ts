@@ -14,3 +14,8 @@ export interface PurchaseInfo {
   cost: number;
   plantId: number;
 }
+
+export interface HarvestInfo {
+  name: string;
+  profit: number;
+}

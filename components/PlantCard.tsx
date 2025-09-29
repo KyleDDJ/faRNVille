@@ -15,7 +15,7 @@ type PlantCardProps = {
 
 const PlantCard: React.FC<PlantCardProps> = ({
   plant,
-  on_add: onAdd,
+  on_add,
   variant = "shop",
   show_add_button = true,
   is_active = false,
@@ -66,7 +66,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
 
       {show_add_button && (
         <TouchableOpacity
-          onPress={() => onAdd?.(plant)}
+          onPress={() => on_add?.(plant)}
           className="w-20 h-11 flex-row gap-1 rounded-full items-center justify-center mt-16"
           style={{ backgroundColor: COLORS.leafy_green1 }}
         >

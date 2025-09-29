@@ -1,11 +1,12 @@
 import { COLORS } from "@/constants/Colors";
+import { PurchaseInfo } from "@/entities/plant.entities";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import React from "react";
 import { Modal, Text, TouchableOpacity, View } from "react-native";
 
 interface PurchaseSuccessModalProps {
   visible: boolean;
-  purchase_info: { name: string; count: string } | null;
+  purchase_info: PurchaseInfo | null;
   on_close: () => void;
 }
 
@@ -23,7 +24,7 @@ const PurchaseSuccessModal: React.FC<PurchaseSuccessModalProps> = ({
           color={COLORS.leafy_green1}
         />
 
-        <Text className="text-lg text-gray-600 font-bold mb-4 text-center">
+        <Text className="text-lg text-gray-600 font-bold my-6 text-center">
           {purchase_info
             ? `You purchased ${purchase_info.count} ${purchase_info.name}(s)!`
             : ""}

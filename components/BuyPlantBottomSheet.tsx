@@ -53,7 +53,7 @@ const BuyPlantBottomSheet = forwardRef<
         borderTopRightRadius: 20,
       }}
       handleIndicatorStyle={{
-        backgroundColor: COLORS.leafy_green1,
+        backgroundColor: COLORS.gray600,
       }}
       backdropComponent={props => (
         <BottomSheetBackdrop
@@ -79,7 +79,7 @@ const BuyPlantBottomSheet = forwardRef<
               Buying {selected_plant.name}
             </Text>
 
-            <View className="flex-row items-center mt-5 w-full gap-5 justify-between">
+            <View className="flex-row items-center my-10 w-full gap-5 justify-between">
               <View className="flex-row items-center">
                 <Text className="mr-2 text-gray-600 text-2xl font-bold">
                   Amount:

@@ -1,16 +1,18 @@
 import { COLORS, defaultBackground } from "@/constants/Colors";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import EarningsSummary from "@/components/EarningsSummary";
 import PlantCard from "@/components/PlantCard";
+import SeedsSkeletonCard from "@/components/SeedsSkeleton";
 import { PLANTS } from "@/constants/Plant";
 import { usePlants } from "@/contexts/PlantsContext";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const SeedsScreen = () => {
   const { inventory } = usePlants();
+  const [loading, setLoading] = useState(true);
 
   const purchasedPlants = PLANTS.filter(
     plant => inventory[plant.id] && inventory[plant.id] > 0
@@ -19,7 +21,9 @@ const SeedsScreen = () => {
     stock: `${inventory[plant.id]} seeds available`,
   }));
 
-  const filledInventory = () => (
+  const skeletonData = Array.from({ length: 6 }).map((_, i) => i);
+
+  const renderInventory = () => (
     <FlatList
       data={purchasedPlants}
       keyExtractor={item => item.id.toString()}
@@ -36,7 +40,17 @@ const SeedsScreen = () => {
     />
   );
 
-  const emptyInventory = () => (
+  const renderSkeleton = () => (
+    <FlatList
+      data={skeletonData}
+      keyExtractor={item => item.toString()}
+      renderItem={() => <SeedsSkeletonCard />}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ paddingBottom: 64 }}
+    />
+  );
+
+  const renderEmptyInventory = () => (
     <View className="flex-1 justify-center items-center px-6">
       <MaterialCommunityIcons
         name="seed-off"
@@ -57,6 +71,11 @@ const SeedsScreen = () => {
     </View>
   );
 
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1800);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <SafeAreaView
       className="flex-1"
@@ -64,7 +83,11 @@ const SeedsScreen = () => {
     >
       <EarningsSummary />
       <View className="flex-1 pt-6 pb-16">
-        {purchasedPlants.length > 0 ? filledInventory() : emptyInventory()}
+        {loading
+          ? renderSkeleton()
+          : purchasedPlants.length > 0
+          ? renderInventory()
+          : renderEmptyInventory()}
       </View>
     </SafeAreaView>
   );

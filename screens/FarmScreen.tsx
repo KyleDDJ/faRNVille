@@ -2,13 +2,14 @@ import AddPlantBottomSheet from "@/components/AddPlantBottomSHeet";
 import AddPlantButton from "@/components/AddPlantButton";
 import EarningSummary from "@/components/EarningsSummary";
 import FarmingSummaryCard from "@/components/FarmingSummary";
+import FarmSkeleton from "@/components/FarmSkeleton";
 import HarvestModal from "@/components/HarvestModal";
 import NoPlantView from "@/components/NoPlantView";
 import RemovePlantBottomSheet from "@/components/RemovePlantBottomSheet";
 import { defaultBackground } from "@/constants/Colors";
 import { PLANTS } from "@/constants/Plant";
 import { usePlants } from "@/contexts/PlantsContext";
-import { Plants } from "@/entities/plant.entities";
+import { HarvestInfo, Plants } from "@/entities/plant.entities";
 import FarmDashboard from "@/screens/FarmDashboard";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import React, {
@@ -31,11 +32,9 @@ const FarmScreen: React.FC = () => {
   const [temp_plant, setTempPlant] = useState<any>(null);
   const [plant_to_remove, setPlantToRemove] = useState<any>(null);
   const [show_harvest_modal, setShowHarvestModal] = useState(false);
-  const [harvest_info, setHarvestInfo] = useState<{
-    name: string;
-    profit: string;
-  } | null>(null);
+  const [harvest_info, setHarvestInfo] = useState<HarvestInfo | null>(null);
   const [plants_with_progress, setPlantsWithProgress] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const addPlantSnapPoints = useMemo(() => ["26%", "65%"], []);
   const removePlantSnapPoints = useMemo(() => ["25%"], []);
@@ -48,9 +47,17 @@ const FarmScreen: React.FC = () => {
   }));
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1800);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       const updatedPlants = planted_plants.map(plant => {
-        const now = new Date().getTime();
+        const now = Date.now();
         const plantedTime = new Date(plant.planted_at).getTime();
         const harvestTime = new Date(plant.harvest_ready_at).getTime();
 
@@ -113,7 +120,7 @@ const FarmScreen: React.FC = () => {
       removePlant(plant_to_remove.unique_id);
       handleCloseRemovePlant();
     }
-  }, [plant_to_remove, removePlant]);
+  }, [plant_to_remove, removePlant, handleCloseRemovePlant]);
 
   const handleHarvest = useCallback(
     (plant: Plants & { unique_id: number }) => {
@@ -121,7 +128,7 @@ const FarmScreen: React.FC = () => {
 
       setHarvestInfo({
         name: plant.name,
-        profit: `$${plant.profit.toFixed(2)}`,
+        profit: plant.profit,
       });
 
       setShowHarvestModal(true);
@@ -134,8 +141,9 @@ const FarmScreen: React.FC = () => {
       <EarningSummary />
 
       <FarmingSummaryCard />
-
-      {plants_with_progress.length > 0 ? (
+      {loading ? (
+        <FarmSkeleton />
+      ) : plants_with_progress.length > 0 ? (
         <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
           {plants_with_progress.map(plant => (
             <FarmDashboard

@@ -1,5 +1,5 @@
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FlatList, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -8,6 +8,7 @@ import EarningsSummary from "@/components/EarningsSummary";
 import PlantCard from "@/components/PlantCard";
 import PurchaseConfirmationModal from "@/components/PurchaseConfirmationModal";
 import PurchaseSuccessModal from "@/components/PurchaseSuccessModal";
+import ShopSkeletonCard from "@/components/ShopSkeleton";
 import { defaultBackground } from "@/constants/Colors";
 import { PLANTS } from "@/constants/Plant";
 import { usePlants } from "@/contexts/PlantsContext";
@@ -15,6 +16,7 @@ import { Plants, PurchaseInfo } from "@/entities/plant.entities";
 
 const ShopScreen = () => {
   const { buyPlant, canAfford, money } = usePlants();
+  const [loading, setLoading] = useState(true);
 
   const [selected_plant, setSelectedPlant] = useState<Plants | null>(null);
   const [success_modal_visible, setSuccessModalVisible] = useState(false);
@@ -45,6 +47,11 @@ const ShopScreen = () => {
     }
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1800);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <SafeAreaView
       className="flex-1"
@@ -53,15 +60,19 @@ const ShopScreen = () => {
       <EarningsSummary />
 
       <View className="flex-1 pt-6 pb-16">
-        <FlatList
-          data={PLANTS}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({ item }) => (
-            <PlantCard plant={item} on_add={handleAddPlant} variant="shop" />
-          )}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 64 }}
-        />
+        {loading ? (
+          <ShopSkeletonCard />
+        ) : (
+          <FlatList
+            data={PLANTS}
+            keyExtractor={item => item.id.toString()}
+            renderItem={({ item }) => (
+              <PlantCard plant={item} on_add={handleAddPlant} variant="shop" />
+            )}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 64 }}
+          />
+        )}
       </View>
 
       <PurchaseConfirmationModal
