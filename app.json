@@ -4,7 +4,7 @@
     "slug": "faRNville",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/seedlogo.png",
+    "icon": "./assets/images/Logo.png",
     "scheme": "farnville",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,9 +14,9 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#fffded",
-        "foregroundImage": "./assets/images/seedlogo.png",
-        "backgroundImage": "./assets/images/seedlogo.png",
-        "monochromeImage": "./assets/images/seedlogo.png"
+        "foregroundImage": "./assets/images/Logo.png",
+        "backgroundImage": "./assets/images/Logo.png",
+        "monochromeImage": "./assets/images/Logo.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
@@ -24,14 +24,14 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/seedlogo.png"
+      "favicon": "./assets/images/Logo.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/seedlogo.png",
+          "image": "./assets/images/Logo.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",

@@ -18,6 +18,7 @@ module.exports = {
         sunny: "#FBC02D",
         black: "#000000ff",
         white: "#ffffffff",
+        lightgreen: "#38a169",
 
         gray50: "#F9FAFB",
         gray100: "#F3F4F6",

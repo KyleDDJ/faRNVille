@@ -48,7 +48,7 @@ const FarmingSummaryCard: React.FC<FarmingSummaryCardProps> = ({
               {totalSeeds}
             </Text>
             <Text
-              className="text-sm text-center"
+              className="text-sm font-semibold text-center"
               style={{ color: COLORS.white }}
             >
               Remaining seeds
@@ -63,7 +63,7 @@ const FarmingSummaryCard: React.FC<FarmingSummaryCardProps> = ({
               ${possibleIncome.toFixed(2)}
             </Text>
             <Text
-              className="text-sm text-center"
+              className="text-sm font-semibold text-center"
               style={{ color: COLORS.white }}
             >
               Possible Income
@@ -78,10 +78,10 @@ const FarmingSummaryCard: React.FC<FarmingSummaryCardProps> = ({
               {plantedCount}
             </Text>
             <Text
-              className="text-sm text-center"
+              className="text-sm font-semibold text-center"
               style={{ color: COLORS.white }}
             >
-              Planted Plants
+              Planted Seeds
             </Text>
           </View>
         </View>

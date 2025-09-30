@@ -21,7 +21,7 @@ const PurchaseSuccessModal: React.FC<PurchaseSuccessModalProps> = ({
         <MaterialCommunityIcons
           name="cart-check"
           size={60}
-          color={COLORS.leafy_green1}
+          color={COLORS.lightgreen}
         />
 
         <Text className="text-lg text-gray-600 font-bold my-6 text-center">
@@ -31,7 +31,7 @@ const PurchaseSuccessModal: React.FC<PurchaseSuccessModalProps> = ({
         </Text>
 
         <TouchableOpacity
-          style={{ backgroundColor: COLORS.leafy_green1 }}
+          style={{ backgroundColor: COLORS.lightgreen }}
           className="w-full py-3 rounded-full"
           onPress={on_close}
         >

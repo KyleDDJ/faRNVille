@@ -124,10 +124,14 @@ export const PlantsProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const parseHarvestTime = (harvestTime: string): number => {
-    const time = parseInt(harvestTime);
-    if (harvestTime.includes("m")) return time * 60 * 1000;
-    if (harvestTime.includes("h")) return time * 60 * 60 * 1000;
-    return time * 60 * 1000;
+    // TESTING: Always return 5 seconds (5000 milliseconds)
+    return 5000;
+
+    // Original code (commented out for testing):
+    // const time = parseInt(harvestTime);
+    // if (harvestTime.includes("m")) return time * 60 * 1000;
+    // if (harvestTime.includes("h")) return time * 60 * 60 * 1000;
+    // return time * 60 * 1000;
   };
 
   const buyPlant = (plant_id: number, amount: number): boolean => {

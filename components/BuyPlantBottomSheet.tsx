@@ -69,12 +69,12 @@ const BuyPlantBottomSheet = forwardRef<
           <View className="items-center">
             <View
               className="w-[80px] h-[80px] rounded-3xl mb-4 border items-center justify-center"
-              style={{ borderColor: COLORS.leafy_green1 }}
+              style={{ borderColor: COLORS.lightgreen }}
             >
               <FontAwesome5
                 name="seedling"
                 size={40}
-                color={COLORS.leafy_green1}
+                color={COLORS.lightgreen}
               />
             </View>
 
@@ -99,7 +99,12 @@ const BuyPlantBottomSheet = forwardRef<
                   keyboardType="number-pad"
                   onChangeText={text => {
                     const cleaned = text.replace(/[^0-9]/g, "");
-                    setNumber(cleaned);
+                    if (cleaned === "") {
+                      setNumber("");
+                    } else {
+                      const num = Math.min(parseInt(cleaned, 10), 99);
+                      setNumber(num.toString());
+                    }
                   }}
                   value={number}
                 />
@@ -128,7 +133,7 @@ const BuyPlantBottomSheet = forwardRef<
               className="w-full mt-4 py-3 rounded-3xl"
               style={{
                 backgroundColor: canAffordCurrent()
-                  ? COLORS.leafy_green1
+                  ? COLORS.lightgreen
                   : COLORS.gray300,
                 opacity: canAffordCurrent() ? 1 : 0.7,
               }}

@@ -12,7 +12,7 @@ type AddPlantButtonProps = {
 const AddPlantButton: React.FC<AddPlantButtonProps> = ({
   title,
   on_press,
-  borderColor = COLORS.gray400,
+  borderColor = COLORS.leafy_green1,
 }) => {
   return (
     <TouchableOpacity
@@ -26,9 +26,12 @@ const AddPlantButton: React.FC<AddPlantButtonProps> = ({
       }}
     >
       <View className="mb-4">
-        <FontAwesome5 name="leaf" size={32} color={COLORS.gray400} />
+        <FontAwesome5 name="leaf" size={32} color={COLORS.leafy_green1} />
       </View>
-      <Text className="text-lg font-semibold" style={{ color: COLORS.gray400 }}>
+      <Text
+        className="text-lg font-semibold"
+        style={{ color: COLORS.leafy_green1 }}
+      >
         {title}
       </Text>
     </TouchableOpacity>

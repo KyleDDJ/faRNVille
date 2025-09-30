@@ -23,7 +23,7 @@ const PurchaseConfirmationModal: React.FC<PurchaseConfirmationModalProps> = ({
         <MaterialCommunityIcons
           name="cart-plus"
           size={60}
-          color={COLORS.leafy_green1}
+          color={COLORS.lightgreen}
         />
 
         <Text className="text-lg text-gray-600 font-bold my-6 text-center">
@@ -43,7 +43,7 @@ const PurchaseConfirmationModal: React.FC<PurchaseConfirmationModalProps> = ({
             <Text className="font-semibold text-gray-500">Cancel</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ backgroundColor: COLORS.leafy_green1 }}
+            style={{ backgroundColor: COLORS.lightgreen }}
             className="px-10 py-3 rounded-full"
             onPress={on_confirm}
           >

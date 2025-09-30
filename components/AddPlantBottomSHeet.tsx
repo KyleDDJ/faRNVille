@@ -112,7 +112,7 @@ const AddPlantBottomSheet = forwardRef<
               style={{
                 backgroundColor:
                   temp_plant && available_seeds.length > 0
-                    ? COLORS.lightgreen
+                    ? COLORS.leafy_green2
                     : COLORS.gray300,
                 opacity: temp_plant && available_seeds.length > 0 ? 1 : 0.6,
               }}

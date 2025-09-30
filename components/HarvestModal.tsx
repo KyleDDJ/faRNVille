@@ -1,6 +1,6 @@
 import { COLORS } from "@/constants/Colors";
 import { HarvestInfo } from "@/entities/plant.entities";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import React from "react";
 import { Modal, Text, TouchableOpacity, View } from "react-native";
 
@@ -19,15 +19,13 @@ const HarvestModal: React.FC<HarvestModalProps> = ({
     <Modal visible={visible} transparent animationType="fade">
       <View className="flex-1 justify-center items-center bg-black/50">
         <View className="bg-white rounded-2xl p-3 w-[90%] items-center">
-          <MaterialCommunityIcons
-            name="cash-plus"
-            size={70}
-            color={COLORS.green}
-          />
+          <View className="py-5">
+            <FontAwesome6 name="seedling" size={65} color={COLORS.lightgreen} />
+          </View>
 
           <Text
             className="text-2xl font-bold mb-4"
-            style={{ color: COLORS.green }}
+            style={{ color: COLORS.lightgreen }}
           >
             Harvest Successful!
           </Text>
@@ -40,8 +38,8 @@ const HarvestModal: React.FC<HarvestModalProps> = ({
           </Text>
 
           <TouchableOpacity
-            className="rounded-3xl w-full py-3"
-            style={{ backgroundColor: COLORS.green }}
+            className="rounded-3xl mb-2 w-full py-3"
+            style={{ backgroundColor: COLORS.lightgreen }}
             onPress={on_close}
           >
             <Text className="text-white font-bold text-lg text-center">

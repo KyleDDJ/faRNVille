@@ -158,7 +158,7 @@ const FarmScreen: React.FC = () => {
 
           <TouchableOpacity className="mt-4">
             <AddPlantButton
-              title="Add a Plant again"
+              title="Plant a Seed again"
               on_press={handleOpenAddPlant}
             />
           </TouchableOpacity>

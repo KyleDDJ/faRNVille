@@ -23,12 +23,39 @@ const PlantCard: React.FC<PlantCardProps> = ({
 }) => {
   const getMiddleText = () => {
     if (variant === "shop") {
-      return `Harvest in ${plant.harvestTime} | Cost: $${plant.cost}.00`;
+      return (
+        <Text className="text-sm text-gray-500 mb-1">
+          Harvest in {plant.harvestTime} |{" "}
+          <Text
+            style={{
+              color: COLORS.green,
+              fontSize: 14,
+              fontWeight: "bold",
+            }}
+          >
+            Cost: ${plant.cost}.00
+          </Text>
+        </Text>
+      );
     } else {
       const stockText = inventory_count
         ? `${inventory_count} seeds available`
         : plant.stock;
-      return `Harvest in ${plant.harvestTime} | Stock: ${stockText}`;
+
+      return (
+        <Text className="text-sm  text-gray-500 mb-1">
+          Harvest in {plant.harvestTime} |{" "}
+          <Text
+            style={{
+              color: COLORS.green,
+              fontSize: 14,
+              fontWeight: "bold",
+            }}
+          >
+            Stock: {stockText}
+          </Text>
+        </Text>
+      );
     }
   };
 
@@ -55,10 +82,11 @@ const PlantCard: React.FC<PlantCardProps> = ({
           {plant.name}
         </Text>
 
-        <Text className="font-bold text-sm text-gray-400 mb-1">
-          {getMiddleText()}
-        </Text>
-        <Text className="text-lg font-bold" style={{ color: COLORS.green }}>
+        <Text className="font-semibold mb-1">{getMiddleText()}</Text>
+        <Text
+          className="text-l font-semibold"
+          style={{ color: COLORS.gray500 }}
+        >
           Profit: ${plant.profit}.00
         </Text>
       </View>
@@ -67,7 +95,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
         <TouchableOpacity
           onPress={() => on_add?.(plant)}
           className="w-20 h-11 flex-row gap-1 rounded-full items-center justify-center mt-16"
-          style={{ backgroundColor: COLORS.leafy_green1 }}
+          style={{ backgroundColor: COLORS.lightgreen }}
         >
           <Text className="font-semibold text-white">Buy</Text>
           <MaterialCommunityIcons
