@@ -96,8 +96,11 @@ const BuyPlantBottomSheet = forwardRef<
                     width: 140,
                     textAlign: "center",
                   }}
-                  onChangeText={setNumber}
-                  keyboardType="numeric"
+                  keyboardType="number-pad"
+                  onChangeText={text => {
+                    const cleaned = text.replace(/[^0-9]/g, "");
+                    setNumber(cleaned);
+                  }}
                   value={number}
                 />
               </View>
