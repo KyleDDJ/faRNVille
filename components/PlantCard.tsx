@@ -26,13 +26,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
       return (
         <Text className="text-sm text-gray-500 mb-1">
           Harvest in {plant.harvestTime} |{" "}
-          <Text
-            style={{
-              color: COLORS.green,
-              fontSize: 14,
-              fontWeight: "bold",
-            }}
-          >
+          <Text className=" text-green text-l font-bold">
             Cost: ${plant.cost}.00
           </Text>
         </Text>
@@ -45,13 +39,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
       return (
         <Text className="text-sm  text-gray-500 mb-1">
           Harvest in {plant.harvestTime} |{" "}
-          <Text
-            style={{
-              color: COLORS.green,
-              fontSize: 14,
-              fontWeight: "bold",
-            }}
-          >
+          <Text className=" text-green text-l font-bold">
             Stock: {stockText}
           </Text>
         </Text>
@@ -75,18 +63,10 @@ const PlantCard: React.FC<PlantCardProps> = ({
       />
 
       <View className="flex-1 pb-4">
-        <Text
-          className="text-2xl font-bold mb-1"
-          style={{ color: COLORS.green }}
-        >
-          {plant.name}
-        </Text>
+        <Text className="text-2xl font-bold mb-1 text-green">{plant.name}</Text>
 
         <Text className="font-semibold mb-1">{getMiddleText()}</Text>
-        <Text
-          className="text-l font-semibold"
-          style={{ color: COLORS.gray500 }}
-        >
+        <Text className="text-l font-semibold text-gray-500">
           Profit: ${plant.profit}.00
         </Text>
       </View>
@@ -94,8 +74,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
       {show_add_button && (
         <TouchableOpacity
           onPress={() => on_add?.(plant)}
-          className="w-20 h-11 flex-row gap-1 rounded-full items-center justify-center mt-16"
-          style={{ backgroundColor: COLORS.lightgreen }}
+          className="w-20 h-11 flex-row gap-1 rounded-full items-center bg-lightgreen justify-center mt-16"
         >
           <Text className="font-semibold text-white">Buy</Text>
           <MaterialCommunityIcons

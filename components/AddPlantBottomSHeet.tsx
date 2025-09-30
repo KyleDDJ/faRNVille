@@ -99,8 +99,7 @@ const AddPlantBottomSheet = forwardRef<
 
           <View className="flex-row item-center justify-center gap-6 mt-3">
             <TouchableOpacity
-              className="w-5/12 rounded-3xl py-3"
-              style={{ backgroundColor: COLORS.gray300 }}
+              className="w-5/12 rounded-3xl bg-gray-300 text-gray-300 py-3"
               onPress={on_cancel}
             >
               <Text className="text-center text-gray-500 text-lg font-semibold">

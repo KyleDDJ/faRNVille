@@ -23,10 +23,7 @@ const HarvestModal: React.FC<HarvestModalProps> = ({
             <FontAwesome6 name="seedling" size={65} color={COLORS.lightgreen} />
           </View>
 
-          <Text
-            className="text-2xl font-bold mb-4"
-            style={{ color: COLORS.lightgreen }}
-          >
+          <Text className="text-2xl font-bold mb-4 text-lightgreen">
             Harvest Successful!
           </Text>
           <Text className="text-center text-gray-600 font-bold text-black mb-6">
@@ -38,8 +35,7 @@ const HarvestModal: React.FC<HarvestModalProps> = ({
           </Text>
 
           <TouchableOpacity
-            className="rounded-3xl mb-2 w-full py-3"
-            style={{ backgroundColor: COLORS.lightgreen }}
+            className="rounded-3xl mb-2 w-full py-3 bg-lightgreen"
             onPress={on_close}
           >
             <Text className="text-white font-bold text-lg text-center">

@@ -8,7 +8,7 @@ type NoPlantViewProps = {
 
 const NoPlantView: React.FC<NoPlantViewProps> = ({ on_add }) => {
   return (
-    <View style={{ paddingTop: 16, alignItems: "center" }}>
+    <View className="pt-8 items-center">
       <AddPlantButton title="Plant a Seed" on_press={on_add} />
     </View>
   );

@@ -45,7 +45,7 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
           resizeMode="cover"
         />
         <View className="flex-col flex-1 mt-16">
-          <Text className="text-l font-bold" style={{ color: COLORS.green }}>
+          <Text className="text-lg font-bold text-green">
             {plant.name}
             {is_ready && (
               <Text className="text-lightgreen font-semibold">

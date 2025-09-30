@@ -52,16 +52,14 @@ const RemovePlantBottomSheet = forwardRef<
 
             <View className="flex-col justify-center items-center mt-6 w-full space-y-4 ">
               <TouchableOpacity
-                className="rounded-3xl py-4 w-full mb-2"
-                style={{ backgroundColor: COLORS.red }}
+                className="rounded-3xl py-4 w-full mb-2 bg-red"
                 onPress={on_confirm}
               >
                 <Text className="text-white font-bold text-center">Remove</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
-                className="rounded-3xl py-4 w-full"
-                style={{ backgroundColor: COLORS.gray300 }}
+                className="rounded-3xl py-4 w-full bg-gray-300"
                 onPress={on_cancel}
               >
                 <Text className="text-gray-600 font-bold text-center">

@@ -1,7 +1,6 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-import { COLORS } from "@/constants/Colors";
 import { usePlants } from "@/contexts/PlantsContext";
 
 type FarmingSummaryCardProps = {
@@ -25,15 +24,9 @@ const FarmingSummaryCard: React.FC<FarmingSummaryCardProps> = ({
   );
 
   return (
-    <View
-      className="rounded-2xl mb-2 mt-2 p-6 mx-3"
-      style={{ backgroundColor: COLORS.green }}
-    >
+    <View className="rounded-2xl mb-2 mt-2 p-6 mx-3 bg-green">
       <View className="flex-row justify-between items-center mb-5">
-        <Text
-          className="text-2xl mb-1 font-bold"
-          style={{ color: COLORS.white }}
-        >
+        <Text className="text-2xl mb-1 font-bold text-white">
           {sprint_name}
         </Text>
       </View>
@@ -41,46 +34,28 @@ const FarmingSummaryCard: React.FC<FarmingSummaryCardProps> = ({
       <View className="w-full mb-1">
         <View className="flex-row justify-around w-full mb-1">
           <View className="items-center">
-            <Text
-              className="font-semibold text-xl"
-              style={{ color: COLORS.white }}
-            >
+            <Text className="font-semibold text-xl text-white">
               {totalSeeds}
             </Text>
-            <Text
-              className="text-sm font-semibold text-center"
-              style={{ color: COLORS.white }}
-            >
+            <Text className="text-sm font-semibold text-center text-white">
               Remaining seeds
             </Text>
           </View>
 
           <View className="items-center">
-            <Text
-              className="font-semibold text-xl"
-              style={{ color: COLORS.white }}
-            >
+            <Text className="font-semibold text-xl text-white">
               ${possibleIncome.toFixed(2)}
             </Text>
-            <Text
-              className="text-sm font-semibold text-center"
-              style={{ color: COLORS.white }}
-            >
+            <Text className="text-sm font-semibold text-center text-white">
               Possible Income
             </Text>
           </View>
 
           <View className="items-center">
-            <Text
-              className="font-semibold text-xl"
-              style={{ color: COLORS.white }}
-            >
+            <Text className="font-semibold text-xl text-white">
               {plantedCount}
             </Text>
-            <Text
-              className="text-sm font-semibold text-center"
-              style={{ color: COLORS.white }}
-            >
+            <Text className="text-sm font-semibold text-center text-white">
               Planted Seeds
             </Text>
           </View>

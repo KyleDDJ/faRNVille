@@ -31,8 +31,7 @@ const PurchaseSuccessModal: React.FC<PurchaseSuccessModalProps> = ({
         </Text>
 
         <TouchableOpacity
-          style={{ backgroundColor: COLORS.lightgreen }}
-          className="w-full py-3 rounded-full"
+          className="w-full py-3 rounded-full bg-lightgreen"
           onPress={on_close}
         >
           <Text className="text-white font-semibold text-center">Accept</Text>

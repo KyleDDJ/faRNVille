@@ -16,9 +16,8 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
 
   return (
     <View
-      className="flex-row justify-between items-center px-6 py-10 rounded-b-3xl"
+      className="flex-row justify-between bg-green items-center px-6 py-10 rounded-b-3xl"
       style={{
-        backgroundColor: COLORS.green,
         elevation: 8,
       }}
     >
@@ -40,20 +39,12 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
           >
             {greeting}
           </Text>
-          <Text
-            className="text-lg font-semibold text-white"
-            style={{ fontSize: 18, fontWeight: "600", color: COLORS.white }}
-          >
-            {user_name}
-          </Text>
+          <Text className="text-2xl font-bold text-white">{user_name}</Text>
         </View>
       </View>
 
       <View className="items-end">
-        <Text
-          className="text-sm text-white mb-1 font-bold mr-4"
-          style={{ fontSize: 14, color: COLORS.gray300 }}
-        >
+        <Text className="text-sm text-gray-300 mb-1 font-bold mr-4">
           Earnings!
         </Text>
         <Text

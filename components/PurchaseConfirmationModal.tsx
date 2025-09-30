@@ -36,15 +36,13 @@ const PurchaseConfirmationModal: React.FC<PurchaseConfirmationModalProps> = ({
 
         <View className="flex-row gap-5">
           <TouchableOpacity
-            style={{ backgroundColor: COLORS.gray300 }}
-            className="px-10 py-3 rounded-full"
+            className="px-10 py-3 rounded-full bg-gray-300"
             onPress={on_cancel}
           >
             <Text className="font-semibold text-gray-500">Cancel</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ backgroundColor: COLORS.lightgreen }}
-            className="px-10 py-3 rounded-full"
+            className="px-10 py-3 rounded-full bg-lightgreen"
             onPress={on_confirm}
           >
             <Text className="text-white font-semibold">Confirm</Text>

@@ -28,12 +28,7 @@ const AddPlantButton: React.FC<AddPlantButtonProps> = ({
       <View className="mb-4">
         <FontAwesome5 name="leaf" size={32} color={COLORS.leafy_green1} />
       </View>
-      <Text
-        className="text-lg font-semibold"
-        style={{ color: COLORS.leafy_green1 }}
-      >
-        {title}
-      </Text>
+      <Text className="text-lg font-semibold text-leafygreen1">{title}</Text>
     </TouchableOpacity>
   );
 };

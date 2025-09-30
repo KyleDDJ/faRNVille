@@ -59,10 +59,7 @@ const SeedsScreen = () => {
         accessibilityLabel="Empty inventory icon"
         className="mb-4"
       />
-      <Text
-        className="text-center text-lg font-semibold mb-2"
-        style={{ color: COLORS.leafy_green1 }}
-      >
+      <Text className="text-center text-lg font-semibold mb-2 text-leafygreen1">
         Oops! Your inventory is empty.
       </Text>
       <Text className="text-center text-base text-gray-500">
