@@ -44,7 +44,7 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
       </View>
 
       <View className="items-end">
-        <Text className="text-sm text-gray-300 mb-1 font-bold mr-4">
+        <Text className="text-sm text-gray-300 mb-1 font-bold mr-6">
           Earnings!
         </Text>
         <Text

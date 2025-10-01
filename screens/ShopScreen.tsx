@@ -14,27 +14,42 @@ import { PLANTS } from "@/constants/Plant";
 import { usePlants } from "@/contexts/PlantsContext";
 import { Plants, PurchaseInfo } from "@/entities/plant.entities";
 
-const ShopScreen = () => {
+/* Screen: ShopScreen
+ * Main Expo Router screen for buying plants
+ */
+const ShopScreen: React.FC = () => {
+  /* Contexts */
   const { buyPlant, canAfford, money } = usePlants();
-  const [loading, setLoading] = useState(true);
 
+  /* Local state */
+  const [loading, setLoading] = useState(true);
   const [selected_plant, setSelectedPlant] = useState<Plants | null>(null);
   const [success_modal_visible, setSuccessModalVisible] = useState(false);
   const [confirmation_modal_visible, setConfirmationModalVisible] =
     useState(false);
   const [purchase_info, setPurchaseInfo] = useState<PurchaseInfo | null>(null);
 
+  /* Bottom Sheet ref */
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
+  /*
+   * DOCU: Open Bottom Sheet for adding a plant
+   */
   const handleAddPlant = (plant: Plants) => {
     setSelectedPlant(plant);
     handleOpen();
   };
 
+  /*
+   * DOCU: Present the Bottom Sheet
+   */
   const handleOpen = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
 
+  /*
+   * DOCU: Confirm purchase and show success modal if applicable
+   */
   const handleConfirmPurchase = () => {
     if (purchase_info) {
       const purchaseSuccess = buyPlant(
@@ -47,11 +62,17 @@ const ShopScreen = () => {
     }
   };
 
+  /*
+   * DOCU: Set loading state timeout
+   */
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1800);
     return () => clearTimeout(timer);
   }, []);
 
+  /*
+   * DOCU: Render ShopScreen content
+   */
   return (
     <SafeAreaView
       className="flex-1"

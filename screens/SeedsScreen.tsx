@@ -10,10 +10,19 @@ import { PLANTS } from "@/constants/Plant";
 import { usePlants } from "@/contexts/PlantsContext";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-const SeedsScreen = () => {
+/* Screen: SeedsScreen
+ * Main Expo Router screen for managing seed inventory
+ */
+const SeedsScreen: React.FC = () => {
+  /* Contexts */
   const { inventory } = usePlants();
+
+  /* Local state */
   const [loading, setLoading] = useState(true);
 
+  /*
+   * DOCU: Compute purchased plants from inventory
+   */
   const purchasedPlants = PLANTS.filter(
     plant => inventory[plant.id] && inventory[plant.id] > 0
   ).map(plant => ({
@@ -21,8 +30,12 @@ const SeedsScreen = () => {
     stock: `${inventory[plant.id]} seeds available`,
   }));
 
+  /* Skeleton data for loading state */
   const skeletonData = Array.from({ length: 6 }).map((_, i) => i);
 
+  /*
+   * DOCU: Render inventory FlatList
+   */
   const renderInventory = () => (
     <FlatList
       data={purchasedPlants}
@@ -40,6 +53,9 @@ const SeedsScreen = () => {
     />
   );
 
+  /*
+   * DOCU: Render skeleton FlatList while loading
+   */
   const renderSkeleton = () => (
     <FlatList
       data={skeletonData}
@@ -50,6 +66,9 @@ const SeedsScreen = () => {
     />
   );
 
+  /*
+   * DOCU: Render empty inventory view
+   */
   const renderEmptyInventory = () => (
     <View className="flex-1 justify-center items-center px-6">
       <MaterialCommunityIcons
@@ -68,11 +87,18 @@ const SeedsScreen = () => {
     </View>
   );
 
+  /*
+   * DOCU: Set loading timeout
+   * Last Updated At: October 1 2025
+   */
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1800);
     return () => clearTimeout(timer);
   }, []);
 
+  /*
+   * DOCU: Render SeedsScreen content
+   */
   return (
     <SafeAreaView
       className="flex-1"

@@ -12,6 +12,7 @@ module.exports = {
         leafygreen: "#314f33",
         leafygreen1: "#7c967d",
         leafygreen2: "#335135",
+        green: "#476A49",
         lightgreen: "#38a169",
         soilBrown: "#8D6E63",
         creamBase: "#FFF8E1",
@@ -19,7 +20,6 @@ module.exports = {
         sunny: "#FBC02D",
         black: "#000000ff",
         white: "#ffffffff",
-        green: "#476A49",
         red: "#CD1C18",
 
         gray50: "#F9FAFB",

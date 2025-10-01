@@ -22,13 +22,19 @@ import React, {
 import { ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+/* Screen: FarmScreen
+ * Main Expo Router screen for managing farm activities
+ */
 const FarmScreen: React.FC = () => {
+  /* Contexts */
   const { inventory, planted_plants, plantSeed, harvestPlant, removePlant } =
     usePlants();
 
+  /* Bottom Sheet refs */
   const addPlantSheetRef = useRef<BottomSheetModal>(null);
   const removePlantSheetRef = useRef<BottomSheetModal>(null);
 
+  /* Local state */
   const [temp_plant, setTempPlant] = useState<any>(null);
   const [plant_to_remove, setPlantToRemove] = useState<any>(null);
   const [show_harvest_modal, setShowHarvestModal] = useState(false);
@@ -36,9 +42,11 @@ const FarmScreen: React.FC = () => {
   const [plants_with_progress, setPlantsWithProgress] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  /* Bottom Sheet snap points */
   const addPlantSnapPoints = useMemo(() => ["26%", "65%"], []);
   const removePlantSnapPoints = useMemo(() => ["25%"], []);
 
+  /* Available seeds */
   const availableSeeds = PLANTS.filter(
     plant => inventory[plant.id] && inventory[plant.id] > 0
   ).map(plant => ({
@@ -46,6 +54,9 @@ const FarmScreen: React.FC = () => {
     stock: `${inventory[plant.id]} seeds available`,
   }));
 
+  /*
+   * DOCU: Handle loading skeleton for screen
+   */
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -54,6 +65,9 @@ const FarmScreen: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  /*
+   * DOCU: Track plant growth progress every second
+   */
   useEffect(() => {
     const interval = setInterval(() => {
       const updatedPlants = planted_plants.map(plant => {
@@ -86,16 +100,25 @@ const FarmScreen: React.FC = () => {
     return () => clearInterval(interval);
   }, [planted_plants]);
 
+  /*
+   * DOCU: Open Add Plant Bottom Sheet
+   */
   const handleOpenAddPlant = useCallback(
     () => addPlantSheetRef.current?.present(),
     []
   );
 
+  /*
+   * DOCU: Close Add Plant Bottom Sheet
+   */
   const handleCloseAddPlant = useCallback(() => {
     addPlantSheetRef.current?.dismiss();
     setTempPlant(null);
   }, []);
 
+  /*
+   * DOCU: Confirm adding a plant
+   */
   const handleConfirmAdd = useCallback(() => {
     if (temp_plant) {
       const success = plantSeed(temp_plant.id);
@@ -105,16 +128,25 @@ const FarmScreen: React.FC = () => {
     }
   }, [temp_plant, plantSeed, handleCloseAddPlant]);
 
+  /*
+   * DOCU: Open Remove Plant Bottom Sheet
+   */
   const handleOpenRemovePlant = useCallback((plant: any) => {
     setPlantToRemove(plant);
     removePlantSheetRef.current?.present();
   }, []);
 
+  /*
+   * DOCU: Close Remove Plant Bottom Sheet
+   */
   const handleCloseRemovePlant = useCallback(() => {
     removePlantSheetRef.current?.dismiss();
     setPlantToRemove(null);
   }, []);
 
+  /*
+   * DOCU: Confirm removing a plant
+   */
   const handleConfirmRemove = useCallback(() => {
     if (plant_to_remove) {
       removePlant(plant_to_remove.unique_id);
@@ -122,6 +154,9 @@ const FarmScreen: React.FC = () => {
     }
   }, [plant_to_remove, removePlant, handleCloseRemovePlant]);
 
+  /*
+   * DOCU: Handle harvesting a plant
+   */
   const handleHarvest = useCallback(
     (plant: Plants & { unique_id: number }) => {
       harvestPlant(plant.unique_id);
@@ -136,6 +171,9 @@ const FarmScreen: React.FC = () => {
     [harvestPlant]
   );
 
+  /*
+   * DOCU: Render FarmScreen content
+   */
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: defaultBackground }}>
       <EarningSummary />
