@@ -4,12 +4,12 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import React from "react";
 import {
-  Dimensions,
   Image,
   Platform,
   Text,
   TouchableOpacity,
   View,
+  useWindowDimensions,
 } from "react-native";
 import * as Progress from "react-native-progress";
 
@@ -27,20 +27,6 @@ type FarmDashboardProps = {
   on_harvest: (plant: PlantedPlant) => void;
 };
 
-const screenWidth = Dimensions.get("window").width;
-
-const imgWidth = Platform.OS === "web" ? screenWidth * 0.11 : 135;
-const imgHeight = imgWidth * 0.8;
-
-const fontSize = (web_size: number, native_size?: number) =>
-  Platform.OS === "web" ? web_size : native_size;
-
-const progressWidth = (web: number, native: number) =>
-  Platform.OS === "web" ? web : native;
-
-const progressHeight = (web: number, native: number) =>
-  Platform.OS === "web" ? web : native;
-
 const FarmDashboard: React.FC<FarmDashboardProps> = ({
   plant,
   progress,
@@ -48,7 +34,69 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
   on_remove,
   on_harvest,
 }) => {
+  const { width: screenWidth } = useWindowDimensions();
   const is_ready = progress >= 1;
+
+  // Responsive breakpoints
+  const isSmallScreen = screenWidth < 380;
+  const isMediumScreen = screenWidth >= 380 && screenWidth < 768;
+  const isLargeScreen = screenWidth >= 768;
+
+  // Responsive image sizing
+  const getImageSize = () => {
+    if (Platform.OS === "web") {
+      if (isLargeScreen)
+        return { width: screenWidth * 0.12, height: screenWidth * 0.108 };
+      if (isMediumScreen)
+        return { width: screenWidth * 0.15, height: screenWidth * 0.135 };
+      return { width: screenWidth * 0.18, height: screenWidth * 0.162 };
+    }
+    if (isSmallScreen) return { width: 100, height: 90 };
+    return { width: 130, height: 117 };
+  };
+
+  // Responsive font sizes
+  const getFontSizes = () => {
+    if (Platform.OS === "web") {
+      if (isLargeScreen) return { title: 22, subtitle: 18, button: 16 };
+      if (isMediumScreen) return { title: 18, subtitle: 16, button: 14 };
+      return { title: 16, subtitle: 14, button: 13 };
+    }
+    if (isSmallScreen) return { title: 13, subtitle: 12, button: 14 };
+    return { title: 14, subtitle: 15, button: 16 };
+  };
+
+  // Responsive progress bar sizing
+  const getProgressSize = () => {
+    if (Platform.OS === "web") {
+      if (isLargeScreen) return { width: 380, height: 12 };
+      if (isMediumScreen) return { width: screenWidth * 0.45, height: 10 };
+      return { width: screenWidth * 0.4, height: 8 };
+    }
+    if (isSmallScreen) return { width: screenWidth * 0.45, height: 6 };
+    return { width: 200, height: 8 };
+  };
+
+  // Responsive button sizing
+  const getButtonStyle = () => {
+    if (isSmallScreen) {
+      return {
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+        iconSize: 16,
+      };
+    }
+    return {
+      paddingHorizontal: 20,
+      paddingVertical: 12,
+      iconSize: 20,
+    };
+  };
+
+  const imageSize = getImageSize();
+  const fontSizes = getFontSizes();
+  const progressSize = getProgressSize();
+  const buttonStyle = getButtonStyle();
 
   return (
     <View className="mb-3">
@@ -58,45 +106,53 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
           borderWidth: 1,
           borderColor: COLORS.gray300,
           backgroundColor: COLORS.white,
-          maxWidth: Platform.OS === "web" ? 600 : undefined,
+          maxWidth: Platform.OS === "web" ? 800 : undefined,
+          paddingHorizontal: isSmallScreen ? 8 : 12,
+          paddingVertical: isSmallScreen ? 8 : 12,
         }}
       >
         <Image
           source={plant.image}
           style={{
-            width: imgWidth,
-            height: imgHeight,
-            borderRadius: 10,
-            marginRight: 9,
+            width: imageSize.width,
+            height: imageSize.height,
+            borderRadius: isSmallScreen ? 8 : 10,
+            marginRight: isSmallScreen ? 6 : 9,
           }}
           resizeMode="cover"
         />
-        <View className="flex-col flex-1 mt-12">
+
+        <View
+          className="flex-col flex-1"
+          style={{ marginTop: isSmallScreen ? 8 : 12 }}
+        >
           <Text
             className="font-semibold text-green"
-            style={{ fontSize: fontSize(20, 14) }}
+            style={{
+              fontSize: fontSizes.title,
+              marginBottom: 2,
+            }}
           >
             {plant.name}
             {is_ready && (
               <Text className="text-lightgreen font-semibold">
+                {" "}
                 (+${plant.profit.toFixed(2)})
               </Text>
             )}
           </Text>
 
           <Text
-            className={`text-base ${
-              is_ready ? "text-lightgreen" : "text-gray-600"
-            } mb-1`}
-            style={{ fontSize: fontSize(20) }}
+            className={`${is_ready ? "text-lightgreen" : "text-gray-600"} mb-1`}
+            style={{ fontSize: fontSizes.subtitle }}
           >
             {is_ready ? "Harvest now!" : `Harvest in ${time_left}`}
           </Text>
 
           <Progress.Bar
             progress={progress}
-            width={progressWidth(380, 200)}
-            height={progressHeight(12, 8)}
+            width={progressSize.width}
+            height={progressSize.height}
             borderRadius={6}
             color={
               is_ready
@@ -111,7 +167,7 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
 
         <TouchableOpacity
           activeOpacity={0.8}
-          className="flex-row items-center justify-center rounded-2xl px-5 py-3 ml-3 mb-20"
+          className="flex-row items-center justify-center rounded-2xl ml-2"
           style={{
             backgroundColor: is_ready ? COLORS.lightgreen : COLORS.remove,
             shadowColor: COLORS.black,
@@ -119,6 +175,9 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
             elevation: 5,
+            paddingHorizontal: buttonStyle.paddingHorizontal,
+            paddingVertical: buttonStyle.paddingVertical,
+            marginBottom: isSmallScreen ? 40 : 80,
           }}
           onPress={() => (is_ready ? on_harvest(plant) : on_remove(plant))}
         >
@@ -126,15 +185,15 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
             <>
               <FontAwesome5
                 name="seedling"
-                size={20}
+                size={buttonStyle.iconSize}
                 color="white"
-                style={{ marginRight: 6 }}
+                style={{ marginRight: isSmallScreen ? 4 : 6 }}
               />
               <Text
                 style={{
                   color: COLORS.white,
                   fontWeight: "bold",
-                  fontSize: 16,
+                  fontSize: fontSizes.button,
                 }}
               >
                 Harvest
@@ -144,15 +203,15 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
             <>
               <FontAwesome6
                 name="trash"
-                size={20}
+                size={buttonStyle.iconSize}
                 color="white"
-                style={{ marginRight: 6 }}
+                style={{ marginRight: isSmallScreen ? 4 : 6 }}
               />
               <Text
                 style={{
                   color: COLORS.white,
                   fontWeight: "bold",
-                  fontSize: 16,
+                  fontSize: fontSizes.button,
                 }}
               >
                 Remove
