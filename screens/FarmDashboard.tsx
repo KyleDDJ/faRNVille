@@ -46,7 +46,7 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
     if (isWeb) {
       if (isLarge) {
         return {
-          image: { width: screenWidth * 0.12, height: screenWidth * 0.1 },
+          image: { width: screenWidth * 0.15, height: screenWidth * 0.13 },
           fontSize: { title: 18, subtitle: 16, button: 14 },
           progress: { width: 480, height: 9 },
           button: { padding: 14, iconSize: 17 },
@@ -56,8 +56,8 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
       }
       if (isMedium) {
         return {
-          image: { width: screenWidth * 0.18, height: screenWidth * 0.162 },
-          fontSize: { title: 16, subtitle: 14, button: 13 },
+          image: { width: screenWidth * 0.35, height: screenWidth * 0.3 },
+          fontSize: { title: 14, subtitle: 14, button: 13 },
           progress: { width: screenWidth * 0.42, height: 8 },
           button: { padding: 14, iconSize: 17 },
           spacing: { card: 12, image: 10, marginTop: 12, marginBottom: 80 },
