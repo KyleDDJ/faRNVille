@@ -2,7 +2,7 @@ import { COLORS } from "@/constants/Colors";
 import { Plants } from "@/entities/plant.entities";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Image,
   Platform,
@@ -37,99 +37,110 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
   const { width: screenWidth } = useWindowDimensions();
   const is_ready = progress >= 1;
 
-  // Responsive breakpoints
-  const isSmallScreen = screenWidth < 380;
-  const isMediumScreen = screenWidth >= 380 && screenWidth < 768;
-  const isLargeScreen = screenWidth >= 768;
+  const config = useMemo(() => {
+    const isWeb = Platform.OS === "web";
+    const isSmall = screenWidth < 380;
+    const isMedium = screenWidth >= 380 && screenWidth < 768;
+    const isLarge = screenWidth >= 768;
 
-  // Responsive image sizing
-  const getImageSize = () => {
-    if (Platform.OS === "web") {
-      if (isLargeScreen)
-        return { width: screenWidth * 0.12, height: screenWidth * 0.108 };
-      if (isMediumScreen)
-        return { width: screenWidth * 0.15, height: screenWidth * 0.135 };
-      return { width: screenWidth * 0.18, height: screenWidth * 0.162 };
-    }
-    if (isSmallScreen) return { width: 100, height: 90 };
-    return { width: 130, height: 117 };
-  };
-
-  // Responsive font sizes
-  const getFontSizes = () => {
-    if (Platform.OS === "web") {
-      if (isLargeScreen) return { title: 22, subtitle: 18, button: 16 };
-      if (isMediumScreen) return { title: 18, subtitle: 16, button: 14 };
-      return { title: 16, subtitle: 14, button: 13 };
-    }
-    if (isSmallScreen) return { title: 13, subtitle: 12, button: 14 };
-    return { title: 14, subtitle: 15, button: 16 };
-  };
-
-  // Responsive progress bar sizing
-  const getProgressSize = () => {
-    if (Platform.OS === "web") {
-      if (isLargeScreen) return { width: 380, height: 12 };
-      if (isMediumScreen) return { width: screenWidth * 0.45, height: 10 };
-      return { width: screenWidth * 0.4, height: 8 };
-    }
-    if (isSmallScreen) return { width: screenWidth * 0.45, height: 6 };
-    return { width: 200, height: 8 };
-  };
-
-  // Responsive button sizing
-  const getButtonStyle = () => {
-    if (isSmallScreen) {
+    if (isWeb) {
+      if (isLarge) {
+        return {
+          image: { width: screenWidth * 0.12, height: screenWidth * 0.1 },
+          fontSize: { title: 18, subtitle: 16, button: 14 },
+          progress: { width: 480, height: 9 },
+          button: { padding: 14, iconSize: 17 },
+          spacing: { card: 12, image: 10, marginTop: 12, marginBottom: 80 },
+          borderRadius: 10,
+        };
+      }
+      if (isMedium) {
+        return {
+          image: { width: screenWidth * 0.18, height: screenWidth * 0.162 },
+          fontSize: { title: 16, subtitle: 14, button: 13 },
+          progress: { width: screenWidth * 0.42, height: 8 },
+          button: { padding: 14, iconSize: 17 },
+          spacing: { card: 12, image: 10, marginTop: 12, marginBottom: 80 },
+          borderRadius: 10,
+        };
+      }
       return {
-        paddingHorizontal: 12,
-        paddingVertical: 8,
-        iconSize: 16,
+        image: { width: screenWidth * 0.22, height: screenWidth * 0.198 },
+        fontSize: { title: 14, subtitle: 13, button: 12 },
+        progress: { width: screenWidth * 0.38, height: 7 },
+        button: { padding: 14, iconSize: 17 },
+        spacing: { card: 12, image: 10, marginTop: 12, marginBottom: 80 },
+        borderRadius: 10,
       };
     }
-    return {
-      paddingHorizontal: 20,
-      paddingVertical: 12,
-      iconSize: 20,
-    };
-  };
 
-  const imageSize = getImageSize();
-  const fontSizes = getFontSizes();
-  const progressSize = getProgressSize();
-  const buttonStyle = getButtonStyle();
+    if (isSmall) {
+      return {
+        image: { width: 120, height: 108 },
+        fontSize: { title: 12, subtitle: 11, button: 13 },
+        progress: { width: screenWidth * 0.42, height: 6 },
+        button: { padding: 10, iconSize: 15 },
+        spacing: { card: 8, image: 8, marginTop: 8, marginBottom: 40 },
+        borderRadius: 8,
+      };
+    }
+
+    return {
+      image: { width: 150, height: 135 },
+      fontSize: { title: 13, subtitle: 13, button: 14 },
+      progress: { width: 185, height: 7 },
+      button: { padding: 14, iconSize: 17 },
+      spacing: { card: 12, image: 10, marginTop: 12, marginBottom: 80 },
+      borderRadius: 10,
+    };
+  }, [screenWidth]);
+
+  const buttonData = is_ready
+    ? {
+        icon: "seedling",
+        IconComponent: FontAwesome5,
+        text: "Harvest",
+        color: COLORS.lightgreen,
+        onPress: () => on_harvest(plant),
+      }
+    : {
+        icon: "trash",
+        IconComponent: FontAwesome6,
+        text: "Remove",
+        color: COLORS.remove,
+        onPress: () => on_remove(plant),
+      };
 
   return (
     <View className="mb-3">
       <View
-        className="w-11/12 flex-row self-center mt-1 rounded-2xl p-2 items-center"
+        className="w-11/12 flex-row self-center mt-1 rounded-2xl items-center"
         style={{
           borderWidth: 1,
           borderColor: COLORS.gray300,
           backgroundColor: COLORS.white,
           maxWidth: Platform.OS === "web" ? 800 : undefined,
-          paddingHorizontal: isSmallScreen ? 8 : 12,
-          paddingVertical: isSmallScreen ? 8 : 12,
+          padding: config.spacing.card,
         }}
       >
         <Image
           source={plant.image}
           style={{
-            width: imageSize.width,
-            height: imageSize.height,
-            borderRadius: isSmallScreen ? 8 : 10,
-            marginRight: isSmallScreen ? 6 : 9,
+            ...config.image,
+            borderRadius: config.borderRadius,
+            marginRight: config.spacing.image,
           }}
           resizeMode="cover"
         />
 
         <View
           className="flex-col flex-1"
-          style={{ marginTop: isSmallScreen ? 8 : 12 }}
+          style={{ marginTop: config.spacing.marginTop }}
         >
           <Text
             className="font-semibold text-green"
             style={{
-              fontSize: fontSizes.title,
+              fontSize: config.fontSize.title,
               marginBottom: 2,
             }}
           >
@@ -144,16 +155,16 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
 
           <Text
             className={`${is_ready ? "text-lightgreen" : "text-gray-600"} mb-1`}
-            style={{ fontSize: fontSizes.subtitle }}
+            style={{ fontSize: config.fontSize.subtitle }}
           >
             {is_ready ? "Harvest now!" : `Harvest in ${time_left}`}
           </Text>
 
           <Progress.Bar
             progress={progress}
-            width={progressSize.width}
-            height={progressSize.height}
-            borderRadius={6}
+            width={config.progress.width}
+            height={config.progress.height}
+            borderRadius={5}
             color={
               is_ready
                 ? COLORS.green
@@ -167,57 +178,34 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
 
         <TouchableOpacity
           activeOpacity={0.8}
-          className="flex-row items-center justify-center rounded-2xl ml-2"
+          className="flex-row items-center justify-center rounded-xl ml-2"
           style={{
-            backgroundColor: is_ready ? COLORS.lightgreen : COLORS.remove,
+            backgroundColor: buttonData.color,
             shadowColor: COLORS.black,
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
             elevation: 5,
-            paddingHorizontal: buttonStyle.paddingHorizontal,
-            paddingVertical: buttonStyle.paddingVertical,
-            marginBottom: isSmallScreen ? 40 : 80,
+            padding: config.button.padding,
+            marginBottom: config.spacing.marginBottom,
           }}
-          onPress={() => (is_ready ? on_harvest(plant) : on_remove(plant))}
+          onPress={buttonData.onPress}
         >
-          {is_ready ? (
-            <>
-              <FontAwesome5
-                name="seedling"
-                size={buttonStyle.iconSize}
-                color="white"
-                style={{ marginRight: isSmallScreen ? 4 : 6 }}
-              />
-              <Text
-                style={{
-                  color: COLORS.white,
-                  fontWeight: "bold",
-                  fontSize: fontSizes.button,
-                }}
-              >
-                Harvest
-              </Text>
-            </>
-          ) : (
-            <>
-              <FontAwesome6
-                name="trash"
-                size={buttonStyle.iconSize}
-                color="white"
-                style={{ marginRight: isSmallScreen ? 4 : 6 }}
-              />
-              <Text
-                style={{
-                  color: COLORS.white,
-                  fontWeight: "bold",
-                  fontSize: fontSizes.button,
-                }}
-              >
-                Remove
-              </Text>
-            </>
-          )}
+          <buttonData.IconComponent
+            name={buttonData.icon}
+            size={config.button.iconSize}
+            color="white"
+            style={{ marginRight: 5 }}
+          />
+          <Text
+            style={{
+              color: COLORS.white,
+              fontWeight: "bold",
+              fontSize: config.fontSize.button,
+            }}
+          >
+            {buttonData.text}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
