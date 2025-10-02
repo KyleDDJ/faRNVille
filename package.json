@@ -2,7 +2,7 @@
   "name": "farnville",
   "main": "expo-router/entry",
   "version": "1.0.0",
-  "homepage": "https://KyleDDJ.github.io/faRNVille",
+  "homepage": "https://KyleDDJ.github.io/faRNVille/",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
@@ -10,7 +10,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "predeploy": "npx expo export -p web",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
