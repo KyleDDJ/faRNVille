@@ -45,7 +45,7 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
           resizeMode="cover"
         />
         <View className="flex-col flex-1 mt-16">
-          <Text className="text-lg font-bold text-green">
+          <Text className="text-medium font-bold text-green">
             {plant.name}
             {is_ready && (
               <Text className="text-lightgreen font-semibold">
@@ -64,7 +64,7 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
 
           <Progress.Bar
             progress={progress}
-            width={212}
+            width={180}
             height={8}
             borderRadius={6}
             borderWidth={0}

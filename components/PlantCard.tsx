@@ -2,7 +2,14 @@ import { COLORS } from "@/constants/Colors";
 import { Plants } from "@/entities/plant.entities";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 type PlantCardProps = {
   plant: Plants;
@@ -47,6 +54,11 @@ const PlantCard: React.FC<PlantCardProps> = ({
     }
   };
 
+  const screenWidth = Dimensions.get("window").width;
+
+  const imgWidth = Platform.OS === "web" ? screenWidth * 0.11 : 144;
+  const imgHeight = imgWidth * 0.75;
+
   return (
     <View
       className="rounded-2xl p-2 mx-4 my-3 flex-row items-center"
@@ -58,10 +70,14 @@ const PlantCard: React.FC<PlantCardProps> = ({
     >
       <Image
         source={plant.image}
-        className="w-36 h-28 rounded-2xl mr-4"
+        style={{
+          width: imgWidth,
+          height: imgHeight,
+          borderRadius: 16,
+          marginRight: 16,
+        }}
         resizeMode="cover"
       />
-
       <View className="flex-1 pb-4">
         <Text className="text-2xl font-bold mb-1 text-green">{plant.name}</Text>
 
