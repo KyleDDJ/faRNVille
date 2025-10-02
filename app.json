@@ -24,7 +24,9 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/Logo.png"
+      "favicon": "./assets/images/Logo.png",
+      "bundler": "metro",
+      "basePath": "/faRNVille"
     },
     "plugins": [
       "expo-router",
