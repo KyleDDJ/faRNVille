@@ -64,7 +64,10 @@ const BuyPlantBottomSheet = forwardRef<
         />
       )}
     >
-      <BottomSheetView className="flex-1 py-2.5 px-4">
+      <BottomSheetView
+        className="flex-1 py-2.5 px-4"
+        style={{ paddingHorizontal: 15 }}
+      >
         {selected_plant ? (
           <View className="items-center">
             <View
@@ -82,9 +85,9 @@ const BuyPlantBottomSheet = forwardRef<
               Buying {selected_plant.name}
             </Text>
 
-            <View className="flex-row items-center my-10 w-full gap-5 justify-between">
-              <View className="flex-row items-center">
-                <Text className="mr-2 text-gray-600 text-2xl font-bold">
+            <View className="flex-col items-center my-6 w-full gap-2 justify-between">
+              <View className="flex-row justify-between items-center w-full px-4">
+                <Text className="text-gray-600 text-2xl font-bold">
                   Amount:
                 </Text>
                 <BottomSheetTextInput
@@ -93,7 +96,7 @@ const BuyPlantBottomSheet = forwardRef<
                     borderColor: COLORS.gray300,
                     paddingVertical: 8,
                     borderRadius: 50,
-                    width: 140,
+                    width: 120,
                     textAlign: "center",
                   }}
                   keyboardType="number-pad"
@@ -110,14 +113,17 @@ const BuyPlantBottomSheet = forwardRef<
                 />
               </View>
 
-              <Text
-                className="text-3xl font-bold"
-                style={{
-                  color: canAffordCurrent() ? COLORS.gray600 : COLORS.red,
-                }}
-              >
-                Cost: ${getCurrentCost().toFixed(2)}
-              </Text>
+              <View className="flex-row justify-between items-center w-full px-12">
+                <Text className="text-2xl text-gray-600 font-bold">Cost:</Text>
+                <Text
+                  className="text-3xl text-gray-600 font-bold"
+                  style={{
+                    color: canAffordCurrent() ? COLORS.gray600 : COLORS.red,
+                  }}
+                >
+                  ${getCurrentCost().toFixed(2)}
+                </Text>
+              </View>
             </View>
 
             {!canAffordCurrent() && (

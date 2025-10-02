@@ -36,5 +36,5 @@ module.exports = {
     },
   },
   plugins: [],
-  base: "/faRNVille",
+  base: "/faRNVille", //
 };

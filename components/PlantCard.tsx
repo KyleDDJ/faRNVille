@@ -74,7 +74,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
           width: imgWidth,
           height: imgHeight,
           borderRadius: 16,
-          marginRight: 16,
+          marginRight: 9,
         }}
         resizeMode="cover"
       />
@@ -90,7 +90,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
       {show_add_button && (
         <TouchableOpacity
           onPress={() => on_add?.(plant)}
-          className="w-20 h-11 flex-row gap-1 rounded-full items-center bg-lightgreen justify-center mt-16"
+          className="w-20 h-11 flex-row gap-1 rounded-full items-center bg-lightgreen justify-center mt-20"
         >
           <Text className="font-semibold text-white">Buy</Text>
           <MaterialCommunityIcons
