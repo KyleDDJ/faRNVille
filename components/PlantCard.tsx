@@ -33,7 +33,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
       return (
         <Text className="text-sm text-gray-500 mb-1">
           Harvest in {plant.harvest_time} |{" "}
-          <Text className=" text-green text-l font-bold">
+          <Text className=" text-green text-l font-semibols">
             Cost: ${plant.cost}.00
           </Text>
         </Text>
@@ -61,11 +61,12 @@ const PlantCard: React.FC<PlantCardProps> = ({
 
   return (
     <View
-      className="rounded-2xl p-2 mx-4 my-3 flex-row items-center"
+      className="rounded-2xl self-center p-2 mx-4 my-3 flex-row items-center"
       style={{
-        backgroundColor: is_active ? COLORS.gray200 : COLORS.white,
-        borderWidth: 1,
+        backgroundColor: is_active ? COLORS.gray100 : COLORS.white,
+        borderWidth: 2,
         borderColor: is_active ? COLORS.lightgreen : COLORS.gray300,
+        maxWidth: Platform.OS === "web" ? 600 : "100%",
       }}
     >
       <Image

@@ -1,7 +1,7 @@
 import { COLORS } from "@/constants/Colors";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Platform, Text, TouchableOpacity, View } from "react-native";
 
 type AddPlantButtonProps = {
   title: string;
@@ -23,6 +23,7 @@ const AddPlantButton: React.FC<AddPlantButtonProps> = ({
         borderWidth: 3,
         borderColor,
         borderStyle: "dashed",
+        maxWidth: Platform.OS === "web" ? 600 : "100%",
       }}
     >
       <View className="mb-4">

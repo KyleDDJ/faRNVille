@@ -6,7 +6,7 @@ import {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import React, { forwardRef } from "react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Platform, Text, TouchableOpacity, View } from "react-native";
 
 interface AddPlantBottomSheetProps {
   snap_points: string[];
@@ -57,7 +57,10 @@ const AddPlantBottomSheet = forwardRef<
         )}
       >
         <BottomSheetView className="flex-1 py-5 px-1">
-          <Text className="text-xl font-bold text-center text-gray-600">
+          <Text
+            className="text-xl font-bold text-center text-gray-600"
+            style={{}}
+          >
             Plant a Seed
           </Text>
 
@@ -96,19 +99,23 @@ const AddPlantBottomSheet = forwardRef<
               </Text>
             </View>
           )}
-
-          <View className="flex-row item-center justify-center gap-6 mt-3">
+          <View className="flex-row items-center justify-center gap-4 mt-3 self-center">
             <TouchableOpacity
-              className="w-5/12 rounded-3xl bg-gray-300 text-gray-300 py-3"
+              className="rounded-3xl bg-gray-300 py-3"
+              style={{
+                width: Platform.OS === "web" ? 240 : 150, // smaller on web
+              }}
               onPress={on_cancel}
             >
               <Text className="text-center text-gray-500 text-lg font-semibold">
                 Cancel
               </Text>
             </TouchableOpacity>
+
             <TouchableOpacity
-              className="w-5/12 rounded-3xl py-3"
+              className="rounded-3xl py-3"
               style={{
+                width: Platform.OS === "web" ? 240 : 150, // same width logic
                 backgroundColor:
                   temp_plant && available_seeds.length > 0
                     ? COLORS.leafy_green2

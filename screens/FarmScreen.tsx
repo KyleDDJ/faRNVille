@@ -43,7 +43,7 @@ const FarmScreen: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   /* Bottom Sheet snap points */
-  const addPlantSnapPoints = useMemo(() => ["26%", "65%"], []);
+  const addPlantSnapPoints = useMemo(() => ["26%", "70%"], []);
   const removePlantSnapPoints = useMemo(() => ["25%"], []);
 
   /* Available seeds */

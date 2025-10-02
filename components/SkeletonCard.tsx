@@ -1,6 +1,6 @@
 import { COLORS } from "@/constants/Colors";
 import React, { useEffect, useRef } from "react";
-import { Animated, View } from "react-native";
+import { Animated, Platform, View } from "react-native";
 
 type SkeletonCardProps = {
   width?: number | string;
@@ -51,6 +51,7 @@ const SkeletonCard: React.FC<SkeletonCardProps> = ({
       style={
         {
           width,
+          maxWidth: Platform.OS === "web" ? 600 : undefined,
           height,
           borderRadius,
           marginTop,

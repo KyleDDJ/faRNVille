@@ -24,9 +24,7 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/Logo.png",
-      "bundler": "metro", //
-      "basePath": "/faRNVille" //
+      "favicon": "./assets/images/Logo.png"
     },
     "plugins": [
       "expo-router",
@@ -46,7 +44,8 @@
     ],
     "experiments": {
       "typedRoutes": true,
-      "reactCompiler": true
+      "reactCompiler": true,
+      "baseUrl": "/faRNVille"
     },
     "extra": {
       "router": {},

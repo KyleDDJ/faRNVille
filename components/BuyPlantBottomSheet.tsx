@@ -8,7 +8,13 @@ import {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import React, { forwardRef, useMemo, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import {
+  Platform,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface BuyPlantBottomSheetProps {
   selected_plant: Plants | null;
@@ -34,6 +40,8 @@ const BuyPlantBottomSheet = forwardRef<
     selected_plant ? selected_plant.cost * Number(number || "0") : 0;
 
   const canAffordCurrent = () => can_afford(getCurrentCost());
+
+  const Input = Platform.OS === "web" ? TextInput : BottomSheetTextInput;
 
   return (
     <BottomSheetModal
@@ -90,30 +98,29 @@ const BuyPlantBottomSheet = forwardRef<
                 <Text className="text-gray-600 text-2xl font-bold">
                   Amount:
                 </Text>
-                <BottomSheetTextInput
+                <Input
                   style={{
                     borderWidth: 1,
                     borderColor: COLORS.gray300,
                     paddingVertical: 8,
                     borderRadius: 50,
-                    width: 120,
+                    width: 90,
                     textAlign: "center",
                   }}
                   keyboardType="number-pad"
                   onChangeText={text => {
                     const cleaned = text.replace(/[^0-9]/g, "");
-                    if (cleaned === "") {
-                      setNumber("");
-                    } else {
-                      const num = Math.min(parseInt(cleaned, 10), 99);
-                      setNumber(num.toString());
-                    }
+                    setNumber(
+                      cleaned === ""
+                        ? ""
+                        : Math.min(parseInt(cleaned, 10), 99).toString()
+                    );
                   }}
                   value={number}
                 />
               </View>
 
-              <View className="flex-row justify-between items-center w-full px-12">
+              <View className="flex-row justify-between items-center w-full px-4">
                 <Text className="text-2xl text-gray-600 font-bold">Cost:</Text>
                 <Text
                   className="text-3xl text-gray-600 font-bold"
@@ -128,7 +135,7 @@ const BuyPlantBottomSheet = forwardRef<
 
             {!canAffordCurrent() && (
               <Text
-                className="text-m text-center mt-4"
+                className="text-m font-semibold text-center mt-4"
                 style={{ color: COLORS.red }}
               >
                 Not enough money! You have ${money.toFixed(2)}

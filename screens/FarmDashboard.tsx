@@ -3,7 +3,14 @@ import { Plants } from "@/entities/plant.entities";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import * as Progress from "react-native-progress";
 
 type PlantedPlant = Plants & {
@@ -19,6 +26,20 @@ type FarmDashboardProps = {
   on_remove: (plant: PlantedPlant) => void;
   on_harvest: (plant: PlantedPlant) => void;
 };
+
+const screenWidth = Dimensions.get("window").width;
+
+const imgWidth = Platform.OS === "web" ? screenWidth * 0.11 : 135;
+const imgHeight = imgWidth * 0.8;
+
+const fontSize = (web_size: number, native_size?: number) =>
+  Platform.OS === "web" ? web_size : native_size;
+
+const progressWidth = (web: number, native: number) =>
+  Platform.OS === "web" ? web : native;
+
+const progressHeight = (web: number, native: number) =>
+  Platform.OS === "web" ? web : native;
 
 const FarmDashboard: React.FC<FarmDashboardProps> = ({
   plant,
@@ -37,15 +58,24 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
           borderWidth: 1,
           borderColor: COLORS.gray300,
           backgroundColor: COLORS.white,
+          maxWidth: Platform.OS === "web" ? 600 : undefined,
         }}
       >
         <Image
           source={plant.image}
-          className="w-32 h-32 rounded-xl mr-3"
+          style={{
+            width: imgWidth,
+            height: imgHeight,
+            borderRadius: 10,
+            marginRight: 9,
+          }}
           resizeMode="cover"
         />
-        <View className="flex-col flex-1 mt-16">
-          <Text className="text-medium font-bold text-green">
+        <View className="flex-col flex-1 mt-12">
+          <Text
+            className="font-semibold text-green"
+            style={{ fontSize: fontSize(20, 14) }}
+          >
             {plant.name}
             {is_ready && (
               <Text className="text-lightgreen font-semibold">
@@ -58,16 +88,16 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
             className={`text-base ${
               is_ready ? "text-lightgreen" : "text-gray-600"
             } mb-1`}
+            style={{ fontSize: fontSize(20) }}
           >
             {is_ready ? "Harvest now!" : `Harvest in ${time_left}`}
           </Text>
 
           <Progress.Bar
             progress={progress}
-            width={180}
-            height={8}
+            width={progressWidth(380, 200)}
+            height={progressHeight(12, 8)}
             borderRadius={6}
-            borderWidth={0}
             color={
               is_ready
                 ? COLORS.green
