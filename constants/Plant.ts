@@ -4,7 +4,7 @@ export const PLANTS: Plants[] = [
   {
     id: 1,
     name: "Carrot",
-    harvestTime: "5m",
+    harvest_time: "5m",
     stock: "999pc remaining",
     profit: 5.0,
     cost: 3.0,
@@ -13,7 +13,7 @@ export const PLANTS: Plants[] = [
   {
     id: 2,
     name: "Potato",
-    harvestTime: "9m",
+    harvest_time: "9m",
     stock: "999pc remaining",
     profit: 9.0,
     cost: 5.0,
@@ -22,7 +22,7 @@ export const PLANTS: Plants[] = [
   {
     id: 3,
     name: "Cabbage",
-    harvestTime: "9m",
+    harvest_time: "9m",
     stock: "999pc remaining",
     profit: 12.0,
     cost: 7.0,

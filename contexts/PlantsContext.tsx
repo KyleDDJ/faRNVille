@@ -123,14 +123,14 @@ export const PlantsProvider: React.FC<{ children: React.ReactNode }> = ({
     return money >= cost;
   };
 
-  const parseHarvestTime = (harvestTime: string): number => {
+  const parseHarvestTime = (harvest_time: string): number => {
     // TESTING: Always return 5 seconds (5000 milliseconds)
     return 5000;
 
     // Original code (commented out for testing):
-    // const time = parseInt(harvestTime);
-    // if (harvestTime.includes("m")) return time * 60 * 1000;
-    // if (harvestTime.includes("h")) return time * 60 * 60 * 1000;
+    // const time = parseInt(harvest_time);
+    // if (harvest_time.includes("m")) return time * 60 * 1000;
+    // if (harvest_time.includes("h")) return time * 60 * 60 * 1000;
     // return time * 60 * 1000;
   };
 
@@ -192,7 +192,7 @@ export const PlantsProvider: React.FC<{ children: React.ReactNode }> = ({
     }));
 
     const now = new Date();
-    const harvestTime = parseHarvestTime(plant.harvestTime);
+    const harvestTime = parseHarvestTime(plant.harvest_time);
     const harvestReadyAt = new Date(now.getTime() + harvestTime);
 
     const plantedPlant: PlantedPlant = {

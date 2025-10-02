@@ -25,7 +25,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
     if (variant === "shop") {
       return (
         <Text className="text-sm text-gray-500 mb-1">
-          Harvest in {plant.harvestTime} |{" "}
+          Harvest in {plant.harvest_time} |{" "}
           <Text className=" text-green text-l font-bold">
             Cost: ${plant.cost}.00
           </Text>
@@ -38,7 +38,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
 
       return (
         <Text className="text-sm  text-gray-500 mb-1">
-          Harvest in {plant.harvestTime} |{" "}
+          Harvest in {plant.harvest_time} |{" "}
           <Text className=" text-green text-l font-bold">
             Stock: {stockText}
           </Text>

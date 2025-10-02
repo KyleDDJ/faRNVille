@@ -1,7 +1,7 @@
 export type Plants = {
   id: number;
   name: string;
-  harvestTime: string;
+  harvest_time: string;
   stock: string;
   profit: number;
   cost: number;
