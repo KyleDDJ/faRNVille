@@ -24,7 +24,7 @@ const FarmingSummaryCard: React.FC<FarmingSummaryCardProps> = ({
   );
 
   return (
-    <View className="rounded-2xl mb-2 mt-2 p-6 mx-3 bg-green">
+    <View className="rounded-2xl mb-2 mt-2 p-5 mx-3 bg-green">
       <View className="flex-row justify-between items-center mb-5">
         <Text className="text-2xl mb-1 font-bold text-white">
           {sprint_name}

@@ -56,7 +56,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
 
   const screenWidth = Dimensions.get("window").width;
 
-  const imgWidth = Platform.OS === "web" ? screenWidth * 0.11 : 144;
+  const imgWidth = Platform.OS === "web" ? screenWidth * 0.1 : 144;
   const imgHeight = imgWidth * 0.75;
 
   return (
@@ -74,7 +74,7 @@ const PlantCard: React.FC<PlantCardProps> = ({
         style={{
           width: imgWidth,
           height: imgHeight,
-          borderRadius: 16,
+          borderRadius: 12,
           marginRight: 9,
         }}
         resizeMode="cover"

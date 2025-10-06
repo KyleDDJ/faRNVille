@@ -56,16 +56,16 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
       : screenWidth * 0.35;
   const imgHeight = imgWidth * 0.9;
 
-  const fontTitle = Platform.OS === "web" ? 16 : 15;
-  const fontSubtitle = Platform.OS === "web" ? 14 : 14;
-  const buttonFont = Platform.OS === "web" ? 14 : 12;
+  const fontTitle = Platform.OS === "web" ? 18 : 14;
+  const fontSubtitle = Platform.OS === "web" ? 16 : 12;
+  const buttonFont = Platform.OS === "web" ? 18 : 15;
 
   const progressWidth =
     Platform.OS === "web" ? Math.min(380, screenWidth * 0.35) : 180;
-  const progressHeight = Platform.OS === "web" ? 12 : 8;
+  const progressHeight = Platform.OS === "web" ? 11 : 8;
 
   return (
-    <View style={{ marginBottom: 12, paddingTop: 10 }}>
+    <View className="mb-1 pt-1">
       <View
         style={{
           flexDirection: "row",
@@ -93,7 +93,7 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
         <View style={{ flex: 1, marginTop: "auto" }}>
           <Text
             style={{
-              fontWeight: "bold",
+              fontWeight: "600",
               color: COLORS.green,
               fontSize: fontTitle,
             }}
@@ -111,6 +111,7 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
               color: is_ready ? COLORS.lightgreen : COLORS.gray600,
               marginBottom: 4,
               fontSize: fontSubtitle,
+              fontWeight: "600",
             }}
           >
             {is_ready ? "Harvest now!" : `Harvest in ${time_left}`}
@@ -143,7 +144,6 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
             paddingVertical: 10,
             borderRadius: 16,
             backgroundColor: is_ready ? COLORS.lightgreen : COLORS.remove,
-            marginLeft: 10,
             elevation: 5,
             marginBottom: "auto",
           }}

@@ -11,6 +11,8 @@ export const COLORS = {
 	sunny: "#FBC02D",
 	black: "#000000ff",
 	white: "#ffffffff",
+	shadow: "#00000080",
+	semi_white: "#FFFFFF33",
 	red: '#CD1C18',
 	remove: '#E43636',
 	orange: '#FA812F',
