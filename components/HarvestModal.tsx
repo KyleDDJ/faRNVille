@@ -2,7 +2,7 @@ import { COLORS } from "@/constants/Colors";
 import { HarvestInfo } from "@/entities/plant.entities";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import React from "react";
-import { Modal, Text, TouchableOpacity, View } from "react-native";
+import { Modal, Platform, Text, TouchableOpacity, View } from "react-native";
 
 interface HarvestModalProps {
   visible: boolean;
@@ -18,7 +18,10 @@ const HarvestModal: React.FC<HarvestModalProps> = ({
   return (
     <Modal visible={visible} transparent animationType="fade">
       <View className="flex-1 justify-center items-center bg-black/50">
-        <View className="bg-white rounded-2xl p-3 w-[90%] items-center">
+        <View
+          className="bg-white rounded-2xl p-3 w-[90%] items-center"
+          style={{ width: Platform.OS === "web" ? 400 : 365 }}
+        >
           <View className="py-5">
             <FontAwesome6 name="seedling" size={65} color={COLORS.lightgreen} />
           </View>

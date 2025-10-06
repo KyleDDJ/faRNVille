@@ -2,7 +2,7 @@ import { COLORS } from "@/constants/Colors";
 import { PurchaseInfo } from "@/entities/plant.entities";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import React from "react";
-import { Modal, Text, TouchableOpacity, View } from "react-native";
+import { Modal, Platform, Text, TouchableOpacity, View } from "react-native";
 
 interface PurchaseSuccessModalProps {
   visible: boolean;
@@ -17,7 +17,10 @@ const PurchaseSuccessModal: React.FC<PurchaseSuccessModalProps> = ({
 }) => (
   <Modal animationType="fade" transparent visible={visible}>
     <View className="flex-1 justify-center items-center bg-black/50">
-      <View className="bg-white rounded-2xl pt-5 pb-4 px-5 w-9/12 items-center">
+      <View
+        className="bg-white rounded-2xl pt-5 pb-4 px-5 w-9/12 items-center"
+        style={{ width: Platform.OS === "web" ? 360 : 300 }}
+      >
         <MaterialCommunityIcons
           name="cart-check"
           size={60}

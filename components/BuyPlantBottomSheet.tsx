@@ -93,8 +93,11 @@ const BuyPlantBottomSheet = forwardRef<
               Buying {selected_plant.name}
             </Text>
 
-            <View className="flex-col items-center my-6 w-full gap-2 justify-between">
-              <View className="flex-row justify-between items-center w-full px-4">
+            <View
+              className="flex-col items-center my-6 w-full gap-2 justify-between"
+              style={{ width: Platform.OS === "web" ? 300 : 400 }}
+            >
+              <View className="flex-row justify-between  items-center w-full px-4">
                 <Text className="text-gray-600 text-2xl font-bold">
                   Amount:
                 </Text>
@@ -145,6 +148,7 @@ const BuyPlantBottomSheet = forwardRef<
             <TouchableOpacity
               className="w-full mt-4 py-3 rounded-3xl"
               style={{
+                width: Platform.OS === "web" ? 300 : 380,
                 backgroundColor: canAffordCurrent()
                   ? COLORS.lightgreen
                   : COLORS.gray300,

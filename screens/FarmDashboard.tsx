@@ -2,14 +2,14 @@ import { COLORS } from "@/constants/Colors";
 import { Plants } from "@/entities/plant.entities";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import React, { useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  Dimensions,
   Image,
   Platform,
   Text,
   TouchableOpacity,
   View,
-  useWindowDimensions,
 } from "react-native";
 import * as Progress from "react-native-progress";
 
@@ -34,137 +34,93 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
   on_remove,
   on_harvest,
 }) => {
-  const { width: screenWidth } = useWindowDimensions();
   const is_ready = progress >= 1;
 
-  const config = useMemo(() => {
-    const isWeb = Platform.OS === "web";
-    const isSmall = screenWidth < 380;
-    const isMedium = screenWidth >= 380 && screenWidth < 768;
-    const isLarge = screenWidth >= 768;
+  const [screenWidth, setScreenWidth] = useState(
+    Dimensions.get("window").width
+  );
 
-    if (isWeb) {
-      if (isLarge) {
-        return {
-          image: { width: screenWidth * 0.15, height: screenWidth * 0.13 },
-          fontSize: { title: 18, subtitle: 16, button: 14 },
-          progress: { width: 480, height: 9 },
-          button: { padding: 14, iconSize: 17 },
-          spacing: { card: 12, image: 10, marginTop: 12, marginBottom: 80 },
-          borderRadius: 10,
-        };
-      }
-      if (isMedium) {
-        return {
-          image: { width: screenWidth * 0.35, height: screenWidth * 0.3 },
-          fontSize: { title: 14, subtitle: 14, button: 13 },
-          progress: { width: screenWidth * 0.42, height: 8 },
-          button: { padding: 14, iconSize: 17 },
-          spacing: { card: 12, image: 10, marginTop: 12, marginBottom: 80 },
-          borderRadius: 10,
-        };
-      }
-      return {
-        image: { width: screenWidth * 0.22, height: screenWidth * 0.198 },
-        fontSize: { title: 14, subtitle: 13, button: 12 },
-        progress: { width: screenWidth * 0.38, height: 7 },
-        button: { padding: 14, iconSize: 17 },
-        spacing: { card: 12, image: 10, marginTop: 12, marginBottom: 80 },
-        borderRadius: 10,
-      };
-    }
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener("change", ({ window }) => {
+      setScreenWidth(window.width);
+    });
 
-    if (isSmall) {
-      return {
-        image: { width: 120, height: 108 },
-        fontSize: { title: 12, subtitle: 11, button: 13 },
-        progress: { width: screenWidth * 0.42, height: 6 },
-        button: { padding: 10, iconSize: 15 },
-        spacing: { card: 8, image: 8, marginTop: 8, marginBottom: 40 },
-        borderRadius: 8,
-      };
-    }
+    return () => subscription.remove();
+  }, []);
 
-    return {
-      image: { width: 150, height: 135 },
-      fontSize: { title: 13, subtitle: 13, button: 14 },
-      progress: { width: 185, height: 7 },
-      button: { padding: 14, iconSize: 17 },
-      spacing: { card: 12, image: 10, marginTop: 12, marginBottom: 80 },
-      borderRadius: 10,
-    };
-  }, [screenWidth]);
+  const cardWidth =
+    Platform.OS === "web" ? Math.min(600, screenWidth * 0.9) : "90%";
+  const imgWidth =
+    Platform.OS === "web"
+      ? Math.min(160, screenWidth * 0.12)
+      : screenWidth * 0.35;
+  const imgHeight = imgWidth * 0.9;
 
-  const buttonData = is_ready
-    ? {
-        icon: "seedling",
-        IconComponent: FontAwesome5,
-        text: "Harvest",
-        color: COLORS.lightgreen,
-        onPress: () => on_harvest(plant),
-      }
-    : {
-        icon: "trash",
-        IconComponent: FontAwesome6,
-        text: "Remove",
-        color: COLORS.remove,
-        onPress: () => on_remove(plant),
-      };
+  const fontTitle = Platform.OS === "web" ? 16 : 15;
+  const fontSubtitle = Platform.OS === "web" ? 14 : 14;
+  const buttonFont = Platform.OS === "web" ? 14 : 12;
+
+  const progressWidth =
+    Platform.OS === "web" ? Math.min(380, screenWidth * 0.35) : 180;
+  const progressHeight = Platform.OS === "web" ? 12 : 8;
 
   return (
-    <View className="mb-3">
+    <View style={{ marginBottom: 12, paddingTop: 10 }}>
       <View
-        className="w-11/12 flex-row self-center mt-1 rounded-2xl items-center"
         style={{
+          flexDirection: "row",
+          alignItems: "center",
+          backgroundColor: COLORS.white,
           borderWidth: 1,
           borderColor: COLORS.gray300,
-          backgroundColor: COLORS.white,
-          maxWidth: Platform.OS === "web" ? 800 : undefined,
-          padding: config.spacing.card,
+          borderRadius: 16,
+          padding: 12,
+          width: cardWidth,
+          alignSelf: "center",
         }}
       >
         <Image
           source={plant.image}
           style={{
-            ...config.image,
-            borderRadius: config.borderRadius,
-            marginRight: config.spacing.image,
+            width: imgWidth,
+            height: imgHeight,
+            borderRadius: 10,
+            marginRight: 10,
           }}
           resizeMode="cover"
         />
 
-        <View
-          className="flex-col flex-1"
-          style={{ marginTop: config.spacing.marginTop }}
-        >
+        <View style={{ flex: 1, marginTop: "auto" }}>
           <Text
-            className="font-semibold text-green"
             style={{
-              fontSize: config.fontSize.title,
-              marginBottom: 2,
+              fontWeight: "bold",
+              color: COLORS.green,
+              fontSize: fontTitle,
             }}
           >
             {plant.name}
             {is_ready && (
-              <Text className="text-lightgreen font-semibold">
-                {" "}
+              <Text style={{ color: COLORS.lightgreen, fontWeight: "600" }}>
                 (+${plant.profit.toFixed(2)})
               </Text>
             )}
           </Text>
 
           <Text
-            className={`${is_ready ? "text-lightgreen" : "text-gray-600"} mb-1`}
-            style={{ fontSize: config.fontSize.subtitle }}
+            style={{
+              color: is_ready ? COLORS.lightgreen : COLORS.gray600,
+              marginBottom: 4,
+              fontSize: fontSubtitle,
+            }}
           >
             {is_ready ? "Harvest now!" : `Harvest in ${time_left}`}
           </Text>
 
           <Progress.Bar
             progress={progress}
-            width={config.progress.width}
-            height={config.progress.height}
-            borderRadius={5}
+            width={progressWidth}
+            height={progressHeight}
+            borderRadius={progressHeight / 2}
             color={
               is_ready
                 ? COLORS.green
@@ -178,34 +134,57 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
 
         <TouchableOpacity
           activeOpacity={0.8}
-          className="flex-row items-center justify-center rounded-xl ml-2"
+          onPress={() => (is_ready ? on_harvest(plant) : on_remove(plant))}
           style={{
-            backgroundColor: buttonData.color,
-            shadowColor: COLORS.black,
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            paddingHorizontal: 14,
+            paddingVertical: 10,
+            borderRadius: 16,
+            backgroundColor: is_ready ? COLORS.lightgreen : COLORS.remove,
+            marginLeft: 10,
             elevation: 5,
-            padding: config.button.padding,
-            marginBottom: config.spacing.marginBottom,
+            marginBottom: "auto",
           }}
-          onPress={buttonData.onPress}
         >
-          <buttonData.IconComponent
-            name={buttonData.icon}
-            size={config.button.iconSize}
-            color="white"
-            style={{ marginRight: 5 }}
-          />
-          <Text
-            style={{
-              color: COLORS.white,
-              fontWeight: "bold",
-              fontSize: config.fontSize.button,
-            }}
-          >
-            {buttonData.text}
-          </Text>
+          {is_ready ? (
+            <>
+              <FontAwesome5
+                name="seedling"
+                size={buttonFont}
+                color={COLORS.white}
+                style={{ marginRight: 6 }}
+              />
+              <Text
+                style={{
+                  color: COLORS.white,
+                  fontWeight: "bold",
+                  fontSize: buttonFont,
+                }}
+              >
+                Harvest
+              </Text>
+            </>
+          ) : (
+            <>
+              <FontAwesome6
+                name="trash"
+                size={buttonFont}
+                color={COLORS.white}
+                style={{ marginRight: 6 }}
+              />
+              <Text
+                style={{
+                  color: COLORS.white,
+                  fontWeight: "bold",
+                  fontSize: buttonFont,
+                }}
+              >
+                Remove
+              </Text>
+            </>
+          )}
         </TouchableOpacity>
       </View>
     </View>

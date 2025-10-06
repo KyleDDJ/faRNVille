@@ -64,11 +64,11 @@ const AddPlantBottomSheet = forwardRef<
             Plant a Seed
           </Text>
 
-          <View className="mt-4">
-            <Text className="text-lg font-semibold text-gray-600 ml-4">
+          <View className="mt-4 px-6 max-w-xl self-center items-center">
+            <Text className="text-lg font-semibold text-gray-600">
               Ready to plant something?
             </Text>
-            <Text className="text-base text-gray-600 opacity-80 ml-4">
+            <Text className="text-base text-gray-600 opacity-80 mt-1 text-center">
               Choose from your available seeds to plant!
             </Text>
           </View>
@@ -103,7 +103,7 @@ const AddPlantBottomSheet = forwardRef<
             <TouchableOpacity
               className="rounded-3xl bg-gray-300 py-3"
               style={{
-                width: Platform.OS === "web" ? 240 : 150, // smaller on web
+                width: Platform.OS === "web" ? 240 : 150,
               }}
               onPress={on_cancel}
             >
@@ -115,7 +115,7 @@ const AddPlantBottomSheet = forwardRef<
             <TouchableOpacity
               className="rounded-3xl py-3"
               style={{
-                width: Platform.OS === "web" ? 240 : 150, // same width logic
+                width: Platform.OS === "web" ? 240 : 150,
                 backgroundColor:
                   temp_plant && available_seeds.length > 0
                     ? COLORS.leafy_green2
