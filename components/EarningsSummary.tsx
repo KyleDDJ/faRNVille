@@ -15,14 +15,19 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
   const { money } = usePlants();
 
   const sizes = {
-    avatar: Platform.select({ web: 50, default: 48 }),
+    avatar: Platform.select({ web: 40, default: 48 }),
     greeting: Platform.select({ web: 15, default: 14 }),
-    userName: Platform.select({ web: 20, default: 24 }),
+    userName: Platform.select({ web: 20, default: 20 }),
     label: Platform.select({ web: 15, default: 14 }),
     earnings: Platform.select({ web: 30, default: 28 }),
     border: Platform.select({ web: 0, default: 30 }),
-    paddingVertical: Platform.select({ web: 15, default: 30 }),
-    paddingHorizontal: Platform.select({ web: 30, default: 15 }),
+    padVerti: Platform.select({ web: 15, default: 30 }),
+    padHori: Platform.select({ web: 30, default: 15 }),
+    bottomColor: Platform.select({
+      web: COLORS.leafy_green,
+      default: undefined,
+    }),
+    bottomWidth: Platform.select({ web: 5, default: undefined }),
   };
 
   return (
@@ -30,11 +35,12 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
       className="flex-row justify-between bg-green items-center"
       style={{
         elevation: 8,
-
         borderBottomLeftRadius: sizes.border,
         borderBottomRightRadius: sizes.border,
-        paddingVertical: sizes.paddingVertical,
-        paddingHorizontal: sizes.paddingHorizontal,
+        paddingVertical: sizes.padVerti,
+        paddingHorizontal: sizes.padHori,
+        borderBottomWidth: sizes.bottomWidth,
+        borderBottomColor: sizes.bottomColor,
       }}
     >
       <View className="flex-row items-center">

@@ -71,7 +71,7 @@ const FarmDashboard: React.FC<FarmDashboardProps> = ({
           flexDirection: "row",
           alignItems: "center",
           backgroundColor: COLORS.white,
-          borderWidth: 1,
+          borderWidth: 2,
           borderColor: COLORS.gray300,
           borderRadius: 16,
           padding: 12,

@@ -26,6 +26,7 @@ export default function WebTabLayout() {
       ),
       route: "/" as const,
     },
+
     {
       name: "seed",
       label: "Seeds",
@@ -37,13 +38,20 @@ export default function WebTabLayout() {
   ];
 
   return (
-    <View style={{ flex: 1, flexDirection: "row" }}>
+    <View
+      style={{
+        flex: 1,
+        flexDirection: "row",
+      }}
+    >
       <View
         style={{
-          width: 180,
+          width: 190,
           backgroundColor: COLORS.green,
           paddingTop: 18,
           paddingHorizontal: 16,
+          borderRightWidth: 5,
+          borderRightColor: COLORS.leafy_green,
         }}
       >
         <View
@@ -63,7 +71,7 @@ export default function WebTabLayout() {
               color: COLORS.gray100,
             }}
           >
-            Plantito.
+            faRNville.
           </Text>
         </View>
 

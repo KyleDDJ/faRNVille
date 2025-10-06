@@ -175,7 +175,12 @@ const FarmScreen: React.FC = () => {
    * DOCU: Render FarmScreen content
    */
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: defaultBackground }}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: defaultBackground,
+      }}
+    >
       <EarningSummary />
 
       <FarmingSummaryCard />
