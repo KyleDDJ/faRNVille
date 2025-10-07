@@ -1,11 +1,9 @@
 import { COLORS } from "@/constants/Colors";
 import { usePlants } from "@/contexts/PlantsContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useGoogleAuth } from "@/hooks/useGoogleAuth";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Image, Platform, Text, TouchableOpacity, View } from "react-native";
-
-const TOKEN_KEY = "userToken";
 
 type EarningsSummaryProps = {
   user_name?: string;
@@ -18,6 +16,7 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
 }) => {
   const { money } = usePlants();
   const router = useRouter();
+  const { logout } = useGoogleAuth();
 
   const sizes = {
     avatar: Platform.select({ web: 40, default: 48 }),
@@ -36,8 +35,8 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
   };
 
   const handleLogout = async () => {
-    await AsyncStorage.removeItem(TOKEN_KEY);
-    router.replace("/(auth)/login");
+    await logout();
+    router.push("/(auth)/login");
   };
 
   return (
@@ -54,16 +53,18 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
       }}
     >
       <View className="flex-row items-center">
-        <Image
-          source={require("@/assets/avatars/user.jpg")}
-          resizeMode="cover"
-          style={{
-            width: sizes.avatar,
-            height: sizes.avatar,
-            borderRadius: sizes.avatar / 2,
-            marginRight: 10,
-          }}
-        />
+        <TouchableOpacity onPress={handleLogout}>
+          <Image
+            source={require("@/assets/avatars/user.jpg")}
+            resizeMode="cover"
+            style={{
+              width: sizes.avatar,
+              height: sizes.avatar,
+              borderRadius: sizes.avatar / 2,
+              marginRight: 10,
+            }}
+          />
+        </TouchableOpacity>
         <View>
           <Text
             className="text-white mb-1"
