@@ -1,7 +1,11 @@
 import { COLORS } from "@/constants/Colors";
 import { usePlants } from "@/contexts/PlantsContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
 import React from "react";
-import { Image, Platform, Text, View } from "react-native";
+import { Image, Platform, Text, TouchableOpacity, View } from "react-native";
+
+const TOKEN_KEY = "userToken";
 
 type EarningsSummaryProps = {
   user_name?: string;
@@ -13,6 +17,7 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
   greeting = "Hello,",
 }) => {
   const { money } = usePlants();
+  const router = useRouter();
 
   const sizes = {
     avatar: Platform.select({ web: 40, default: 48 }),
@@ -28,6 +33,11 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
       default: undefined,
     }),
     bottomWidth: Platform.select({ web: 5, default: undefined }),
+  };
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem(TOKEN_KEY);
+    router.replace("/(auth)/login");
   };
 
   return (
@@ -87,6 +97,14 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
         >
           ${money.toFixed(2)}
         </Text>
+      </View>
+      <View className="items-center bg-red rounded-2xl mt-6">
+        <TouchableOpacity
+          onPress={handleLogout}
+          className="bg-red-600 py-3 px-8 rounded-xl"
+        >
+          <Text className="text-white font-semibold text-base">Log Out</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

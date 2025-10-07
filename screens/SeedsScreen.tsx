@@ -1,6 +1,6 @@
-import { COLORS, defaultBackground } from "@/constants/Colors";
+import { defaultBackground } from "@/constants/Colors";
 import React, { useEffect, useState } from "react";
-import { FlatList, Text, View } from "react-native";
+import { FlatList, Image, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import EarningsSummary from "@/components/EarningsSummary";
@@ -8,7 +8,6 @@ import PlantCard from "@/components/PlantCard";
 import SeedsSkeletonCard from "@/components/SeedsSkeleton";
 import { PLANTS } from "@/constants/Plant";
 import { usePlants } from "@/contexts/PlantsContext";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 /* Screen: SeedsScreen
  * Main Expo Router screen for managing seed inventory
@@ -71,12 +70,14 @@ const SeedsScreen: React.FC = () => {
    */
   const renderEmptyInventory = () => (
     <View className="flex-1 justify-center items-center px-6">
-      <MaterialCommunityIcons
-        name="seed-off"
-        size={48}
-        color={COLORS.leafy_green1}
-        accessibilityLabel="Empty inventory icon"
-        className="mb-4"
+      <Image
+        source={require("@/assets/images/Empty.png")}
+        style={{
+          width: 300,
+          height: 300,
+          marginBottom: 20,
+          resizeMode: "contain",
+        }}
       />
       <Text className="text-center text-lg font-semibold mb-2 text-leafygreen1">
         Oops! Your inventory is empty.
