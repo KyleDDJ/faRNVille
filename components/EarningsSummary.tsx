@@ -1,20 +1,20 @@
 import { COLORS } from "@/constants/Colors";
 import { usePlants } from "@/contexts/PlantsContext";
+import { useUser } from "@/contexts/UserContext";
 import { useGoogleAuth } from "@/hooks/useGoogleAuth";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Image, Platform, Text, TouchableOpacity, View } from "react-native";
 
 type EarningsSummaryProps = {
-  user_name?: string;
   greeting?: string;
 };
 
 const EarningsSummary: React.FC<EarningsSummaryProps> = ({
-  user_name = "Calvin Kyle",
   greeting = "Hello,",
 }) => {
   const { money } = usePlants();
+  const { user } = useUser();
   const router = useRouter();
   const { logout } = useGoogleAuth();
 
@@ -39,6 +39,12 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
     router.push("/(auth)/login");
   };
 
+  const displayName = user?.givenName || user?.name || "Guest User";
+
+  const avatarSource = user?.photo
+    ? { uri: user.photo }
+    : require("@/assets/avatars/blank-profile.jpg");
+
   return (
     <View
       className="flex-row justify-between bg-green items-center"
@@ -55,13 +61,14 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
       <View className="flex-row items-center">
         <TouchableOpacity onPress={handleLogout}>
           <Image
-            source={require("@/assets/avatars/user.jpg")}
+            source={avatarSource}
             resizeMode="cover"
             style={{
               width: sizes.avatar,
               height: sizes.avatar,
               borderRadius: sizes.avatar / 2,
               marginRight: 10,
+              backgroundColor: COLORS.leafy_green,
             }}
           />
         </TouchableOpacity>
@@ -76,7 +83,7 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
             className="font-bold text-white"
             style={{ fontSize: sizes.userName }}
           >
-            {user_name}
+            {displayName}
           </Text>
         </View>
       </View>

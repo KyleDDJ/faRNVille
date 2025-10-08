@@ -1,3 +1,4 @@
+import { useUser } from "@/contexts/UserContext";
 import { GoogleSignin, SignInResponse, statusCodes } from "@react-native-google-signin/google-signin";
 import { router } from "expo-router";
 import { useState } from "react";
@@ -7,6 +8,7 @@ export const useGoogleAuth = () => {
   const [error, setError] = useState<any>(null);
   const [user_info, setUserInfo] = useState<any>(null);
   const [is_loading, setIsLoading] = useState(false);
+  const { setUser } = useUser();
 
   const signIn = async () => {
     console.log("Pressed sign in");
@@ -14,17 +16,34 @@ export const useGoogleAuth = () => {
 
     try {
       await GoogleSignin.hasPlayServices();
-      const info: SignInResponse = await GoogleSignin.signIn(); // const info = await GoogleSignin.signIn();
+      const info: SignInResponse = await GoogleSignin.signIn();
 
-      if (info.type === 'cancelled') { // cancel sign-in handling
+      if (info.type === 'cancelled') {
          console.log('Sign-in cancelled by user');
          setIsLoading(false);
          return; 
       }
 
-    setUserInfo(info.user);
-    Alert.alert('Login Successful');
-    router.push('/(tabs)');
+      const userData = info.data?.user;
+      
+      if (userData) {
+        setUserInfo(userData);
+        
+        // Set user data in context with safe access
+        setUser({
+          id: userData.id || '',
+          email: userData.email || '',
+          name: userData.name || '',
+          givenName: userData.givenName || undefined,
+          familyName: userData.familyName || undefined,
+          photo: userData.photo || undefined,
+        });
+        
+        Alert.alert('Login Successful');
+        router.push('/(tabs)');
+      } else {
+        Alert.alert('Error', 'Unable to retrieve user information');
+      }
 
     } catch (e: any) {
       console.error("Google Sign-In Error:", e);
@@ -50,6 +69,7 @@ export const useGoogleAuth = () => {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
       setUserInfo(null);
+      setUser(null); // Clear user from context
       setError(null);
       Alert.alert("Logout Successful");
     } catch (e: any) {
