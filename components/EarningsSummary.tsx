@@ -39,7 +39,7 @@ const EarningsSummary: React.FC<EarningsSummaryProps> = ({
     router.push("/(auth)/login");
   };
 
-  const displayName = user?.givenName || user?.name || "Guest User";
+  const displayName = user?.given_name || user?.name || "Guest User";
 
   const avatarSource = user?.photo
     ? { uri: user.photo }

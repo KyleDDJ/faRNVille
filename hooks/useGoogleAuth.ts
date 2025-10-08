@@ -14,6 +14,8 @@ export const useGoogleAuth = () => {
     console.log("Pressed sign in");
     setIsLoading(true);
 
+    
+
     try {
       await GoogleSignin.hasPlayServices();
       const info: SignInResponse = await GoogleSignin.signIn();
@@ -29,13 +31,12 @@ export const useGoogleAuth = () => {
       if (userData) {
         setUserInfo(userData);
         
-        // Set user data in context with safe access
         setUser({
           id: userData.id || '',
           email: userData.email || '',
           name: userData.name || '',
-          givenName: userData.givenName || undefined,
-          familyName: userData.familyName || undefined,
+          given_name: userData.givenName || undefined,
+          family_name: userData.familyName || undefined,
           photo: userData.photo || undefined,
         });
         
@@ -69,7 +70,7 @@ export const useGoogleAuth = () => {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
       setUserInfo(null);
-      setUser(null); // Clear user from context
+      setUser(null);
       setError(null);
       Alert.alert("Logout Successful");
     } catch (e: any) {
