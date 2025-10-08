@@ -1,7 +1,7 @@
 import { useUser } from "@/contexts/UserContext";
-import { GoogleSignin, SignInResponse, statusCodes } from "@react-native-google-signin/google-signin";
+import { GoogleSignin, SignInResponse, SignInSilentlyResponse, statusCodes } from "@react-native-google-signin/google-signin";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 export const useGoogleAuth = () => {
@@ -10,11 +10,40 @@ export const useGoogleAuth = () => {
   const [is_loading, setIsLoading] = useState(false);
   const { setUser } = useUser();
 
+useEffect(() => {
+  const trySilentLogin = async () => {
+    if (GoogleSignin.hasPreviousSignIn()) {
+      setIsLoading(true);
+      try {
+        const info: SignInSilentlyResponse = await GoogleSignin.signInSilently();
+        if (info.type === "success") {
+          const userData = info.data.user;
+          setUserInfo(userData);
+
+          setUser({
+            id: userData.id || '',
+            email: userData.email || '',
+            name: userData.name || '',
+            given_name: userData.givenName || undefined,
+            family_name: userData.familyName || undefined,
+            photo: userData.photo || undefined,
+          });
+          
+          router.push("/(tabs)");
+        }
+      } catch (err) {
+        console.log("Silent login failed:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+  trySilentLogin();
+}, []);
+
   const signIn = async () => {
     console.log("Pressed sign in");
     setIsLoading(true);
-
-    
 
     try {
       await GoogleSignin.hasPlayServices();
