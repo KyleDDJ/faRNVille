@@ -14,7 +14,7 @@ const LoginScreen = () => {
       <TouchableOpacity
         onPress={signIn}
         disabled={is_loading}
-        className="mt-5 flex-row gap-5 items-center bg-white py-3 px-9 rounded-full shadow-md"
+        className="mt-5 flex-row gap-5 items-center bg-white py-4 px-12 rounded-full shadow-md"
       >
         <AntDesign name="google" size={24} color={COLORS.remove} />
         {is_loading ? (

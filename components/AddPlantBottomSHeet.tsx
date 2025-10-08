@@ -8,6 +8,7 @@ import {
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import {
   FlatList,
+  Image,
   Modal,
   Platform,
   Pressable,
@@ -115,6 +116,11 @@ const AddPlantBottomSheet = forwardRef<
           />
         ) : (
           <View className="flex-1 justify-center items-center py-16">
+            <Image
+              source={require("@/assets/images/Empty.png")}
+              className="w-52 h-52 mb-5"
+              resizeMode="contain"
+            />
             <Text className="text-center text-gray-500 text-lg">
               No seeds available!
             </Text>

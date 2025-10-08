@@ -3,7 +3,7 @@ import { Image, Text, View } from "react-native";
 
 export const AuthHeader = () => {
   return (
-    <View className="items-center mb-10">
+    <View className="items-center mb-20">
       <Image
         source={require("@/assets/images/Seeding.png")}
         className="w-80 h-80 mb-5"
